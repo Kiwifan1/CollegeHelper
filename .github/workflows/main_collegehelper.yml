@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'CollegeHelper'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_486867D742D14043A7091AD1C5B7EA2F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_4FB28536A27D42F3854796E37217AA99 }}
           package: '*.jar'
