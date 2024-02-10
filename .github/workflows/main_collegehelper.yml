@@ -21,19 +21,21 @@ jobs:
         with:
           node-version: "18.x"
 
-      - name: npm install, build, and test
-        run: |
-          cd College_Helper
-          npm install
-          npm run build --if-present
-          npm run test --if-present
+      - name: Install packages and dependencies
+        run: cd College_Helper && npm install
 
-      - name: Create dotenv file
+      - name: Create environment file
         run: |
           cd College_Helper
           touch .env
           echo API_URL=${{ secrets.API_URL }} >> .env
 
+      - name: Build and test
+        run: |
+          cd College_Helper
+          npm run build --if-present
+          npm run test --if-present
+        
       - name: Zip artifact for deployment
         run: cd College_Helper && zip ../release.zip ./dist/college-helper/*
 
