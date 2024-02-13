@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ApiCallService } from 'src/app/Services/api-call.service';
-import { PeopleService } from './age.service';
 
 @Component({
   selector: 'app-increment-card',
@@ -8,26 +7,14 @@ import { PeopleService } from './age.service';
   styleUrls: ['./increment-card.component.scss'],
 })
 export class IncrementCardComponent {
-  number: Number = 0;
-  name: string = '';
-  age: Number = 0;
-  addedAge: boolean = false;
-  response: any;
+  number = 0;
 
-  constructor(private peopleService: PeopleService) {}
+  constructor(private apiCallService: ApiCallService) {}
 
-  parseJson(): void {
-    try {
-      this.parsedPeople = JSON.parse(this.jsonData);
-      this.peopleService.incrementAges(this.parsedPeople);
-    } catch (error) {
-      console.error('Error parsing JSON:', error);
-    }
-  }
-  addAge() {
-    this.apiCallService.getAge(this.name, this.age).subscribe((data: any) => {
-      this.response = data;
-      this.addedAge = true;
+  increment() {
+    console.log('clicked!');
+    this.apiCallService.incrementNumber(this.number).subscribe((data: any) => {
+      this.number = data['result'];
     });
   }
 }
