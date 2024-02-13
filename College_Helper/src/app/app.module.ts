@@ -19,7 +19,7 @@ import { RegisterPageComponent } from './Components/register-page/register-page.
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { JsonIncrementComponent } from './Components/json-increment/json-increment.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +28,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CollegeSearchPageComponent,
     PageNotFoundComponent,
     RegisterPageComponent,
+    JsonIncrementComponent,
   ],
   imports: [
     BrowserModule,
