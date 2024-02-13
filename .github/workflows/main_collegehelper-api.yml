@@ -49,9 +49,8 @@ jobs:
         with:
           name: python-app
           path: |
-            College_Helper_Api/
-            release.zip
-            !venv/
+            College_Helper_Api/release.zip
+            College_Helper_Api/!venv/
 
   deploy:
     runs-on: ubuntu-latest
