@@ -1,5 +1,18 @@
-<div class="title">
-  <h1>Increment Number</h1>
+
+
+<form #jsonForm="ngForm" (ngSubmit)="parseJson()">
+  <textarea name="jsonData" [(ngModel)]="jsonData" required></textarea>
+  <button type="submit">Parse JSON</button>
+</form>
+
+<div *ngIf="parsedPeople && parsedPeople.length > 0">
+  <div *ngFor="let person of parsedPeople">
+    <p>{{ person.name }} will be {{ person.age }}</p>
+  </div>
+</div>
+
+<div *ngIf="parsedPeople && parsedPeople.length === 0">
+  <p>No people data to display.</p>
 </div>
 <mat-card>
   <mat-card-header>
@@ -11,6 +24,23 @@
     <input matInput type="number" [(ngModel)]="number" />
   </mat-card-content>
   <button mat-raised-button color="primary" (click)="increment()">
-    Increment
+    Increment number
   </button>
+</mat-card>
+
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h2>Enter your Name and Age!</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <input matInput type="text" placeholder="Name" [(ngModel)]="name" />
+    <input matInput type="number" placeholder="Age" [(ngModel)]="age" />
+  </mat-card-content>
+  <button mat-raised-button color="primary" (click)="addAge()">Submit</button>
+  <mat-card-content *ngIf="addedAge">
+    <h3>{{ response | json }}</h3>
+    <h4>{{ response.name}} will be {{ response.age }} years old!</h4>
+  </mat-card-content>
 </mat-card>

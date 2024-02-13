@@ -1,0 +1,150 @@
+<div class="page">
+  <mat-card color="secondary">
+    <mat-card-title>Registering & Setting up Account</mat-card-title>
+    <mat-stepper [linear]="true" #stepper>
+      <!-- Step 1 -->
+      <mat-step [stepControl]="firstFormGroup" [editable]="true">
+        <form
+          class="form"
+          [formGroup]="firstFormGroup"
+          autcomplete="off"
+          (reset)="firstFormGroup.reset()"
+        >
+          <ng-template matStepLabel>Step 1</ng-template>
+          <!-- Username -->
+          <p>
+            <mat-form-field class="fill-card">
+              <mat-label>Username</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="username"
+                placeholder="Ex. pat"
+                required
+              />
+              <mat-error *ngIf="emptyUsername()"
+                >Username is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </p>
+
+          <!-- Next Button -->
+          <mat-card-actions>
+            <button
+              type="reset"
+              mat-button
+              [disabled]="firstFormGroup.pristine"
+            >
+              Clear
+            </button>
+
+            <span class="fill-remaining-space"></span>
+            <button type="button" mat-button (click)="login()">Login</button>
+
+            <button
+              type="button"
+              mat-button
+              (click)="register(stepper)"
+              [disabled]="firstFormGroup.invalid"
+            >
+              Register
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-step>
+
+      <!-- Step 2 -->
+      <mat-step [stepControl]="secondFormGroup">
+        <form
+          class="form"
+          [formGroup]="secondFormGroup"
+          (ngSubmit)="createAccount()"
+          autcomplete="off"
+          (reset)="secondFormGroup.reset()"
+        >
+          <ng-template matStepLabel>Step 2</ng-template>
+
+          <!-- Email -->
+          <p>
+            <mat-form-field class="fill-card">
+              <mat-label>Email</mat-label>
+              <input
+                type="email"
+                matInput
+                formControlName="email"
+                placeholder="Ex. pat@example.com"
+                required
+              />
+              <mat-error *ngIf="invalidEmail()"
+                >Please enter a valid email address
+              </mat-error>
+              <mat-error *ngIf="emptyEmail()"
+                >Email is <strong>required</strong>
+              </mat-error>
+            </mat-form-field>
+          </p>
+
+          <!-- Password -->
+          <p>
+            <mat-form-field class="fill-card">
+              <input
+                type="password"
+                matInput
+                placeholder="Password*"
+                formControlName="password"
+              />
+              <mat-error *ngIf="invalidPassword()">Invalid Password</mat-error>
+              <mat-error *ngIf="tooSmallPassword()"
+                >Password length is
+                {{
+                  secondFormGroup.get("password")?.getError("minlength")
+                    ?.actualLength
+                }}. Minimum length is
+                {{
+                  secondFormGroup.get("password")?.getError("minlength")
+                    ?.requiredLength
+                }}
+              </mat-error>
+            </mat-form-field>
+          </p>
+
+          <!-- Password Confirmation -->
+          <p>
+            <mat-form-field class="fill-card">
+              <input
+                type="password"
+                matInput
+                placeholder="Confirm Password*"
+                formControlName="confirmPassword"
+              />
+              <mat-error *ngIf="invalidConfirmPassword()"
+                >Passwords do not match</mat-error
+              >
+            </mat-form-field>
+          </p>
+
+          <mat-card-actions>
+            <!-- Buttons -->
+            <button
+              type="reset"
+              mat-button
+              [disabled]="secondFormGroup.pristine"
+            >
+              Clear
+            </button>
+            <span class="fill-remaining-space"></span>
+            <button type="button" mat-button (click)="login()">Login</button>
+
+            <button
+              type="submit"
+              mat-button
+              [disabled]="secondFormGroup.invalid"
+            >
+              Create Account
+            </button>
+          </mat-card-actions>
+        </form>
+      </mat-step>
+    </mat-stepper>
+  </mat-card>
+</div>
