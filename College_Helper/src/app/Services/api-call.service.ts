@@ -12,6 +12,15 @@ export class ApiCallService {
     return this.$http.get(url);
   }
 
+  getAge(name: string, age: Number) {
+    const content = {
+      name: name,
+      age: age,
+    }
+    let url = environment.API_URL + '/getAge';
+    return this.$http.post(url, content);
+  }
+
   checkIfUserIsLoggedIn() {
     const user = localStorage.getItem('user');
     return this.login(user ? user : '', 'admin');
