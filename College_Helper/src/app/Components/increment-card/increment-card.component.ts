@@ -8,8 +8,11 @@ import { PeopleService } from './age.service';
   styleUrls: ['./increment-card.component.scss'],
 })
 export class IncrementCardComponent {
-  jsonData: string = '';
-  parsedPeople: any[] = [];
+  number: Number = 0;
+  name: string = '';
+  age: Number = 0;
+  addedAge: boolean = false;
+  response: any;
 
   constructor(private peopleService: PeopleService) {}
 
@@ -21,5 +24,10 @@ export class IncrementCardComponent {
       console.error('Error parsing JSON:', error);
     }
   }
-  
+  addAge() {
+    this.apiCallService.getAge(this.name, this.age).subscribe((data: any) => {
+      this.response = data;
+      this.addedAge = true;
+    });
+  }
 }

@@ -37,6 +37,18 @@ input[type="number"] {
   margin-bottom: 20px;
 }
 
+input[type="text"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+  margin-bottom: 20px;
+}
+
 mat-card-header {
   justify-content: center;
 }
