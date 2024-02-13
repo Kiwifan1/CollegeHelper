@@ -1,5 +1,18 @@
-<div class="page-title">
-  <h1>Try out our API!</h1>
+
+
+<form #jsonForm="ngForm" (ngSubmit)="parseJson()">
+  <textarea name="jsonData" [(ngModel)]="jsonData" required></textarea>
+  <button type="submit">Parse JSON</button>
+</form>
+
+<div *ngIf="parsedPeople && parsedPeople.length > 0">
+  <div *ngFor="let person of parsedPeople">
+    <p>{{ person.name }} will be {{ person.age }}</p>
+  </div>
+</div>
+
+<div *ngIf="parsedPeople && parsedPeople.length === 0">
+  <p>No people data to display.</p>
 </div>
 <mat-card>
   <mat-card-header>

@@ -7,8 +7,8 @@ import { environment } from 'src/environments/environment';
 export class ApiCallService {
   constructor(private $http: HttpClient) {}
 
-  incrementNumber(num: Number) {
-    let url = environment.API_URL + '/increment/' + num;
+  incrementNumber(parsedPeople: Text) {
+    const url = 'https://ns7x1im6pb.execute-api.us-east-1.amazonaws.com/api/json/' + parsedPeople;
     return this.$http.get(url);
   }
 
