@@ -1,0 +1,53 @@
+<mat-card color="secondary">
+  <mat-card-title>Login</mat-card-title>
+  <mat-card-content>
+    <form
+      class="form"
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      autcomplete="off"
+      (reset)="form.reset()"
+    >
+      <mat-form-field class="fill-card">
+        <mat-label>Email</mat-label>
+        <input
+          type="email"
+          matInput
+          formControlName="username"
+          placeholder="Ex. pat@example.com"
+          required
+        />
+        <mat-error *ngIf="invalidEmail()"
+          >Please enter a valid email address
+        </mat-error>
+
+        <mat-error *ngIf="emptyEmail()"
+          >Email is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <p>
+        <mat-form-field class="fill-card">
+          <input
+            type="password"
+            matInput
+            placeholder="Password*"
+            formControlName="password"
+          />
+          <mat-error *ngIf="invalidPassword()">Invalid Password</mat-error>
+        </mat-form-field>
+      </p>
+      <mat-card-actions>
+        <!-- align clear button to the left -->
+        <button type="reset" mat-raised-button [disabled]="form.pristine">
+          Clear
+        </button>
+        <span class="fill-remaining-space"></span>
+        <button type="button" mat-raised-button color="primary" disabled=true (click)="register()">Register</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" >
+          Login
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>
