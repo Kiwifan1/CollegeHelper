@@ -37,6 +37,18 @@ input[type="number"] {
   margin-bottom: 20px;
 }
 
+input[type="text"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+  margin-bottom: 20px;
+}
+
 mat-card-header {
   justify-content: center;
 }
@@ -48,4 +60,7 @@ mat-card {
   background-color: #f2f2f2;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
+  border-radius: 12px;
+  width: 20%;
+  margin: auto;
 }
