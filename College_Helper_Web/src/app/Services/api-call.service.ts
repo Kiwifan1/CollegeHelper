@@ -16,7 +16,7 @@ export class ApiCallService {
     const content = {
       name: name,
       age: age,
-    }
+    };
     let url = environment.API_URL + '/getAge';
     return this.$http.post(url, content);
   }
