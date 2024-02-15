@@ -18,7 +18,7 @@ export class IncrementCardComponent {
   increment() {
     console.log('clicked!');
     this.apiCallService.incrementNumber(this.number).subscribe((data: any) => {
-      this.number = data['result'];
+      this.number = data['value'];
     });
   }
 
