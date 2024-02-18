@@ -1,5 +1,10 @@
 <mat-sidenav-container class="sidenav-container" autosize [hasBackdrop]="true">
   <mat-sidenav #sidenav [mode]="'over'">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <span>Menu</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
     <mat-nav-list>
       <mat-list-item routerLink="/home">
         <mat-icon mat-list-icon>home</mat-icon>
