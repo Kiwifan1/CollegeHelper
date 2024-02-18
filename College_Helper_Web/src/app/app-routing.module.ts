@@ -8,9 +8,13 @@ import { RegisterPageComponent } from './Components/register-page/register-page.
 import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
   {
     path: 'home',
+    component: CollegeSearchPageComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'increment',
     component: IncrementCardComponent,
     canActivate: [loginGuard],
   },
@@ -22,8 +26,9 @@ const routes: Routes = [
     path: 'register',
     component: RegisterPageComponent,
   },
-  { path: '**', redirectTo: '/404', pathMatch: 'full' },
   { path: '404', component: PageNotFoundComponent },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];
 
 @NgModule({
