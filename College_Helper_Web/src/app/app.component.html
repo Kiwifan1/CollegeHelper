@@ -1,50 +1,22 @@
-<div class="toolbar mat-toolbard">
-  <mat-toolbar fixed>
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <span class="spacer"></span>
-    <span class="toolbar-spacer"></span>
-    <span>College Helper</span>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>more_vert</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>
-        <mat-icon>account_circle</mat-icon>
-        <span>Profile</span>
-      </button>
-      <button mat-menu-item>
-        <mat-icon>settings</mat-icon>
-        <span>Settings</span>
-      </button>
-    </mat-menu>
-  </mat-toolbar>
-</div>
-<mat-sidenav-container autosize [hasBackdrop]="true">
+<mat-sidenav-container class="sidenav-container" autosize [hasBackdrop]="true">
   <mat-sidenav #sidenav [mode]="'over'">
     <mat-nav-list>
-      <mat-list-item routerLink="/home" routerLinkActive="active-link">
+      <mat-list-item routerLink="/home">
         <mat-icon mat-list-icon>home</mat-icon>
         <span mat-line>Home</span></mat-list-item
       >
-      <mat-list-item
-        routerLink="/college-search"
-        routerLinkActive="active-link"
-      >
+      <mat-list-item routerLink="/college-search">
         <mat-icon mat-list-icon>search</mat-icon>
         <span mat-line>College Search</span></mat-list-item
       >
-      <mat-list-item
-        routerLink="/increment"
-        routerLinkActive="active-link"
-      >
+      <mat-list-item routerLink="/increment">
         <mat-icon mat-list-icon>add</mat-icon>
         <span mat-line>Increment Card</span></mat-list-item
       >
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
+    <app-main-nav [sidenav]="sidenav"></app-main-nav>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
