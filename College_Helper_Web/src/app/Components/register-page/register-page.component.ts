@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs/operators';
@@ -13,14 +18,14 @@ import { ApiCallService } from 'src/app/Services/api-call.service';
   styleUrls: ['./register-page.component.scss'],
 })
 export class RegisterPageComponent implements OnInit {
-  firstFormGroup = this.formBuilder.group({
-    username: ['', Validators.required],
-  });
-
-  secondFormGroup = this.formBuilder.group({
-    email: ['', Validators.required, Validators.email],
-    password: ['', Validators.required, Validators.minLength(6)],
-    confirmPassword: ['', Validators.required],
+  form: FormGroup = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    confirmPassword: new FormControl('', [Validators.required]),
   });
 
   registered: boolean = false;
@@ -36,38 +41,40 @@ export class RegisterPageComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  emptyEmail() {
+    return this.form.get('username')?.hasError('required');
+  }
+
   invalidEmail() {
     return (
-      this.secondFormGroup.get('email')?.hasError('email') &&
-      !this.secondFormGroup.get('email')?.hasError('required')
+      this.form.get('username')?.hasError('email') &&
+      !this.form.get('username')?.hasError('required')
     );
   }
 
-  emptyEmail() {
-    return this.secondFormGroup.get('email')?.hasError('required');
-  }
-
   invalidPassword() {
-    return this.secondFormGroup.get('password')?.hasError('required');
+    return (
+      this.form.get('password')?.hasError('required') &&
+      this.form.get('password')?.touched
+    );
   }
 
   tooSmallPassword() {
     return (
-      this.secondFormGroup.get('password')?.hasError('minlength') &&
-      !this.secondFormGroup.get('password')?.hasError('required')
+      this.form.get('password')?.hasError('minlength') &&
+      !this.form.get('password')?.hasError('required')
     );
   }
 
   invalidConfirmPassword() {
     return (
-      !this.secondFormGroup.get('confirmPassword')?.hasError('required') &&
-      this.secondFormGroup.get('password')?.value !==
-        this.secondFormGroup.get('confirmPassword')?.value
+      this.form.get('password')?.value ===
+      this.form.get('confirmPassword')?.value
     );
   }
 
   emptyUsername() {
-    return this.firstFormGroup.get('username')?.hasError('required');
+    return this.form.get('username')?.hasError('required');
   }
 
   register(stepper: any) {

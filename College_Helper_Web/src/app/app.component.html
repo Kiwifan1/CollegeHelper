@@ -1,5 +1,5 @@
 <mat-sidenav-container class="sidenav-container" autosize [hasBackdrop]="true">
-  <mat-sidenav #sidenav [mode]="'over'">
+  <mat-sidenav #sidenav [mode]="'over'" (click)="sidenav.toggle()">
     <mat-toolbar>
       <mat-toolbar-row>
         <span>Menu</span>
