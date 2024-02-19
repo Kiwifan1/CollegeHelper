@@ -1,0 +1,84 @@
+{
+    "college": {
+        "name": "The Chicago School of Professional Psychology at Los Angeles",
+        "generalInformation": {
+            "address": {
+                "street": "707 Wilshire Boulevard",
+                "city": "Los Angeles",
+                "province": "California",
+                "postCode": "90017",
+                "website": "https://www.thechicagoschool.edu/los-angeles"
+            },
+            "institutionFunding": "Private",
+            "history": "Created 1979 and forms part of a network of psychology schools across the USA",
+            "academicYear": "The academic year typically begins with the last Monday in August and ends with the end of the summer semester, typically the third week in August. The School has a continuous enrollment policy and requires summer school for all programs. Seme",
+            "languages": ["English"],
+            "accreditingAgency": [
+                "Higher Learning Commission",
+                "WASC Senior College and University Commission",
+                "American Psychological Association, Commission on Accreditation"
+            ]
+        },
+        "officers": [
+            {
+                "name": "Michele Nealon",
+                "jobTitle": "President"
+            },
+            {
+                "name": "Alisha DeWalt",
+                "jobTitle": "Executive Director of TCSPP Global"
+            }
+        ],
+        "divisions": [
+            {
+                "courseProgramme": "Psychology",
+                "fieldsOfStudy": [
+                    "Behavioural Sciences",
+                    "Clinical Psychology",
+                    "Industrial and Organizational Psychology",
+                    "Leadership",
+                    "Psychology",
+                    "Social and Community Services"
+                ]
+            }
+        ],
+        "degrees": [
+            {
+                "degreeType": "Bachelor's Degree",
+                "fieldsOfStudy": ["Psychology"]
+            },
+            {
+                "degreeType": "Post-bachelor's Diploma/Certificate",
+                "fieldsOfStudy": ["Behavioural Sciences"]
+            },
+            {
+                "degreeType": "Master's Degree",
+                "fieldsOfStudy": ["Clinical Psychology", "Psychology"]
+            },
+            {
+                "degreeType": "Doctor's Degrees (Professional Practice)",
+                "fieldsOfStudy": ["Education", "Psychology"]
+            },
+            {
+                "degreeType": "Doctor's Degree (Research/Scholarship)",
+                "fieldsOfStudy": [
+                    "Behavioural Sciences",
+                    "Clinical Psychology",
+                    "Industrial and Organizational Psychology",
+                    "Leadership",
+                    "Psychology"
+                ]
+            }
+        ],
+        "studentStaffNumbers": {
+            "staff": {
+                "statisticsYear": "2021-2022",
+                "fullTimeTotal": "300"
+            },
+            "students": {
+                "statisticsYear": "2021-2022",
+                "total": "5912"
+            }
+        }
+    }
+}

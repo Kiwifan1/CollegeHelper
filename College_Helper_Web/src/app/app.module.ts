@@ -27,6 +27,7 @@ import { MatListModule } from '@angular/material/list';
 import { MainNavComponent } from './Components/main-nav/main-nav.component';
 import { CollegeListComponent } from './Components/college-search-page/college-list/college-list.component';
 import { CollegeDetailComponent } from './Components/college-search-page/college-detail/college-detail.component';
+import { CollegeItemComponent } from './Components/college-search-page/college-list/college-item/college-item.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { CollegeDetailComponent } from './Components/college-search-page/college
     MainNavComponent,
     CollegeListComponent,
     CollegeDetailComponent,
+    CollegeItemComponent,
   ],
   imports: [
     BrowserModule,
