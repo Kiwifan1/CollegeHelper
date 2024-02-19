@@ -31,6 +31,7 @@ import { CollegeItemComponent } from './Components/college-search-page/college-l
 import { SmartTableComponent } from './Components/common/smart-table/smart-table.component';
 import { MatCell, MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -54,13 +55,13 @@ import { MatSelectModule } from '@angular/material/select';
     AppRoutingModule,
     MatCardModule,
     MatInputModule,
-    FormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatCardActions,
     MatInput,
     ReactiveFormsModule,
+    FormsModule,
     MatDialogModule,
     MatStepperModule,
     MatButtonModule,
@@ -71,6 +72,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatListModule,
     MatTableModule,
     MatSelectModule,
+    MatAutocompleteModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

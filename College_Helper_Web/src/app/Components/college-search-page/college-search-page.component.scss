@@ -1,10 +1,22 @@
 .left-pane {
-    width: 30%;
-    float: left;
-    padding: 10px;
-    margin: 10px;
-    box-sizing: border-box;
+  width: 30%;
+  float: left;
+  padding: 10px;
+  margin: 10px;
 }
 
 .main-pane {
+  margin: 10px;
+  padding: 10px;
+  width: 60%;
+  float: left;
+
+  // don't let the main pane go below the left pane
+  min-height: 100%;
+  
+}
+
+mat-card {
+  display: flex;
+  flex-direction: column;
 }

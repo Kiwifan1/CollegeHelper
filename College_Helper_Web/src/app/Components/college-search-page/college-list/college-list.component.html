@@ -1,10 +1,13 @@
 <mat-card>
-  <mat-card-header>
-    <mat-card-title>College Search</mat-card-title>
-  </mat-card-header>
   <mat-card-content>
     <mat-form-field>
-      <input matInput placeholder="Search for colleges" />
+      <input
+        type="text"
+        matInput
+        [formControl]="searchForm"
+        placeholder="Search for colleges"
+      />
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
     <mat-selection-list
       #collegelist
@@ -12,7 +15,7 @@
       [multiple]="false"
     >
       <mat-list-option
-        *ngFor="let college of colleges"
+        *ngFor="let college of filteredColleges | async"
         (selectedChange)="
           selectCollege(collegelist.selectedOptions.selected[0].value)
         "
@@ -21,5 +24,6 @@
         <app-college-item [college]="college"></app-college-item>
       </mat-list-option>
     </mat-selection-list>
+    <mat-divider></mat-divider>
   </mat-card-content>
 </mat-card>

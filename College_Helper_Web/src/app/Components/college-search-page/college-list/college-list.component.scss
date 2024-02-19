@@ -1,8 +1,3 @@
-mat-card {
-  display: flex;
-  flex-direction: column;
-}
-
 mat-list-option {
   display: flex;
   flex-direction: row;
@@ -10,3 +5,13 @@ mat-list-option {
   justify-content: center;
   align-items: center;
 }
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-icon {
+  margin-left: auto;
+}
+
+
