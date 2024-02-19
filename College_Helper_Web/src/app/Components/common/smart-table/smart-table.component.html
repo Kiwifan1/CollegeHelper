@@ -1,0 +1,21 @@
+<table class="mat-elevation-z8" mat-table [dataSource]="dataSource">
+  <ng-container
+    [matColumnDef]="tableData"
+    *ngFor="let tableData of objectKeys(columnHeader)"
+  >
+    <mat-header-cell *matHeaderCellDef>
+      {{ columnHeader[tableData] }}
+    </mat-header-cell>
+    <mat-cell *matCellDef="let college; let i = index">
+      {{ college[tableData] }}
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="objectKeys(columnHeader)"></mat-header-row>
+  <mat-row
+    [class.row-is-clicked]="selectedRow == row"
+    matRipple
+    *matRowDef="let row; columns: objectKeys(columnHeader)"
+    (click)="displayRow(row)"
+  ></mat-row>
+</table>

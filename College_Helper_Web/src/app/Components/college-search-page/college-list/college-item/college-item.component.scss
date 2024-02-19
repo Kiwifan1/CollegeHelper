@@ -1,0 +1,23 @@
+.college-info {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9; /* Light grey background */
+}
+
+h3 {
+  margin: 0;
+  font-weight: bold;
+  color: #333; /* Black font color */
+}
+
+p {
+  margin: 5px 0;
+  color: #333; /* Black font color */
+}
+
+/* Optional: Add hover effect for interactivity */
+.college-info:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}

@@ -29,4 +29,8 @@ export class CollegeListComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  changeCollege(college: any) {
+    console.log(college);
+  }
 }

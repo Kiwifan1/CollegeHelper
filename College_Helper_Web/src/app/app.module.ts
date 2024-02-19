@@ -28,6 +28,8 @@ import { MainNavComponent } from './Components/main-nav/main-nav.component';
 import { CollegeListComponent } from './Components/college-search-page/college-list/college-list.component';
 import { CollegeDetailComponent } from './Components/college-search-page/college-detail/college-detail.component';
 import { CollegeItemComponent } from './Components/college-search-page/college-list/college-item/college-item.component';
+import { SmartTableComponent } from './Components/common/smart-table/smart-table.component';
+import { MatCell, MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -41,9 +43,11 @@ import { CollegeItemComponent } from './Components/college-search-page/college-l
     CollegeListComponent,
     CollegeDetailComponent,
     CollegeItemComponent,
+    SmartTableComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
@@ -64,6 +68,7 @@ import { CollegeItemComponent } from './Components/college-search-page/college-l
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatTableModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],
