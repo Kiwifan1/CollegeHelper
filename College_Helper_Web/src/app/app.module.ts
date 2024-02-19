@@ -30,6 +30,7 @@ import { CollegeDetailComponent } from './Components/college-search-page/college
 import { CollegeItemComponent } from './Components/college-search-page/college-list/college-item/college-item.component';
 import { SmartTableComponent } from './Components/common/smart-table/smart-table.component';
 import { MatCell, MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { MatCell, MatTableModule } from '@angular/material/table';
     MatSidenavModule,
     MatListModule,
     MatTableModule,
+    MatSelectModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

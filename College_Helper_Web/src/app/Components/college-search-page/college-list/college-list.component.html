@@ -6,5 +6,10 @@
     <mat-form-field>
       <input matInput placeholder="Search for colleges" />
     </mat-form-field>
+    <mat-action-list>
+      <mat-list-item *ngFor="let college of colleges">
+        <app-college-item [college]="college"></app-college-item>
+      </mat-list-item>
+    </mat-action-list>
   </mat-card-content>
 </mat-card>
