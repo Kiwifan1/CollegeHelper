@@ -9,6 +9,9 @@ import { Route, Router } from '@angular/router';
 export class MainNavComponent {
   @Input() sidenav: any;
 
+  // TODO: replace with actual username grabbed from database when logging in
+  user = localStorage.getItem('user')
+
   constructor(private router: Router) {}
 
   isAuthenticated() {

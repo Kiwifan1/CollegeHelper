@@ -25,6 +25,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MainNavComponent } from './Components/main-nav/main-nav.component';
+import { CollegeListComponent } from './Components/college-search-page/college-list/college-list.component';
+import { CollegeDetailComponent } from './Components/college-search-page/college-detail/college-detail.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { MainNavComponent } from './Components/main-nav/main-nav.component';
     PageNotFoundComponent,
     RegisterPageComponent,
     MainNavComponent,
+    CollegeListComponent,
+    CollegeDetailComponent,
   ],
   imports: [
     BrowserModule,
