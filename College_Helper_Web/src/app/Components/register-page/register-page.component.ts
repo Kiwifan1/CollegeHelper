@@ -11,6 +11,8 @@ import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ApiCallService } from 'src/app/Services/api-call.service';
+import { ErrorStateMatcher } from '../login-page/login-page.component';
+import { passwordMatchValidator } from '../common/validators';
 
 @Component({
   selector: 'app-register-page',
@@ -18,63 +20,67 @@ import { ApiCallService } from 'src/app/Services/api-call.service';
   styleUrls: ['./register-page.component.scss'],
 })
 export class RegisterPageComponent implements OnInit {
-  form: FormGroup = new FormGroup({
+  userForm: FormGroup = new FormGroup({
     username: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-    confirmPassword: new FormControl('', [Validators.required]),
   });
+
+  passwordForm = new FormGroup(
+    {
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
+      confirmPassword: new FormControl(''),
+    },
+    {
+      validators: [passwordMatchValidator('password', 'confirmPassword')],
+    }
+  );
 
   registered: boolean = false;
   token: string = '';
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private dialog: MatDialog,
-    private apiCallService: ApiCallService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  matcher = new ErrorStateMatcher();
+
+  constructor(private router: Router, private apiCallService: ApiCallService) {}
 
   ngOnInit(): void {}
 
   emptyEmail() {
-    return this.form.get('username')?.hasError('required');
+    return this.userForm.get('email')?.hasError('required');
   }
 
   invalidEmail() {
     return (
-      this.form.get('username')?.hasError('email') &&
-      !this.form.get('username')?.hasError('required')
+      this.userForm.get('email')?.hasError('email') &&
+      !this.userForm.get('email')?.hasError('required')
     );
   }
 
   invalidPassword() {
     return (
-      this.form.get('password')?.hasError('required') &&
-      this.form.get('password')?.touched
+      this.passwordForm.get('password')?.hasError('required') &&
+      this.passwordForm.get('password')?.touched
     );
   }
 
   tooSmallPassword() {
     return (
-      this.form.get('password')?.hasError('minlength') &&
-      !this.form.get('password')?.hasError('required')
+      this.passwordForm.get('password')?.hasError('minlength') &&
+      !this.passwordForm.get('password')?.hasError('required')
     );
   }
 
   invalidConfirmPassword() {
-    return (
-      this.form.get('password')?.value ===
-      this.form.get('confirmPassword')?.value
-    );
+    let invalidConfirm =
+      this.passwordForm.get('password')?.value !==
+      this.passwordForm.get('confirmPassword')?.value;
+    return invalidConfirm;
   }
 
   emptyUsername() {
-    return this.form.get('username')?.hasError('required');
+    return this.userForm.get('username')?.hasError('required');
   }
 
   register(stepper: any) {

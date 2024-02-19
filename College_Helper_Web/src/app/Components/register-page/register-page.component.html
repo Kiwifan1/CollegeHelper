@@ -4,10 +4,10 @@
     <mat-card-content>
       <form
         class="form"
-        [formGroup]="form"
+        [formGroup]="userForm"
         (ngSubmit)="createAccount()"
         autcomplete="off"
-        (reset)="form.reset()"
+        (reset)="userForm.reset()"
       >
         <mat-form-field class="fill-card">
           <mat-label>Username</mat-label>
@@ -18,6 +18,9 @@
             placeholder="Ex. pat"
             required
           />
+          <mat-error *ngIf="emptyUsername()"
+            >Username is <strong>required</strong></mat-error
+          >
         </mat-form-field>
         <p>
           <mat-form-field class="fill-card">
@@ -25,7 +28,7 @@
             <input
               type="email"
               matInput
-              formControlName="username"
+              formControlName="email"
               placeholder="Ex. pat@example.com"
               required
             />
@@ -38,40 +41,57 @@
             </mat-error>
           </mat-form-field>
         </p>
-        <p>
-          <mat-form-field class="fill-card">
-            <input
-              type="password"
-              matInput
-              placeholder="Password*"
-              formControlName="password"
-            />
-            <mat-error *ngIf="invalidPassword()">Invalid Password</mat-error>
-          </mat-form-field>
-        </p>
+        <form class="form" [formGroup]="passwordForm"></form>
+      </form>
+      <mat-divider></mat-divider>
+      <form
+        class="form"
+        [formGroup]="passwordForm"
+        (ngSubmit)="createAccount()"
+      >
         <mat-form-field class="fill-card">
+          <mat-label>Password</mat-label>
           <input
             type="password"
             matInput
-            placeholder="Confirm Password*"
-            formControlName="confirmPassword"
+            formControlName="password"
+            placeholder="Ex. password"
+            required
           />
-          <mat-error *ngIf="invalidConfirmPassword()"
-            >Passwords should match</mat-error
+          <mat-error *ngIf="invalidPassword()"
+            >Password is <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="tooSmallPassword()"
+            >Password must be at least 8 characters long</mat-error
           >
         </mat-form-field>
-        <mat-card-actions>
-          <span class="fill-remaining-space"></span>
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid"
-          >
-            Sign Up
-          </button>
-        </mat-card-actions>
+        <p>
+          <mat-form-field class="fill-card">
+            <mat-label>Confirm Password</mat-label>
+            <input
+              type="password"
+              matInput
+              formControlName="confirmPassword"
+              placeholder="Ex. password"
+              required
+            />
+            <mat-error *ngIf="invalidConfirmPassword()"
+              >Passwords do not match
+            </mat-error>
+          </mat-form-field>
+        </p>
       </form>
+      <mat-card-actions>
+        <span class="fill-remaining-space"></span>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="userForm.invalid || passwordForm.invalid"
+        >
+          Sign Up
+        </button>
+      </mat-card-actions>
     </mat-card-content>
   </mat-card>
 </div>
