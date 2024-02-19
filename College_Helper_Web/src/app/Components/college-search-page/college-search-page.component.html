@@ -1,6 +1,10 @@
 <div class="page">
   <div class="left-pane">
-    <app-college-list></app-college-list>
+    <app-college-list
+      (collegeSelected)="onCollegeSelected($event)"
+    ></app-college-list>
   </div>
-  <div class="main-pane"></div>
+  <div class="main-pane">
+    <app-college-detail [college]="selectedCollege"></app-college-detail>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { College, testCollege } from 'src/app/Objects/College/College';
 
 @Component({
@@ -26,11 +26,16 @@ export class CollegeListComponent implements OnInit {
     testCollege,
   ];
 
+  selectedCollege!: College;
+
+  @Output() collegeSelected = new EventEmitter<College>();
+
   constructor() {}
 
   ngOnInit(): void {}
 
-  changeCollege(college: any) {
-    console.log(college);
+  selectCollege(college: College) {
+    this.selectedCollege = college;
+    this.collegeSelected.emit(college);
   }
 }

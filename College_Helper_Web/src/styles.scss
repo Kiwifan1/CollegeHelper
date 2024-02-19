@@ -49,10 +49,13 @@ $college-helper-app-dark-theme: mat.define-dark-theme(
   @include mat.all-component-themes($college-helper-app-dark-theme);
 }
 
+.light-mode {
+  @include mat.all-component-themes($college-helper-app-theme);
+}
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($college-helper-app-theme);
 
 html,
 body {
@@ -161,10 +164,6 @@ mat-panel-title {
   align-self: center;
 }
 
-.mat-mdc-form-field + .mat-mdc-form-field {
-  margin-left: 8px;
-}
-
 .grid-container {
   display: grid;
   gap: auto;
@@ -196,4 +195,9 @@ mat-panel-title {
   font-weight: bold;
   margin-right: 10px;
   margin-bottom: 15px;
+}
+
+mat-form-field {
+  width: 70%;
+  margin-left: auto;
 }

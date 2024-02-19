@@ -8,7 +8,6 @@ import { College } from 'src/app/Objects/College/College';
 })
 export class CollegeItemComponent implements OnInit {
   @Input() college: College = {} as College;
-  @Output() chosenCollege = new EventEmitter<College>();
 
   constructor() {}
 
@@ -16,9 +15,5 @@ export class CollegeItemComponent implements OnInit {
 
   getCollegeName(): string {
     return this.college.name;
-  }
-
-  displayCollegeInfo() {
-    this.chosenCollege.emit(this.college);
   }
 }

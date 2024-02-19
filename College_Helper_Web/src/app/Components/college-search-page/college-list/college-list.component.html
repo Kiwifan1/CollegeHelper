@@ -6,10 +6,20 @@
     <mat-form-field>
       <input matInput placeholder="Search for colleges" />
     </mat-form-field>
-    <mat-action-list>
-      <mat-list-item *ngFor="let college of colleges">
+    <mat-selection-list
+      #collegelist
+      hideSingleSelectionIndicator
+      [multiple]="false"
+    >
+      <mat-list-option
+        *ngFor="let college of colleges"
+        (selectedChange)="
+          selectCollege(collegelist.selectedOptions.selected[0].value)
+        "
+        [value]="college"
+      >
         <app-college-item [college]="college"></app-college-item>
-      </mat-list-item>
-    </mat-action-list>
+      </mat-list-option>
+    </mat-selection-list>
   </mat-card-content>
 </mat-card>
