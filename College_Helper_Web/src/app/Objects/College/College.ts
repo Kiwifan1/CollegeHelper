@@ -1,3 +1,4 @@
+import { Cost } from './Cost';
 import { Division } from './Course';
 import { GeneralInfo } from './GeneralInfo';
 import { Officer } from './Officer';
@@ -10,6 +11,8 @@ export interface College {
   divisions: Division[];
   degrees: Division[];
   populations: Population[];
+  ceeb: Number;
+  cost: Cost;
 }
 
 export const testCollege: College = {
@@ -98,4 +101,16 @@ export const testCollege: College = {
       yearGathered: '2021-2022',
     },
   ],
+  ceeb: 4330,
+  cost: {
+    totalCostOnCampus: 0,
+    totalCostOffCampusNoFamily: 0,
+    totalCostOffCampusWithFamily: 0,
+    avgNetCost: 0,
+    avgNetCostIncome0_30: 0,
+    avgNetCostIncome30_48: 0,
+    avgNetCostIncome48_75: 0,
+    avgNetCostIncome75_110: 0,
+    avgNetCostIncome110: 0,
+  },
 };
