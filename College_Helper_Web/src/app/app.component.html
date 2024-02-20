@@ -1,1 +1,27 @@
-<router-outlet></router-outlet>
+<mat-sidenav-container class="sidenav-container" autosize [hasBackdrop]="true">
+  <mat-sidenav #sidenav [mode]="'over'" (click)="sidenav.toggle()">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <span>Menu</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-nav-list>
+      <mat-list-item routerLink="/home">
+        <mat-icon mat-list-icon>home</mat-icon>
+        <span mat-line>Home</span></mat-list-item
+      >
+      <mat-list-item routerLink="/college-search">
+        <mat-icon mat-list-icon>search</mat-icon>
+        <span mat-line>College Search</span></mat-list-item
+      >
+      <mat-list-item routerLink="/increment">
+        <mat-icon mat-list-icon>add</mat-icon>
+        <span mat-line>Increment Card</span></mat-list-item
+      >
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-main-nav [sidenav]="sidenav"></app-main-nav>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

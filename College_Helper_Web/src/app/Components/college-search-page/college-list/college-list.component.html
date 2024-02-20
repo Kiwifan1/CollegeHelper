@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-content>
+    <mat-form-field>
+      <input
+        type="text"
+        matInput
+        [formControl]="searchForm"
+        placeholder="Search for colleges"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+    <mat-divider></mat-divider>
+    <mat-selection-list
+      #collegelist
+      hideSingleSelectionIndicator
+      [multiple]="false"
+    >
+      <mat-list-option
+        *ngFor="let college of filteredColleges | async"
+        (selectedChange)="
+          selectCollege(collegelist.selectedOptions.selected[0].value)
+        "
+        [value]="college"
+      >
+        <app-college-item [college]="college"></app-college-item>
+      </mat-list-option>
+    </mat-selection-list>
+  </mat-card-content>
+</mat-card>

@@ -19,6 +19,19 @@ import { RegisterPageComponent } from './Components/register-page/register-page.
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MainNavComponent } from './Components/main-nav/main-nav.component';
+import { CollegeListComponent } from './Components/college-search-page/college-list/college-list.component';
+import { CollegeDetailComponent } from './Components/college-search-page/college-detail/college-detail.component';
+import { CollegeItemComponent } from './Components/college-search-page/college-list/college-item/college-item.component';
+import { SmartTableComponent } from './Components/common/smart-table/smart-table.component';
+import { MatCell, MatTableModule } from '@angular/material/table';
+import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -28,24 +41,38 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CollegeSearchPageComponent,
     PageNotFoundComponent,
     RegisterPageComponent,
+    MainNavComponent,
+    CollegeListComponent,
+    CollegeDetailComponent,
+    CollegeItemComponent,
+    SmartTableComponent,
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     BrowserAnimationsModule,
     CommonModule,
     AppRoutingModule,
     MatCardModule,
     MatInputModule,
-    FormsModule,
     MatCardModule,
     MatInputModule,
     MatFormFieldModule,
     MatCardActions,
     MatInput,
     ReactiveFormsModule,
+    FormsModule,
     MatDialogModule,
     MatStepperModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTableModule,
+    MatSelectModule,
+    MatAutocompleteModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],
