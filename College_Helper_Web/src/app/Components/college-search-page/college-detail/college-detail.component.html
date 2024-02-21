@@ -2,8 +2,8 @@
   <mat-card-header>
     <mat-card-title>{{ college.name }}</mat-card-title>
     <mat-card-subtitle
-      >{{ college.generalInfo.address.city }} |
-      <a href="{{ college.generalInfo.address.website }}"
+      >{{ college.generalInfo?.address?.city }} |
+      <a href="{{ college.generalInfo?.address?.website }}"
         >Visit Website</a
       ></mat-card-subtitle
     >
