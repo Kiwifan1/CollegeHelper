@@ -4,5 +4,5 @@ export interface Address {
   state: string;
   zip: string;
   country: string | null;
-  website: string;
+  website: string | null;
 }

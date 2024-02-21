@@ -1,4 +1,4 @@
-import { Cost } from './Cost';
+import { CollegeBoard } from './CollegeBoard';
 import { Division } from './Course';
 import { GeneralInfo } from './GeneralInfo';
 import { Officer } from './Officer';
@@ -6,13 +6,13 @@ import { Population } from './Population';
 
 export interface College {
   name: string;
-  generalInfo: GeneralInfo;
-  officers: Officer[];
-  divisions: Division[];
-  degrees: Division[];
-  populations: Population[];
-  ceeb: Number;
-  cost: Cost;
+  generalInfo: GeneralInfo | null;
+  officers: Officer[] | null;
+  divisions: Division[] | null;
+  degrees: Division[] | null;
+  populations: Population[] | null;
+  ceeb: Number | null;
+  collegeBoard: CollegeBoard | null;
 }
 
 export const testCollege: College = {
@@ -102,15 +102,70 @@ export const testCollege: College = {
     },
   ],
   ceeb: 4330,
-  cost: {
-    totalCostOnCampus: 0,
-    totalCostOffCampusNoFamily: 0,
-    totalCostOffCampusWithFamily: 0,
-    avgNetCost: 0,
-    avgNetCostIncome0_30: 0,
-    avgNetCostIncome30_48: 0,
-    avgNetCostIncome48_75: 0,
-    avgNetCostIncome75_110: 0,
-    avgNetCostIncome110: 0,
+
+  collegeBoard: {
+    admissions: {
+      gpaRange: {
+        '3.75': -1,
+        '3.5': -1,
+        '3.25': -1,
+        '3.0': -1,
+        '2.5': -1,
+        '2.0': -1,
+        '0.0': -1,
+      },
+      satRange: {
+        satTotalRange: {
+          min: 0,
+          max: 0,
+        },
+        satMathRange: {
+          min: 0,
+          max: 0,
+        },
+        satReadingRange: {
+          min: 0,
+          max: 0,
+        },
+      },
+      actRange: {
+        compositeRange: {
+          min: 0,
+          max: 0,
+        },
+      },
+      acceptanceRate: {
+        description: 'Not Available',
+        rate: 'Not Available',
+        applicantCount: -1,
+        admittedCount: -1,
+        enrolledCount: -1,
+      },
+    },
+    academics: {
+      graduationRate: 'Not Available',
+      retentionRate: 'Not Available',
+      studentFacultyRatio: 'Not Available',
+    },
+    costs: {
+      avgNetPrice: -1,
+      netPriceIncome: {
+        '<30k': -1,
+        '30-48k': -1,
+        '48-75k': -1,
+        '75-110k': -1,
+        '110k+': -1,
+      },
+      stickerPrice: {
+        inState: -1,
+        outOfState: -1,
+      },
+      otherCosts: {
+        housing: -1,
+        supplies: -1,
+        personal: -1,
+        transportation: -1,
+      },
+    },
   },
 };
