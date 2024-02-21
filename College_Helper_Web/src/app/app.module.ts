@@ -34,6 +34,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CollegeDetailGeneralComponent } from './Components/college-search-page/college-detail/college-detail-general/college-detail-general.component';
+import { CollegeDetailAdmissionsComponent } from './Components/college-search-page/college-detail/college-detail-admissions/college-detail-admissions.component';
+import { CollegeDetailCostsComponent } from './Components/college-search-page/college-detail/college-detail-costs/college-detail-costs.component';
+import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +51,9 @@ import { CollegeDetailGeneralComponent } from './Components/college-search-page/
     CollegeItemComponent,
     SmartTableComponent,
     CollegeDetailGeneralComponent,
+    CollegeDetailAdmissionsComponent,
+    CollegeDetailCostsComponent,
+    SettingsDialogComponent,
   ],
   imports: [
     BrowserModule,
