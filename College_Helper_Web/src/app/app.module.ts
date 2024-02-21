@@ -32,7 +32,8 @@ import { SmartTableComponent } from './Components/common/smart-table/smart-table
 import { MatCell, MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { MatTabsModule } from '@angular/material/tabs';
+import { CollegeDetailGeneralComponent } from './Components/college-search-page/college-detail/college-detail-general/college-detail-general.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +47,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     CollegeDetailComponent,
     CollegeItemComponent,
     SmartTableComponent,
+    CollegeDetailGeneralComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +75,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatTableModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatTabsModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

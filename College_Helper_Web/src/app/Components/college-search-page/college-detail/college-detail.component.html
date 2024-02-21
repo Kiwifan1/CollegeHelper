@@ -1,14 +1,9 @@
 <mat-card *ngIf="college">
-  <mat-card-header>
-    <mat-card-title>{{ college.name }}</mat-card-title>
-    <mat-card-subtitle
-      >{{ college.generalInfo?.address?.city }} |
-      <a href="{{ college.generalInfo?.address?.website }}"
-        >Visit Website</a
-      ></mat-card-subtitle
-    >
-  </mat-card-header>
-  <mat-card-content>
-    <!-- TODO, implement details  -->
-  </mat-card-content>
+  <mat-tab-group [mat-stretch-tabs]="false" mat-align-tabs="start">
+    <mat-tab label="Overview">
+      <app-college-detail-general
+        [college]="college"
+      ></app-college-detail-general>
+    </mat-tab>
+  </mat-tab-group>
 </mat-card>

@@ -36,6 +36,18 @@ export class CollegeListComponent implements OnInit {
     testCollege,
     testCollege,
     testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
+    testCollege,
   ];
 
   filteredColleges = of(this.colleges);
