@@ -1,0 +1,30 @@
+mat-list-option {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-icon {
+  margin-left: auto;
+}
+
+mat-card {
+  margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 5px;
+
+  mat-selection-list {
+    max-height: 1000px;
+    overflow: auto;
+  }
+
+  mat-list-option {
+    height: 100%;
+  }
+}

@@ -1,1 +1,12 @@
-<p>college-search-page works!</p>
+<div class="page">
+  <div class="page-content">
+    <div class="left-pane">
+      <app-college-list
+        (collegeSelected)="onCollegeSelected($event)"
+      ></app-college-list>
+    </div>
+    <div class="main-pane">
+      <app-college-detail [college]="selectedCollege"></app-college-detail>
+    </div>
+  </div>
+</div>

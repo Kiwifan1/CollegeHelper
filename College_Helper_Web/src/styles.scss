@@ -1,4 +1,6 @@
 @use "@angular/material" as mat;
+@use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
 
 @import "themes/custom_map.scss";
 
@@ -47,14 +49,18 @@ $college-helper-app-dark-theme: mat.define-dark-theme(
   @include mat.all-component-themes($college-helper-app-dark-theme);
 }
 
+.light-mode {
+  @include mat.all-component-themes($college-helper-app-theme);
+}
+
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include mat.all-component-themes($college-helper-app-theme);
 
 html,
 body {
-  min-height: 100vh;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 body {
   margin: 0;
@@ -62,9 +68,9 @@ body {
 }
 
 .page {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  padding-top: 64px;
 }
 
 .page-title {
@@ -158,10 +164,6 @@ mat-panel-title {
   align-self: center;
 }
 
-.mat-mdc-form-field + .mat-mdc-form-field {
-  margin-left: 8px;
-}
-
 .grid-container {
   display: grid;
   gap: auto;
@@ -193,4 +195,13 @@ mat-panel-title {
   font-weight: bold;
   margin-right: 10px;
   margin-bottom: 15px;
+}
+
+mat-form-field {
+  width: 70%;
+  margin-left: auto;
+}
+
+a {
+  color: #2a862a;
 }

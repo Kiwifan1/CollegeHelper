@@ -3,23 +3,18 @@ mat-card {
   margin-top: 10%;
   padding: 20px;
   text-align: center;
-  max-width: 500px;
+  width: 20%
 }
 
 mat-card-content {
+  padding-top: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-// align login button to the right
 mat-card-actions {
   justify-content: flex-end;
-}
-
-// buttons
-button {
-  margin: 5px;
 }
 
 .fill-remaining-space {
@@ -34,4 +29,16 @@ button {
 
 .fill-card {
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.mat-stepper-horizontal {
+  margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+  margin-top: 16px;
 }

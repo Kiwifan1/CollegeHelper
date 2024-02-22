@@ -1,0 +1,30 @@
+<mat-card *ngIf="college">
+  <mat-card-header>
+    <mat-card-title>{{ college.name }}</mat-card-title>
+    <mat-card-subtitle
+      >{{ college.generalInfo?.address?.city }} |
+      <a href="{{ college.generalInfo?.address?.website }}">Visit Website</a>
+      <p>{{ college.generalInfo?.history }}</p>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content>
+    <mat-tab-group [mat-stretch-tabs]="false" mat-align-tabs="start">
+      <mat-tab label="Overview">
+        <app-college-detail-general
+          [college]="college"
+        ></app-college-detail-general>
+      </mat-tab>
+      <mat-tab label="Admissions">
+        <app-college-detail-admissions
+          [college]="college"
+        ></app-college-detail-admissions>
+      </mat-tab>
+      <mat-tab label="Costs">
+        <app-college-detail-costs
+          [college]="college"
+        ></app-college-detail-costs>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card-content>
+</mat-card>
