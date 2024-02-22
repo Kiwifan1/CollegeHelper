@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { loginGuard } from './guards/login-guard.guard';
+import { loginGuard } from './Guards/login-guard.guard';
 import { CollegeSearchPageComponent } from './Components/college-search-page/college-search-page.component';
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
