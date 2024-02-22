@@ -37,6 +37,7 @@ import { CollegeDetailGeneralComponent } from './Components/college-search-page/
 import { CollegeDetailAdmissionsComponent } from './Components/college-search-page/college-detail/college-detail-admissions/college-detail-admissions.component';
 import { CollegeDetailCostsComponent } from './Components/college-search-page/college-detail/college-detail-costs/college-detail-costs.component';
 import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
+import { MoneyPipe } from './Components/common/money.pipe';
 @NgModule({
   declarations: [
     AppComponent,
@@ -82,6 +83,7 @@ import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/s
     MatSelectModule,
     MatAutocompleteModule,
     MatTabsModule,
+    MoneyPipe,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

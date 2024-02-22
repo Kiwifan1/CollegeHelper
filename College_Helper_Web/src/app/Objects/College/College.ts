@@ -154,7 +154,7 @@ export const testCollege: College = {
         '30-48k': -1,
         '48-75k': -1,
         '75-110k': -1,
-        '110k+': -1,
+        '110k+': 43603,
       },
       stickerPrice: {
         inState: -1,
