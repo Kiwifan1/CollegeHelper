@@ -59,7 +59,8 @@ $college-helper-app-dark-theme: mat.define-dark-theme(
 
 html,
 body {
-  min-height: 100vh;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 body {
   margin: 0;
@@ -67,7 +68,6 @@ body {
 }
 
 .page {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   padding-top: 64px;
@@ -92,7 +92,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%; 
+  width: 100%;
   height: 100%;
   background: white;
   z-index: 9999;
@@ -200,4 +200,8 @@ mat-panel-title {
 mat-form-field {
   width: 70%;
   margin-left: auto;
+}
+
+a {
+  color: #2a862a;
 }

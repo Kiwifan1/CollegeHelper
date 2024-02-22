@@ -3,17 +3,25 @@
   float: left;
   padding: 10px;
   margin: 10px;
+  max-height: 60%;  
+}
+
+.page-content{
+  margin: 10px;
+  padding: 10px;
+  float: left;
+  // make width the rest of the page, but if window shrinks, keep a minimum width
+  width: calc(100% - 20px);
+  min-width: 300px;
 }
 
 .main-pane {
   margin: 10px;
   padding: 10px;
-  width: 60%;
   float: left;
-
-  // don't let the main pane go below the left pane
-  min-height: 100%;
-  
+  // make width the rest of the page, but if window shrinks, keep a minimum width
+  width: calc(65% - 20px);
+  min-width: 300px;
 }
 
 mat-card {

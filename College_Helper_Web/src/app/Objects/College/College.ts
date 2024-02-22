@@ -1,4 +1,4 @@
-import { CollegeBoard } from './CollegeBoard';
+import { CollegeBoard } from './Collegeboard/CollegeBoard';
 import { Division } from './Course';
 import { GeneralInfo } from './GeneralInfo';
 import { Officer } from './Officer';
@@ -116,22 +116,22 @@ export const testCollege: College = {
       },
       satRange: {
         satTotalRange: {
-          min: 0,
-          max: 0,
+          min: 1160,
+          max: 1440,
         },
         satMathRange: {
-          min: 0,
-          max: 0,
+          min: 580,
+          max: 720,
         },
         satReadingRange: {
-          min: 0,
-          max: 0,
+          min: 580,
+          max: 720,
         },
       },
       actRange: {
         compositeRange: {
-          min: 0,
-          max: 0,
+          min: 24,
+          max: 30,
         },
       },
       acceptanceRate: {
@@ -154,7 +154,7 @@ export const testCollege: College = {
         '30-48k': -1,
         '48-75k': -1,
         '75-110k': -1,
-        '110k+': -1,
+        '110k+': 43603,
       },
       stickerPrice: {
         inState: -1,
