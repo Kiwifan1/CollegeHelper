@@ -39,10 +39,11 @@ import { CollegeDetailCostsComponent } from './Components/college-search-page/co
 import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
 import { MoneyPipe } from './Components/common/money.pipe';
 import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
-import { Step1Component } from './Components/questionnaire-stepper/step-1/step-1.component';
-import { Step2Component } from './Components/questionnaire-stepper/step-2/step-2.component';
-import { Step3Component } from './Components/questionnaire-stepper/step-3/step-3.component';
-import { Step4Component } from './Components/questionnaire-stepper/step-4/step-4.component';
+import { GeneralInfoComponent } from './Components/questionnaire-stepper/general-info/general-info.component';
+import { ScoreInfoComponent } from './Components/questionnaire-stepper/score-info/score-info.component';
+import { CollegeInfoComponent } from './Components/questionnaire-stepper/college-info/college-info.component';
+import { MajorInfoComponent } from './Components/questionnaire-stepper/major-info/major-info.component';
+import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -61,10 +62,11 @@ import { Step4Component } from './Components/questionnaire-stepper/step-4/step-4
     CollegeDetailCostsComponent,
     SettingsDialogComponent,
     QuestionnaireStepperComponent,
-    Step1Component,
-    Step2Component,
-    Step3Component,
-    Step4Component,
+    GeneralInfoComponent,
+    ScoreInfoComponent,
+    CollegeInfoComponent,
+    MajorInfoComponent,
+    CareerInfoComponent,
   ],
   imports: [
     BrowserModule,

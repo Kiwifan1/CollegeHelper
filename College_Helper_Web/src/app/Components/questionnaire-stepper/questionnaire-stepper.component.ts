@@ -1,10 +1,85 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-questionnaire-stepper',
   templateUrl: './questionnaire-stepper.component.html',
-  styleUrl: './questionnaire-stepper.component.scss'
+  styleUrl: './questionnaire-stepper.component.scss',
 })
-export class QuestionnaireStepperComponent {
+export class QuestionnaireStepperComponent implements OnInit {
+  // all information is not required, but will be helpful for the user
+  generalUserInfoForm: FormGroup = new FormGroup({
+    age: new FormControl(''),
+    gender: new FormControl(''),
+    ethnicity: new FormControl(''),
+    nationality: new FormControl(''),
+    educationLevel: new FormControl(''),
+    occupation: new FormControl(''),
+    incomeLevel: new FormControl(''),
+    maritalStatus: new FormControl(''),
+    location: new FormControl(''),
+  });
 
+  userScoreInfoForm: FormGroup = new FormGroup({
+    SAT: new FormControl(''),
+    ACT: new FormControl(''),
+    GPA: new FormControl(''),
+    AP: new FormControl(''),
+    IB: new FormControl(''),
+    PSAT10: new FormControl(''),
+    NMSQT: new FormControl(''),
+  });
+
+  userBasicCollegePreferencesForm: FormGroup = new FormGroup({
+    colleges: new FormControl(''),
+  });
+
+  userBasicMajorPreferencesForm: FormGroup = new FormGroup({
+    majors: new FormControl(''),
+  });
+
+  userBasicCareerPreferencesForm: FormGroup = new FormGroup({
+    careers: new FormControl(''),
+  });
+
+  userCurrentCoursesForm: FormGroup = new FormGroup({
+    currentCourses: new FormControl(''),
+  });
+
+  // advanced are optional, and will be used to help further specify the areas
+
+  userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
+    collegeSize: new FormControl(''),
+    collegeLocation: new FormControl(''),
+    collegeType: new FormControl(''),
+    collegeMajor: new FormControl(''),
+    collegeCost: new FormControl(''),
+    collegeDorm: new FormControl(''),
+    collegeSports: new FormControl(''),
+    collegeClubs: new FormControl(''),
+    collegeGreekLife: new FormControl(''),
+  });
+
+  userAdvancedMajorPreferencesForm: FormGroup = new FormGroup({
+    majorType: new FormControl(''),
+    majorLocation: new FormControl(''),
+    majorCost: new FormControl(''),
+    majorSize: new FormControl(''),
+    majorClubs: new FormControl(''),
+    majorGreekLife: new FormControl(''),
+    majorSports: new FormControl(''),
+  });
+
+  userAdvancedCareerPreferencesForm: FormGroup = new FormGroup({
+    careerType: new FormControl(''),
+    careerLocation: new FormControl(''),
+    careerSalary: new FormControl(''),
+    careerHours: new FormControl(''),
+    careerBenefits: new FormControl(''),
+    careerWorkLife: new FormControl(''),
+  });
+
+  constructor() {}
+
+  ngOnInit(): void {}
 }
