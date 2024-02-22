@@ -59,10 +59,12 @@ $college-helper-app-dark-theme: mat.define-dark-theme(
 
 html,
 body {
+  height: 100vh;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 body {
+  height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
@@ -71,6 +73,15 @@ body {
   display: flex;
   flex-direction: column;
   padding-top: 64px;
+}
+
+.page-content {
+  margin: 10px;
+  padding: 10px;
+  float: left;
+  // make width the rest of the page, but if window shrinks, keep a minimum width
+  width: calc(100% - 20px);
+  min-width: 300px;
 }
 
 .page-title {

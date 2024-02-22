@@ -3,18 +3,8 @@
   float: left;
   padding: 10px;
   margin: 10px;
-  max-height: 60%;  
+  max-height: 60%;
 }
-
-.page-content{
-  margin: 10px;
-  padding: 10px;
-  float: left;
-  // make width the rest of the page, but if window shrinks, keep a minimum width
-  width: calc(100% - 20px);
-  min-width: 300px;
-}
-
 .main-pane {
   margin: 10px;
   padding: 10px;
@@ -22,6 +12,13 @@
   // make width the rest of the page, but if window shrinks, keep a minimum width
   width: calc(65% - 20px);
   min-width: 300px;
+}
+
+.aligned-cards {
+  display: flex;
+  flex-direction: row;
+  // align them so that they are the same height and the bottom of the cards line up
+  align-items: stretch;
 }
 
 mat-card {
