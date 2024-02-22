@@ -1,1 +1,114 @@
-<p>college-detail-admissions works!</p>
+<div class="info-box">
+  <div class="info">
+    <h2 class="title">Admission Rate:</h2>
+    <!-- GPA Range -->
+    <div class="info-item">
+      <ul>
+        <p class="label">GPA Range:</p>
+        <table>
+          <tr *ngFor="let gpaLabel of gpaRanges; let i = index">
+            <td>{{ gpaLabel }}:</td>
+            <td>{{ gpaValues[i] }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+
+    <!-- SAT Range -->
+    <div class="info-item">
+      <ul>
+        <span class="label">Average SAT Scores:</span>
+        <span class="value">
+          {{ getValue(getAdmissions()?.satRange?.satTotalRange?.min) }} -
+          {{ getValue(getAdmissions()?.satRange?.satTotalRange?.max) }}
+        </span>
+        <ul>
+          <table>
+            <tr>
+              <td><strong>Math:</strong></td>
+              <td>
+                {{ getValue(getAdmissions()?.satRange?.satMathRange?.min) }} -
+                {{ getValue(getAdmissions()?.satRange?.satMathRange?.max) }}
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Reading:</strong></td>
+              <td>
+                {{ getValue(getAdmissions()?.satRange?.satReadingRange?.min) }}
+                -
+                {{ getValue(getAdmissions()?.satRange?.satReadingRange?.max) }}
+              </td>
+            </tr>
+          </table>
+        </ul>
+      </ul>
+    </div>
+
+    <!-- ACT Range -->
+    <div class="info-item">
+      <ul>
+        <span class="label">Average ACT Scores:</span>
+        <span class="value">
+          {{ getValue(getAdmissions()?.actRange?.compositeRange?.min) }} -
+          {{ getValue(getAdmissions()?.actRange?.compositeRange?.max) }}
+        </span>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Acceptance and Retention -->
+  <div class="info">
+    <h2 class="title">Acceptance and Retention</h2>
+    <!-- Acceptance -->
+    <ul>
+      <div class="info-item">
+        <span class="label">Acceptance Rate:</span>
+        <span class="value">{{ getAdmissions()?.acceptanceRate?.rate }}</span>
+        <p
+          *ngIf="
+            getAdmissions()?.acceptanceRate?.description != 'Not Available'
+          "
+        >
+          {{ getAdmissions()?.acceptanceRate?.description }}
+        </p>
+        <ul>
+          <table>
+            <tr>
+              <td>Applicants:</td>
+              <td>
+                {{ getValue(getAdmissions()?.acceptanceRate?.applicantCount) }}
+              </td>
+            </tr>
+            <tr>
+              <td>Admitted:</td>
+              <td>
+                {{ getValue(getAdmissions()?.acceptanceRate?.admittedCount) }}
+              </td>
+            </tr>
+            <tr>
+              <td>Enrolled:</td>
+              <td>
+                {{ getValue(getAdmissions()?.acceptanceRate?.enrolledCount) }}
+              </td>
+            </tr>
+          </table>
+        </ul>
+      </div>
+      <!-- Graduation and Retention -->
+      <div class="info-item">
+        <span class="label">Graduation Rate:</span>
+        <span class="value">{{ getAcademics()?.graduationRate }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Retention Rate:</span>
+        <span class="value">{{ getAcademics()?.retentionRate }}</span>
+      </div>
+
+      <div class="info-item">
+        <span class="label">Student Faculty Ratio:</span>
+        <span class="value">{{ getAcademics()?.studentFacultyRatio }}</span>
+      </div>
+    </ul>
+  </div>
+</div>

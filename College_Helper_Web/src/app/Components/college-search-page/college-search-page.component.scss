@@ -7,7 +7,12 @@
 }
 
 .page-content{
-  // align both cards so that their bottoms are aligned
+  margin: 10px;
+  padding: 10px;
+  float: left;
+  // make width the rest of the page, but if window shrinks, keep a minimum width
+  width: calc(100% - 20px);
+  min-width: 300px;
 }
 
 .main-pane {

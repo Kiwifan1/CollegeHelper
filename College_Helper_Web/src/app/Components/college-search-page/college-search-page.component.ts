@@ -13,7 +13,6 @@ export class CollegeSearchPageComponent implements OnInit {
   ngOnInit(): void {}
 
   onCollegeSelected(college: College) {
-    console.log(college);
     this.selectedCollege = college;
   }
 }

@@ -1,84 +1,73 @@
-<mat-card-header>
-  <mat-card-title>{{ college.name }}</mat-card-title>
-  <mat-card-subtitle
-    >{{ college.generalInfo?.address?.city }} |
-    <a href="{{ college.generalInfo?.address?.website }}">Visit Website</a>
-    <p>{{ college.generalInfo?.history }}</p>
-  </mat-card-subtitle>
-</mat-card-header>
-<mat-divider></mat-divider>
-<mat-card-content>
-  <!-- General Info -->
-  <div class="info-box">
-    <div class="info">
-      <h2 class="title">General Information:</h2>
-      <!-- History -->
-      <div class="info-item">
-        <p class="label">History:</p>
-        <p class="value">
-          {{ college.generalInfo?.history }}
-        </p>
-      </div>
-
-      <!-- Address -->
-      <div class="info-item">
-        <p class="label">Address:</p>
-        <address>
-          {{ college.generalInfo?.address?.street }} <br />
-          {{ college.generalInfo?.address?.city }},
-          {{ college.generalInfo?.address?.state }}
-          {{ college.generalInfo?.address?.country }}
-          {{ college.generalInfo?.address?.zip }}
-        </address>
-      </div>
-
-      <!-- Funding, language and Accreditations -->
-      <div class="info-item">
-        <p class="label">Funding Type:</p>
-        <p class="value">{{ college.generalInfo?.funding }}</p>
-
-        <p class="label">Languages:</p>
-        <p class="value">{{ college.generalInfo?.languages }}</p>
-
-        <p class="label">Accreditations:</p>
-        <ul>
-          <li *ngFor="let accreditation of college.generalInfo?.accreditations">
-            {{ accreditation }}
-          </li>
-        </ul>
-      </div>
+<!-- General Info -->
+<div class="info-box">
+  <div class="info">
+    <h2 class="title">General Information:</h2>
+    <!-- History -->
+    <div class="info-item">
+      <p class="label">History:</p>
+      <p class="value">
+        {{ college.generalInfo?.history }}
+      </p>
     </div>
-    <div class="info">
-      <h2 class="title">Divisions and Degrees:</h2>
-      <!-- Divisions: list of divisions, all with a name, and a list of fields of study -->
-      <div class="info-item">
-        <p class="label">Divisions:</p>
-        <ul>
-          <li *ngFor="let division of college.divisions">
-            {{ division.name }}
-            <ul>
-              <li *ngFor="let field of division.fieldsOfStudy">
-                {{ field }}
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
 
-      <!-- Degrees, same setup as divisions -->
-      <div class="info-item">
-        <p class="label">Degrees:</p>
-        <ul>
-          <li *ngFor="let degree of college.degrees">
-            {{ degree.name }}
-            <ul>
-              <li *ngFor="let field of degree.fieldsOfStudy">
-                {{ field }}
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+    <!-- Address -->
+    <div class="info-item">
+      <p class="label">Address:</p>
+      <address>
+        {{ college.generalInfo?.address?.street }} <br />
+        {{ college.generalInfo?.address?.city }},
+        {{ college.generalInfo?.address?.state }}
+        {{ college.generalInfo?.address?.country }}
+        {{ college.generalInfo?.address?.zip }}
+      </address>
+    </div>
+
+    <!-- Funding, language and Accreditations -->
+    <div class="info-item">
+      <p class="label">Funding Type:</p>
+      <p class="value">{{ college.generalInfo?.funding }}</p>
+
+      <p class="label">Languages:</p>
+      <p class="value">{{ college.generalInfo?.languages }}</p>
+
+      <p class="label">Accreditations:</p>
+      <ul>
+        <li *ngFor="let accreditation of college.generalInfo?.accreditations">
+          {{ accreditation }}
+        </li>
+      </ul>
     </div>
   </div>
-</mat-card-content>
+  <div class="info">
+    <h2 class="title">Divisions and Degrees:</h2>
+    <!-- Divisions: list of divisions, all with a name, and a list of fields of study -->
+    <div class="info-item">
+      <p class="label">Divisions:</p>
+      <ul>
+        <li *ngFor="let division of college.divisions">
+          {{ division.name }}
+          <ul>
+            <li *ngFor="let field of division.fieldsOfStudy">
+              {{ field }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Degrees, same setup as divisions -->
+    <div class="info-item">
+      <p class="label">Degrees:</p>
+      <ul>
+        <li *ngFor="let degree of college.degrees">
+          {{ degree.name }}
+          <ul>
+            <li *ngFor="let field of degree.fieldsOfStudy">
+              {{ field }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
