@@ -13,11 +13,15 @@ mat-list-item {
 
 mat-sidenav-content {
   overflow: hidden;
-  height: 100%;
 }
 
 .sidenav-container {
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  min-height: 100%;
+  height: auto;
 }
 
 .sidenav {
