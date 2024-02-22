@@ -18,12 +18,12 @@ mat-card {
   margin-bottom: 20px;
   padding: 20px;
   border-radius: 5px;
-  min-height: 90vh;
-  max-height: 90vh;
+  min-height: 85vh;
+  max-height: 85vh;
 
   mat-selection-list {
     // keep list within card at all times
-    max-height: calc(90vh - 160px);
+    max-height: calc(85vh - 160px);
     overflow: auto;
   }
 

@@ -83,15 +83,18 @@ export class RegisterPageComponent implements OnInit {
     return this.userForm.get('username')?.hasError('required');
   }
 
-  register(stepper: any) {
-    console.log('Registering user...');
+  login() {
+    this.apiCallService.login('admin@admin.com', 'admin') &&
+      this.router.navigate(['/questionnaire']);
   }
 
-  login() {
-    this.router.navigate(['/login']);
+  register() {
+    // TODO: Implement
   }
 
   createAccount() {
+    this.register();
+    this.login();
     // check for email account existence
     // if exists -> error
     // else -> save account

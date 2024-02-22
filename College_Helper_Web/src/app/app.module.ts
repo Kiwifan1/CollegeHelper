@@ -38,6 +38,11 @@ import { CollegeDetailAdmissionsComponent } from './Components/college-search-pa
 import { CollegeDetailCostsComponent } from './Components/college-search-page/college-detail/college-detail-costs/college-detail-costs.component';
 import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
 import { MoneyPipe } from './Components/common/money.pipe';
+import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
+import { Step1Component } from './Components/questionnaire-stepper/step-1/step-1.component';
+import { Step2Component } from './Components/questionnaire-stepper/step-2/step-2.component';
+import { Step3Component } from './Components/questionnaire-stepper/step-3/step-3.component';
+import { Step4Component } from './Components/questionnaire-stepper/step-4/step-4.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +60,11 @@ import { MoneyPipe } from './Components/common/money.pipe';
     CollegeDetailAdmissionsComponent,
     CollegeDetailCostsComponent,
     SettingsDialogComponent,
+    QuestionnaireStepperComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component,
+    Step4Component,
   ],
   imports: [
     BrowserModule,
