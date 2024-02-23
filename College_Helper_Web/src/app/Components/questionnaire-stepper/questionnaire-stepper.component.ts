@@ -11,7 +11,7 @@ export class QuestionnaireStepperComponent implements OnInit {
   // all information is not required, but will be helpful for the user
 
   userGeneralInfoForm: FormGroup = new FormGroup({
-    age: new FormControl(''),
+    age: new FormControl('', [Validators.min(0), Validators.max(120)]),
     gender: new FormControl(Gender),
     ethnicity: new FormControl(''),
     nationality: new FormControl(''),
@@ -23,13 +23,13 @@ export class QuestionnaireStepperComponent implements OnInit {
   });
 
   userScoreInfoForm: FormGroup = new FormGroup({
-    SAT: new FormControl(''),
-    ACT: new FormControl(''),
-    GPA: new FormControl(''),
+    SAT: new FormControl('', [Validators.min(400), Validators.max(1600)]),
+    ACT: new FormControl('', [Validators.min(1), Validators.max(36)]),
+    GPA: new FormControl('', [Validators.min(0), Validators.max(4)]),
     AP: new FormControl(''),
     IB: new FormControl(''),
-    PSAT10: new FormControl(''),
-    NMSQT: new FormControl(''),
+    PSAT10: new FormControl('', [Validators.min(320), Validators.max(1520)]),
+    NMSQT: new FormControl('', [Validators.min(320), Validators.max(1520)]),
   });
 
   userBasicCollegePreferencesForm: FormGroup = new FormGroup({

@@ -73,7 +73,7 @@
 
           <mat-form-field>
             <mat-label>Benefits</mat-label>
-            <mat-select formControlName="careerBenefits">
+            <mat-select formControlName="careerBenefits" multiple>
               <mat-option value="health">Health</mat-option>
               <mat-option value="dental">Dental</mat-option>
               <mat-option value="vision">Vision</mat-option>
@@ -94,4 +94,9 @@
       </form>
     </mat-expansion-panel>
   </mat-accordion>
+
+  <div class="stepper-buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </div>
 </div>

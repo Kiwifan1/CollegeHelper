@@ -46,6 +46,7 @@ import { MajorInfoComponent } from './Components/questionnaire-stepper/major-inf
 import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     CollegeInfoComponent,
     MajorInfoComponent,
     CareerInfoComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,

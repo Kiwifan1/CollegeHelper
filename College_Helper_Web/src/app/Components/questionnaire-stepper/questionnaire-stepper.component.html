@@ -40,6 +40,28 @@
               "
             ></app-career-info>
           </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Review and Confirm</ng-template>
+            <app-review
+              [userGeneralInfoForm]="userGeneralInfoForm"
+              [userScoreInfoForm]="userScoreInfoForm"
+              [userBasicCollegePreferencesForm]="
+                userBasicCollegePreferencesForm
+              "
+              [userAdvancedCollegePreferencesForm]="
+                userAdvancedCollegePreferencesForm
+              "
+              [userBasicMajorPreferencesForm]="userBasicMajorPreferencesForm"
+              [userAdvancedMajorPreferencesForm]="
+                userAdvancedMajorPreferencesForm
+              "
+              [userBasicCareerPreferencesForm]="userBasicCareerPreferencesForm"
+              [userAdvancedCareerPreferencesForm]="
+                userAdvancedCareerPreferencesForm
+              "
+            ></app-review>
+          </mat-step>
         </mat-stepper>
       </mat-card-content>
     </mat-card>

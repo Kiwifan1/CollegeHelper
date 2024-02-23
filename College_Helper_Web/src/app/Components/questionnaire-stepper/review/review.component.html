@@ -1,0 +1,120 @@
+<div>
+  <div class="info">
+    <!-- user general Info -->
+    <div class="info-item">
+      <ul>
+        <p class="label">General Info:</p>
+        <table>
+          <tr>
+            <td>Age:</td>
+            <td>{{ userGeneralInfoForm.value.age }}</td>
+          </tr>
+          <tr>
+            <td>Gender:</td>
+            <td>{{ userGeneralInfoForm.value.gender | json }}</td>
+          </tr>
+          <tr>
+            <td>Ethnicity:</td>
+            <td>{{ userGeneralInfoForm.value.ethnicity }}</td>
+          </tr>
+          <tr>
+            <td>Nationality:</td>
+            <td>{{ userGeneralInfoForm.value.nationality }}</td>
+          </tr>
+          <tr>
+            <td>Education Level:</td>
+            <td>{{ userGeneralInfoForm.value.educationLevel }}</td>
+          </tr>
+          <tr>
+            <td>Occupation:</td>
+            <td>{{ userGeneralInfoForm.value.occupation }}</td>
+          </tr>
+          <tr>
+            <td>Income Level:</td>
+            <td>{{ userGeneralInfoForm.value.incomeLevel }}</td>
+          </tr>
+          <tr>
+            <td>Marital Status:</td>
+            <td>{{ userGeneralInfoForm.value.maritalStatus }}</td>
+          </tr>
+          <tr>
+            <td>Location:</td>
+            <td>{{ userGeneralInfoForm.value.location }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="info-item">
+      <ul>
+        <p class="label">Grades:</p>
+        <table>
+          <tr>
+            <td>GPA:</td>
+            <td>{{ userScoreInfoForm.value.GPA }}</td>
+          </tr>
+          <tr>
+            <td>SAT Score:</td>
+            <td>{{ userScoreInfoForm.value.SAT }}</td>
+          </tr>
+          <tr>
+            <td>ACT Score:</td>
+            <td>{{ userScoreInfoForm.value.ACT }}</td>
+          </tr>
+          <tr>
+            <td>Number of AP classes completed:</td>
+            <td>{{ userScoreInfoForm.value.AP }}</td>
+          </tr>
+          <tr>
+            <td>Number of IB classes completed:</td>
+            <td>{{ userScoreInfoForm.value.IB }}</td>
+          </tr>
+          <tr>
+            <td>PSAT10 Score:</td>
+            <td>{{ userScoreInfoForm.value.PSAT10 }}</td>
+          </tr>
+          <tr>
+            <td>PSAT/NMSQT Score:</td>
+            <td>{{ userScoreInfoForm.value.NMSQT }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="info-item">
+      <ul>
+        <p class="label">College Preferences:</p>
+        <table>
+          <tr>
+            <td>College Size:</td>
+            <td>{{ userBasicCollegePreferencesForm.value.collegeSize }}</td>
+          </tr>
+          <tr>
+            <td>College Location:</td>
+            <td>{{ userBasicCollegePreferencesForm.value.collegeLocation }}</td>
+          </tr>
+          <tr>
+            <td>College Cost:</td>
+            <td>{{ userBasicCollegePreferencesForm.value.collegeCost }}</td>
+          </tr>
+          <tr>
+            <td>College Sports:</td>
+            <td>{{ userBasicCollegePreferencesForm.value.collegeSports }}</td>
+          </tr>
+          <tr>
+            <td>College Clubs:</td>
+            <td>{{ userBasicCollegePreferencesForm.value.collegeClubs }}</td>
+          </tr>
+          <tr>
+            <td>Greek Life?</td>
+            <td>{{ userBasicCollegePreferencesForm.value.greekLife }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+</div>

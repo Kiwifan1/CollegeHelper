@@ -12,4 +12,24 @@ export class ScoreInfoComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  invalidSAT(): boolean {
+    return this.userScoreInfoForm.controls['SAT'].invalid;
+  }
+
+  invalidACT(): boolean {
+    return this.userScoreInfoForm.controls['ACT'].invalid;
+  }
+
+  invalidGPA(): boolean {
+    return this.userScoreInfoForm.controls['GPA'].invalid;
+  }
+
+  invalidPSAT10(): boolean {
+    return this.userScoreInfoForm.controls['PSAT10'].invalid;
+  }
+
+  invalidNMSQT(): boolean {
+    return this.userScoreInfoForm.controls['NMSQT'].invalid;
+  }
 }
