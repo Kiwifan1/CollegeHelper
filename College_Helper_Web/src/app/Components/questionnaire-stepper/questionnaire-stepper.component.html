@@ -15,6 +15,13 @@
               [userScoreInfoForm]="userScoreInfoForm"
             ></app-score-info>
           </mat-step>
+          <mat-step [stepControl]="userBasicCollegePreferencesForm">
+            <ng-template matStepLabel>College Preferences</ng-template>
+            <app-college-info
+              [basicCollegeInfoForm]="userBasicCollegePreferencesForm"
+              [advancedCollegeInfoForm]="userAdvancedCollegePreferencesForm"
+            ></app-college-info>
+          </mat-step>
         </mat-stepper>
       </mat-card-content>
     </mat-card>

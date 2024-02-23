@@ -44,6 +44,8 @@ import { ScoreInfoComponent } from './Components/questionnaire-stepper/score-inf
 import { CollegeInfoComponent } from './Components/questionnaire-stepper/college-info/college-info.component';
 import { MajorInfoComponent } from './Components/questionnaire-stepper/major-info/major-info.component';
 import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,6 +98,7 @@ import { CareerInfoComponent } from './Components/questionnaire-stepper/career-i
     MatAutocompleteModule,
     MatTabsModule,
     MoneyPipe,
+    MatExpansionModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

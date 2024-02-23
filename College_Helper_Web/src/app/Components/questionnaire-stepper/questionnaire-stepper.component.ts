@@ -14,6 +14,7 @@ export class QuestionnaireStepperComponent implements OnInit {
     age: new FormControl(''),
     gender: new FormControl(Gender),
     ethnicity: new FormControl(''),
+    nationality: new FormControl(''),
     educationLevel: new FormControl(''),
     occupation: new FormControl(''),
     incomeLevel: new FormControl(''),
@@ -52,10 +53,7 @@ export class QuestionnaireStepperComponent implements OnInit {
   userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
     collegeSize: new FormControl(''),
     collegeLocation: new FormControl(''),
-    collegeType: new FormControl(''),
-    collegeMajor: new FormControl(''),
     collegeCost: new FormControl(''),
-    collegeDorm: new FormControl(''),
     collegeSports: new FormControl(''),
     collegeClubs: new FormControl(''),
     collegeGreekLife: new FormControl(''),
