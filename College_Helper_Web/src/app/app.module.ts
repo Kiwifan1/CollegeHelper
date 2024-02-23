@@ -45,6 +45,7 @@ import { CollegeInfoComponent } from './Components/questionnaire-stepper/college
 import { MajorInfoComponent } from './Components/questionnaire-stepper/major-info/major-info.component';
 import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatTabsModule,
     MoneyPipe,
     MatExpansionModule,
+    MatCheckboxModule,
   ],
   providers: [ApiCallService, provideHttpClient()],
   bootstrap: [AppComponent],

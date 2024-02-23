@@ -33,19 +33,19 @@ export class QuestionnaireStepperComponent implements OnInit {
   });
 
   userBasicCollegePreferencesForm: FormGroup = new FormGroup({
-    colleges: new FormControl(''),
+    colleges: new FormControl(['']),
   });
 
   userBasicMajorPreferencesForm: FormGroup = new FormGroup({
-    majors: new FormControl(''),
+    majors: new FormControl(['']),
   });
 
   userBasicCareerPreferencesForm: FormGroup = new FormGroup({
-    careers: new FormControl(''),
+    careers: new FormControl(['']),
   });
 
   userCurrentCoursesForm: FormGroup = new FormGroup({
-    currentCourses: new FormControl(''),
+    currentCourses: new FormControl(['']),
   });
 
   // advanced are optional, and will be used to help further specify the areas
@@ -62,11 +62,6 @@ export class QuestionnaireStepperComponent implements OnInit {
   userAdvancedMajorPreferencesForm: FormGroup = new FormGroup({
     majorType: new FormControl(''),
     majorLocation: new FormControl(''),
-    majorCost: new FormControl(''),
-    majorSize: new FormControl(''),
-    majorClubs: new FormControl(''),
-    majorGreekLife: new FormControl(''),
-    majorSports: new FormControl(''),
   });
 
   userAdvancedCareerPreferencesForm: FormGroup = new FormGroup({

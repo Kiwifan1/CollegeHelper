@@ -22,6 +22,14 @@
               [advancedCollegeInfoForm]="userAdvancedCollegePreferencesForm"
             ></app-college-info>
           </mat-step>
+
+          <mat-step [stepControl]="userBasicMajorPreferencesForm">
+            <ng-template matStepLabel>Major Preferences</ng-template>
+            <app-major-info
+              [basicMajorPreferencesForm]="userBasicMajorPreferencesForm"
+              [advancedMajorPreferencesForm]="userAdvancedMajorPreferencesForm"
+            ></app-major-info>
+          </mat-step>
         </mat-stepper>
       </mat-card-content>
     </mat-card>

@@ -15,7 +15,7 @@
           <mat-option
             *ngFor="let college of filteredColleges | async"
             [value]="college.name"
-            (onSelectionChange)="filterChange()"
+            (onSelectionChange)="selectCollege(college.name)"
           >
             {{ college.name }}
           </mat-option>

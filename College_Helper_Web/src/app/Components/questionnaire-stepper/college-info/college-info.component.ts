@@ -25,6 +25,8 @@ export class CollegeInfoComponent implements OnInit {
     testCollege,
   ];
 
+  collegeNames: string[] = this.colleges.map((college) => college.name);
+
   filteredColleges = of(this.colleges);
   searchForm: FormControl = new FormControl('');
 
@@ -33,6 +35,13 @@ export class CollegeInfoComponent implements OnInit {
   ngOnInit(): void {
     this.searchForm.valueChanges.subscribe((value) => {
       this.filterChange();
+    });
+  }
+
+  selectCollege(collegeName: string) {
+    // add college to form which is list of colleges
+    this.basicCollegeInfoForm.patchValue({
+      colleges: [...this.basicCollegeInfoForm.value.colleges, collegeName]
     });
   }
 
