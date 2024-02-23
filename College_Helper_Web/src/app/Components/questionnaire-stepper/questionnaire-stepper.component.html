@@ -1,5 +1,22 @@
 <div class="page">
   <div class="page-content">
-    <mat-stepper isLinear #stepper> </mat-stepper>
+    <mat-card>
+      <mat-card-content>
+        <mat-stepper isLinear>
+          <mat-step [stepControl]="userGeneralInfoForm">
+            <ng-template matStepLabel>General Info</ng-template>
+            <app-general-info
+              [generalUserInfoForm]="userGeneralInfoForm"
+            ></app-general-info>
+          </mat-step>
+          <mat-step [stepControl]="userScoreInfoForm">
+            <ng-template matStepLabel>Grades</ng-template>
+            <app-score-info
+              [userScoreInfoForm]="userScoreInfoForm"
+            ></app-score-info>
+          </mat-step>
+        </mat-stepper>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

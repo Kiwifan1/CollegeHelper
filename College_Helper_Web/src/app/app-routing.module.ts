@@ -36,7 +36,7 @@ const routes: Routes = [
   {
     path: 'questionnaire',
     component: QuestionnaireStepperComponent,
-    canActivate: [loginGuard, validationGuard],
+    canActivate: [loginGuard],
   },
   { path: '404', component: PageNotFoundComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

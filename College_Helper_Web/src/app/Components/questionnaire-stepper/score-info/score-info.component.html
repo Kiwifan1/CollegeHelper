@@ -1,1 +1,73 @@
-<p>score-info works!</p>
+<form [formGroup]="userScoreInfoForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>GPA</mat-label>
+      <input matInput formControlName="GPA" type="number" placeholder="GPA" />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>SAT Score</mat-label>
+      <input
+        matInput
+        formControlName="SAT"
+        type="number"
+        placeholder="SAT Score"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>ACT Score</mat-label>
+      <input
+        matInput
+        formControlName="ACT"
+        type="number"
+        placeholder="ACT Score"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number of AP classes completed</mat-label>
+      <input
+        matInput
+        formControlName="AP"
+        type="number"
+        placeholder="Number of AP classes completed"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number of IB classes completed</mat-label>
+      <input
+        matInput
+        formControlName="IB"
+        type="number"
+        placeholder="Number of IB classes completed"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>PSAT10 Score</mat-label>
+      <input
+        matInput
+        formControlName="PSAT10"
+        type="number"
+        placeholder="PSAT10 Score"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>PSAT/NMSQT Score</mat-label>
+      <input
+        matInput
+        formControlName="NMSQT"
+        type="number"
+        placeholder="PSAT/NMSQT Score"
+      />
+    </mat-form-field>
+  </div>
+
+  <div class="stepper-buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </div>
+</form>

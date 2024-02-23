@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Gender } from 'src/app/Objects/User/Demographics';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -8,11 +9,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class QuestionnaireStepperComponent implements OnInit {
   // all information is not required, but will be helpful for the user
-  generalUserInfoForm: FormGroup = new FormGroup({
+
+  userGeneralInfoForm: FormGroup = new FormGroup({
     age: new FormControl(''),
-    gender: new FormControl(''),
+    gender: new FormControl(Gender),
     ethnicity: new FormControl(''),
-    nationality: new FormControl(''),
     educationLevel: new FormControl(''),
     occupation: new FormControl(''),
     incomeLevel: new FormControl(''),

@@ -83,6 +83,10 @@ export class RegisterPageComponent implements OnInit {
     return this.userForm.get('username')?.hasError('required');
   }
 
+  goBack() {
+    this.router.navigate(['/login']);
+  }
+
   login() {
     this.apiCallService.login('admin@admin.com', 'admin') &&
       this.router.navigate(['/questionnaire']);
