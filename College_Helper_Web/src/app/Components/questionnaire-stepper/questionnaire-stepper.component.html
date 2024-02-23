@@ -30,6 +30,16 @@
               [advancedMajorPreferencesForm]="userAdvancedMajorPreferencesForm"
             ></app-major-info>
           </mat-step>
+
+          <mat-step [stepControl]="userBasicCareerPreferencesForm">
+            <ng-template matStepLabel>Career Preferences</ng-template>
+            <app-career-info
+              [basicCareerPreferencesForm]="userBasicCareerPreferencesForm"
+              [advancedCareerPreferencesForm]="
+                userAdvancedCareerPreferencesForm
+              "
+            ></app-career-info>
+          </mat-step>
         </mat-stepper>
       </mat-card-content>
     </mat-card>
