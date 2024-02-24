@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Route, Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
+import { ApiCallService } from 'src/app/Services/api-call.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -12,12 +13,18 @@ export class MainNavComponent {
   @Input() sidenav: any;
 
   // TODO: replace with actual username grabbed from database when logging in
-  user = localStorage.getItem('user');
+  user!: string | null;
 
-  constructor(private router: Router, private dialog: MatDialog) {}
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private apiCallService: ApiCallService
+  ) {
+    this.user = this.apiCallService.getUser();
+  }
 
   isAuthenticated() {
-    return localStorage.getItem('user') !== null;
+    return this.apiCallService.checkIfUserIsLoggedIn();
   }
 
   goToProfile() {
@@ -34,9 +41,7 @@ export class MainNavComponent {
   }
 
   logout() {
-    localStorage.removeItem('user');
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
-    this.sidenav.close();
+    this.apiCallService.logout();
+    this.router.navigate(['/login']);
   }
 }

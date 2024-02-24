@@ -1,0 +1,87 @@
+<form [formGroup]="generalUserInfoForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label for="age">Age</mat-label>
+      <input
+        matInput
+        type="number"
+        class="form-control"
+        id="age"
+        formControlName="age"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="gender">Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option *ngFor="let g of genderEnums" [value]="g">{{
+          g
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="ethnicity">Ethnicity</mat-label>
+      <mat-select formControlName="ethnicity">
+        <mat-option *ngFor="let e of ethnicityEnums" [value]="e">{{
+          e
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="education">Educational Level</mat-label>
+      <mat-select formControlName="educationLevel">
+        <mat-option *ngFor="let e of educationLevelEnums" [value]="e">{{
+          e
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="occupation">Occupation</mat-label>
+      <mat-select formControlName="occupation">
+        <mat-option *ngFor="let o of occupationEnums" [value]="o">{{
+          o
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="income">Family Income</mat-label>
+      <mat-select formControlName="incomeLevel">
+        <mat-option *ngFor="let i of incomeLevelEnums" [value]="i">{{
+          i
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="maritalStatus">Marital Status</mat-label>
+      <mat-select formControlName="maritalStatus">
+        <mat-option *ngFor="let m of maritalStatusEnums" [value]="m">{{
+          m
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label for="location">Location</mat-label>
+      <input
+        matInput
+        type="text"
+        class="form-control"
+        id="location"
+        formControlName="location"
+        placeholder="E.g. 12th Avenue, Las Vegas Nevada, 89101"
+      />
+      <button matSuffix mat-icon-button (click)="getLocation()">
+        <mat-icon>location_on</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
+
+  <div class="stepper-buttons">
+    <button mat-button matStepperNext>Next</button>
+  </div>
+</form>

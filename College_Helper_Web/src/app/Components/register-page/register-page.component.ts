@@ -83,17 +83,38 @@ export class RegisterPageComponent implements OnInit {
     return this.userForm.get('username')?.hasError('required');
   }
 
-  register(stepper: any) {
-    console.log('Registering user...');
+  goBack() {
+    this.router.navigate(['/login']);
   }
 
   login() {
-    this.router.navigate(['/login']);
+    this.apiCallService.login('admin@admin.com', 'admin') &&
+      this.router.navigate(['/questionnaire']);
+  }
+
+  register() {
+    // TODO: Implement
+    let userInfo = {
+      username: '',
+      email: '',
+      password: '',
+    };
+    const password = this.passwordForm.get('password')?.value;
+    const username = this.userForm.get('username')?.value;
+    const email = this.userForm.get('email')?.value;
+    userInfo.username = username;
+    userInfo.email = email;
+    userInfo.password = password ?? '';
+
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    localStorage.setItem('registerComplete', 'true');
+    this.router.navigate(['/questionnaire']);
   }
 
   createAccount() {
     // check for email account existence
     // if exists -> error
     // else -> save account
+    this.register();
   }
 }

@@ -1,0 +1,92 @@
+<form [formGroup]="userScoreInfoForm">
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Unweighted GPA</mat-label>
+      <input matInput formControlName="GPA" type="number" placeholder="GPA" />
+
+      <mat-error *ngIf="invalidGPA()"
+        >GPA must be between 0.0 and 4.0</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>SAT Score</mat-label>
+      <input
+        matInput
+        formControlName="SAT"
+        type="number"
+        placeholder="SAT Score"
+      />
+
+      <mat-error *ngIf="invalidSAT()"
+        >SAT score must be between 400 and 1600</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>ACT Score</mat-label>
+      <input
+        matInput
+        formControlName="ACT"
+        type="number"
+        placeholder="ACT Score"
+      />
+
+      <mat-error *ngIf="invalidACT()"
+        >ACT score must be between 1 and 36</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number of AP classes completed</mat-label>
+      <input
+        matInput
+        formControlName="AP"
+        type="number"
+        placeholder="Number of AP classes completed"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Number of IB classes completed</mat-label>
+      <input
+        matInput
+        formControlName="IB"
+        type="number"
+        placeholder="Number of IB classes completed"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>PSAT10 Score</mat-label>
+      <input
+        matInput
+        formControlName="PSAT10"
+        type="number"
+        placeholder="PSAT10 Score"
+      />
+      <mat-error *ngIf="invalidPSAT10()"
+        >PSAT10 score must be between 320 and 1520</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>PSAT/NMSQT Score</mat-label>
+      <input
+        matInput
+        formControlName="NMSQT"
+        type="number"
+        placeholder="PSAT/NMSQT Score"
+      />
+
+      <mat-error>PSAT/NMSQT must be between 320 and 1520</mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="stepper-buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext [disabled]="userScoreInfoForm.invalid">
+      Next
+    </button>
+  </div>
+</form>

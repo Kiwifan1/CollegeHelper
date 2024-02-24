@@ -82,11 +82,15 @@
         </p>
       </form>
       <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="goBack()">
+          Go Back
+        </button>
         <span class="fill-remaining-space"></span>
         <button
           mat-raised-button
           color="primary"
           type="submit"
+          (click)="createAccount()"
           [disabled]="userForm.invalid || passwordForm.invalid"
         >
           Sign Up

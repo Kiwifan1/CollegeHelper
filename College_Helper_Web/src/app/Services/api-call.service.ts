@@ -8,7 +8,7 @@ export class ApiCallService {
   constructor(private $http: HttpClient) {}
 
   incrementNumber(num: Number) {
-    let url = environment.API_URL + '/increment/' + num;
+    let url = environment.WEB_API_URL + '/increment/' + num;
     return this.$http.get(url);
   }
 
@@ -17,13 +17,29 @@ export class ApiCallService {
       name: name,
       age: age,
     };
-    let url = environment.API_URL + '/getAge';
+    let url = environment.WEB_API_URL + '/getAge';
     return this.$http.post(url, content);
+  }
+
+  getUser() {
+    return localStorage.getItem('user');
   }
 
   checkIfUserIsLoggedIn() {
     const user = localStorage.getItem('user');
-    return this.login(user ? user : '', 'admin');
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+
+    if (localStorage.getItem('user')) {
+      return false;
+    }
+    return true;
   }
 
   login(username: string, password: string): boolean {
