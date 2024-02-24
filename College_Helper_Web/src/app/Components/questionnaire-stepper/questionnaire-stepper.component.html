@@ -2,7 +2,7 @@
   <div class="page-content">
     <mat-card>
       <mat-card-content>
-        <mat-stepper isLinear>
+        <mat-stepper [linear]="true">
           <mat-step [stepControl]="userGeneralInfoForm">
             <ng-template matStepLabel>General Info</ng-template>
             <app-general-info

@@ -39,8 +39,7 @@ export class GeneralInfoComponent implements OnInit {
 
   constructor(private geoLocationService: GeoLocationService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   getLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -49,11 +48,11 @@ export class GeneralInfoComponent implements OnInit {
       this.geoLocationService
         .getAddressFromLatLong(lat, long)
         .subscribe((res: any) => {
-          this.address.city = res.address.city;
-          this.address.state = res.address.state;
-          this.address.country = res.address.country_code;
-          this.address.zip = res.address.postcode;
-          this.address.street = res.address.road;
+          this.address.city = res.address.city ?? '';
+          this.address.state = res.address.state ?? '';
+          this.address.country = res.address.country_code ?? '';
+          this.address.zip = res.address.postcode ?? '';
+          this.address.street = res.address.road ?? '';
 
           this.generalUserInfoForm.patchValue({
             location: this.stringify(this.address),
@@ -69,11 +68,13 @@ export class GeneralInfoComponent implements OnInit {
       city: split[1].split(' ')[0],
       state: split[1].split(' ')[1],
       zip: split[2],
-      website: null
+      website: null,
     };
   }
 
   stringify(address: Address) {
-    return `${address.street}, ${address.city} ${address.state}, ${address.zip}`;
+    const stateExists = address.state ? ' ' : '';
+    const zipExists = address.zip ? ', ' : '';
+    return `${address.street}, ${address.city}${stateExists}${address.state}${zipExists}${address.zip}`;
   }
 }

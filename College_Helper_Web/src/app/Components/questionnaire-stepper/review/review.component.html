@@ -9,9 +9,9 @@
             <td>Age:</td>
             <td>{{ userGeneralInfoForm.value.age }}</td>
           </tr>
-          <tr>
+          <tr *ngIf="userGeneralInfoForm.value.gender">
             <td>Gender:</td>
-            <td>{{ userGeneralInfoForm.value.gender | json }}</td>
+            <td>{{ userGeneralInfoForm.value.gender }}</td>
           </tr>
           <tr>
             <td>Ethnicity:</td>
@@ -110,11 +110,15 @@
             <td>{{ userBasicCollegePreferencesForm.value.collegeClubs }}</td>
           </tr>
           <tr>
-            <td>Greek Life?</td>
+            <td>Greek Life:</td>
             <td>{{ userBasicCollegePreferencesForm.value.greekLife }}</td>
           </tr>
         </table>
       </ul>
     </div>
+  </div>
+  <div class="stepper-buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button type="submit">Submit</button>
   </div>
 </div>

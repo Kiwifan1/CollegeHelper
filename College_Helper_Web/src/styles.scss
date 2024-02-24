@@ -129,6 +129,10 @@ body {
   padding-top: 10px;
 }
 
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
 .card-title {
   margin-top: 10px;
   font-size: 20px;

@@ -12,7 +12,7 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   userGeneralInfoForm: FormGroup = new FormGroup({
     age: new FormControl('', [Validators.min(0), Validators.max(120)]),
-    gender: new FormControl(Gender),
+    gender: new FormControl(''),
     ethnicity: new FormControl(''),
     nationality: new FormControl(''),
     educationLevel: new FormControl(''),
@@ -73,7 +73,16 @@ export class QuestionnaireStepperComponent implements OnInit {
     careerWorkLife: new FormControl(''),
   });
 
+  private userInfo: any = {};
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    const info = localStorage.getItem('userInfo');
+    if (info) {
+      this.userInfo = JSON.parse(info);
+    }
+
+    console.log(this.userInfo);
+  }
 }

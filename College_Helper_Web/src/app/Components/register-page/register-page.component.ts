@@ -94,13 +94,15 @@ export class RegisterPageComponent implements OnInit {
 
   register() {
     // TODO: Implement
+    localStorage.setItem('userInfo', JSON.stringify(this.userForm.value));
+    localStorage.setItem('registerComplete', 'true');
+    this.router.navigate(['/questionnaire']);
   }
 
   createAccount() {
-    this.register();
-    this.login();
     // check for email account existence
     // if exists -> error
     // else -> save account
+    this.register();
   }
 }

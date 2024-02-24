@@ -90,6 +90,7 @@
           mat-raised-button
           color="primary"
           type="submit"
+          (click)="createAccount()"
           [disabled]="userForm.invalid || passwordForm.invalid"
         >
           Sign Up
