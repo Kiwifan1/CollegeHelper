@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Gender } from 'src/app/Objects/User/Demographics';
+import { ApiCallService } from 'src/app/Services/api-call.service';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -75,14 +78,45 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   private userInfo: any = {};
 
-  constructor() {}
+  submitted: boolean = false;
+
+  constructor(
+    private apiCallService: ApiCallService,
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
+    localStorage.removeItem('registrationComplete');
     const info = localStorage.getItem('userInfo');
     if (info) {
       this.userInfo = JSON.parse(info);
+    } else {
+      this.showSnackBar();
     }
+    localStorage.removeItem('userInfo');
+  }
 
-    console.log(this.userInfo);
+  showSnackBar() {
+    this.router.navigate(['/register']);
+    this.snackBar.open(
+      'Sorry, something went wrong. Please register again.',
+      'Close',
+      {
+        duration: 5000,
+      }
+    );
+  }
+
+  handleSubmission() {
+    this.submitted = true;
+    const user = this.userInfo['username'];
+    const password = this.userInfo['password'];
+
+    if (this.apiCallService.login(user, password)) {
+      this.router.navigate(['/home']);
+    } else {
+      this.showSnackBar();
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 
 @Component({
@@ -16,8 +16,13 @@ export class ReviewComponent implements OnInit {
   @Input() userBasicCareerPreferencesForm!: FormGroup;
   @Input() userAdvancedCareerPreferencesForm!: FormGroup;
 
+  @Output() submitQuestionnaire: EventEmitter<any> = new EventEmitter();
+
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  submitForms() {
+    this.submitQuestionnaire.emit('complete');
   }
 }

@@ -94,7 +94,19 @@ export class RegisterPageComponent implements OnInit {
 
   register() {
     // TODO: Implement
-    localStorage.setItem('userInfo', JSON.stringify(this.userForm.value));
+    let userInfo = {
+      username: '',
+      email: '',
+      password: '',
+    };
+    const password = this.passwordForm.get('password')?.value;
+    const username = this.userForm.get('username')?.value;
+    const email = this.userForm.get('email')?.value;
+    userInfo.username = username;
+    userInfo.email = email;
+    userInfo.password = password ?? '';
+
+    localStorage.setItem('userInfo', JSON.stringify(userInfo));
     localStorage.setItem('registerComplete', 'true');
     this.router.navigate(['/questionnaire']);
   }
