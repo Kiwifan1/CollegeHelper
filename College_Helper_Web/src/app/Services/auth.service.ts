@@ -52,9 +52,9 @@ export class AuthService {
     return this.$http.post(url, payload);
   }
 
-  checkIfUserExists(email: string) {
-    const url = environment.WEB_API_URL + '/check_user';
-    return this.$http.post(url, { email: email });
+  checkIfUserExists(username: string) {
+    const url = environment.WEB_API_URL + '/check_user_exists';
+    return this.$http.post(url, { username: username });
   }
 
   createUser(user: User) {

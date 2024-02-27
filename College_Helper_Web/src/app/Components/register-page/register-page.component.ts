@@ -108,7 +108,7 @@ export class RegisterPageComponent implements OnInit {
 
   createAccount() {
     this.authService
-      .checkIfUserExists(this.userForm.get('email')?.value)
+      .checkIfUserExists(this.userForm.get('username')?.value)
       .subscribe({
         next: (res: any) => {
           if (res.exists) {
