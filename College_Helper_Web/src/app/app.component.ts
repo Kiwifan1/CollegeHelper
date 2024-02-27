@@ -14,7 +14,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.setTheme();
-    this.authService.createUser(defaultUser); 
   }
 
   setTheme() {

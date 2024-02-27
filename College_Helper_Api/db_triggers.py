@@ -1,5 +1,6 @@
 import logging
 import bcrypt
+import uuid
 import azure.functions as func
 
 bp = func.Blueprint()
@@ -39,23 +40,6 @@ def test_doc_output(req: func.HttpRequest, msg: func.Out[func.QueueMessage],
         )
 
 
-# @bp.queue_trigger(arg_name="msg",
-#                   queue_name="outqueue",
-#                   connection="AzureWebJobsStorage")
-# @bp.cosmos_db_input(arg_name="inputDocument",
-#                     database_name="CollegeHelperDB",
-#                     container_name="TEST",
-#                     connection=cosmos_db_connection)
-# @bp.cosmos_db_output(arg_name="outputDocument",
-#                      database_name="CollegeHelperDB",
-#                      container_name="TEST",
-#                      connection=cosmos_db_connection)
-# def test_doc_input(msg: func.QueueMessage, inputDocument: func.DocumentList, outputDocument: func.Out[func.Document]) -> None:
-#     document = inputDocument[0]
-#     document['text'] = 'updated'
-#     outputDocument.set(document)
-
-
 @bp.route(route="create_user")
 @bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
 def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) -> func.HttpResponse:
@@ -67,7 +51,7 @@ def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
         salt, hashed = salt_and_hash(user['password'])
         user['salt'] = salt
         user['password'] = hashed
-        user['id'] = user['username']
+        user['id'] = str(uuid.uuid4())
 
         outputDocument.set(func.Document.from_dict(user))
         return func.HttpResponse(f"User {user['username']} created successfully.", status_code=201)
@@ -98,5 +82,23 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
     else:
         return func.HttpResponse(
             "Login failed. Please provide a username and password in the request body.",
+            status_code=400
+        )
+
+
+@bp.route(route="check_exists")
+@bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
+def check_email(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.')
+    email = req.get_json()
+    if email and 'email' in email:
+        # check if email exists in database
+        for doc in inputDocument:
+            if doc['email'] == email['email']:
+                return func.HttpResponse(f"Email {email['email']} already exists.")
+        return func.HttpResponse(f"Email {email['email']} does not exist.")
+    else:
+        return func.HttpResponse(
+            "Email check failed. Please provide an email in the request body.",
             status_code=400
         )

@@ -43,7 +43,7 @@ export class RegisterPageComponent implements OnInit {
 
   matcher = new ErrorStateMatcher();
 
-  constructor(private router: Router, private apiCallService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -87,11 +87,6 @@ export class RegisterPageComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  login() {
-    this.apiCallService.login('admin@admin.com', 'admin') &&
-      this.router.navigate(['/questionnaire']);
-  }
-
   register() {
     // TODO: Implement
     let userInfo = {
@@ -112,9 +107,20 @@ export class RegisterPageComponent implements OnInit {
   }
 
   createAccount() {
-    // check for email account existence
-    // if exists -> error
-    // else -> save account
+    this.authService
+      .checkIfUserExists(this.userForm.get('email')?.value)
+      .subscribe(
+        (res: any) => {
+          if (res.exists) {
+            console.log('User already exists');
+          } else {
+            this.register();
+          }
+        },
+        (err: any) => {
+          console.error(err);
+        }
+      );
     this.register();
   }
 }

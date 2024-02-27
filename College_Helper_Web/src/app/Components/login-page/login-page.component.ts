@@ -51,35 +51,34 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiCallService: AuthService,
+    private authService: AuthService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    if (this.apiCallService.checkIfUserIsLoggedIn()) {
+    if (this.authService.checkIfUserIsLoggedIn()) {
       this.router.navigate(['/home']);
     }
   }
 
   submit() {
-    let loggedIn = this.apiCallService.login(
-      this.form.get('username')?.value,
-      this.form.get('password')?.value
-    );
+    this.authService
+      .login(this.form.get('username')?.value, this.form.get('password')?.value)
+      .subscribe((loggedIn) => {
+        if (loggedIn) {
+          this.router.navigate(['/home']);
+        } else {
+          // display error message
+          this.snackBar.open('Incorrect Password or Username', 'Close', {
+            duration: 5000,
+            horizontalPosition: this.horizontalPos,
+            verticalPosition: this.verticalPos,
+            politeness: 'assertive',
+          });
 
-    if (loggedIn) {
-      this.router.navigate(['/home']);
-    } else {
-      // display error message
-      this.snackBar.open('Incorrect Password or Username', 'Close', {
-        duration: 5000,
-        horizontalPosition: this.horizontalPos,
-        verticalPosition: this.verticalPos,
-        politeness: 'assertive',
+          this.form.reset();
+        }
       });
-
-      this.form.reset();
-    }
   }
 
   emptyEmail() {

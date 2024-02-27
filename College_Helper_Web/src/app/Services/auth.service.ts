@@ -43,17 +43,18 @@ export class AuthService {
     return true;
   }
 
-  login(username: string, password: string): boolean {
-    const user = defaultUser;
-    // convert user to json
-    const userJson = JSON.stringify(user);
-
+  login(username: string, password: string) {
+    const payload = {
+      username: username,
+      password: password,
+    };
     const url = environment.WEB_API_URL + '/login';
-    this.$http.post(url, userJson).subscribe((res) => {
-      console.log(res);
-      localStorage.setItem('user', res.toString());
-    });
-    return true;
+    return this.$http.post(url, payload);
+  }
+
+  checkIfUserExists(email: string) {
+    const url = environment.WEB_API_URL + '/check_user';
+    return this.$http.post(url, { email: email });
   }
 
   createUser(user: User) {

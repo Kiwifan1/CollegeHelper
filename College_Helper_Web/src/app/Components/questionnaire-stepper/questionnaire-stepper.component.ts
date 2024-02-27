@@ -112,11 +112,12 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.submitted = true;
     const user = this.userInfo['username'];
     const password = this.userInfo['password'];
-
-    if (this.apiCallService.login(user, password)) {
-      this.router.navigate(['/home']);
-    } else {
-      this.showSnackBar();
-    }
+    this.apiCallService.login(user, password).subscribe((loggedIn) => {
+      if (loggedIn) {
+        this.router.navigate(['/home']);
+      } else {
+        this.showSnackBar();
+      }
+    });
   }
 }
