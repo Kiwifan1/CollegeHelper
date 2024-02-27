@@ -3,7 +3,9 @@ import bcrypt
 import uuid
 import json
 import azure.functions as func
-from azure.cosmos import CosmosClient, PartitionKey
+
+from azure.cosmos import CosmosClient
+from http import HTTPStatus
 
 env_variables = json.load(open("local.settings.json"))
 cosmos_connection_var = env_variables["Values"]["CosmosDBConnectionString"]
@@ -79,7 +81,7 @@ def test_doc_output(req: func.HttpRequest, msg: func.Out[func.QueueMessage],
     else:
         return func.HttpResponse(
             "This HTTP triggered function executed unsuccessfully. Pass a name in the query string or in the request body for a personalized response.",
-            status_code=400
+            status_code=HTTPStatus.BAD_REQUEST
         )
 
 
@@ -106,11 +108,11 @@ def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
         user['id'] = str(uuid.uuid4())
 
         outputDocument.set(func.Document.from_dict(user))
-        return func.HttpResponse(f"User {user['username']} created successfully.", status_code=201)
+        return func.HttpResponse(f"User {user['username']} created successfully.", status_code=HTTPStatus.CREATED)
     else:
         return func.HttpResponse(
             "User creation failed. Please provide a username and password in the request body.",
-            status_code=400
+            status_code=HTTPStatus.BAD_REQUEST
         )
 
 
@@ -141,7 +143,7 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
     else:
         return func.HttpResponse(
             "Login failed. Please provide a username and password in the request body.",
-            status_code=400
+            status_code=HTTPStatus.BAD_REQUEST
         )
 
 
@@ -168,7 +170,7 @@ def check_user_exists(req: func.HttpRequest, inputDocument: func.DocumentList) -
     else:
         return func.HttpResponse(
             "username check failed. Please provide an username in the request body.",
-            status_code=400
+            status_code=HTTPStatus.BAD_REQUEST
         )
 
 
