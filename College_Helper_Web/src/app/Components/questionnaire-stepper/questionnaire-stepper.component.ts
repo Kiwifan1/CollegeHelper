@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Observable, switchMap } from 'rxjs';
 import { Gender } from 'src/app/Objects/User/Demographics';
+import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
@@ -81,7 +83,7 @@ export class QuestionnaireStepperComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(
-    private apiCallService: AuthService,
+    private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
@@ -108,16 +110,72 @@ export class QuestionnaireStepperComponent implements OnInit {
     );
   }
 
+  makeUser(): User {
+    const user: User = {
+      username: this.userInfo['username'],
+      password: this.userInfo['password'],
+      address: {
+        street: this.userGeneralInfoForm.get('location')?.value,
+        city: '',
+        state: '',
+        zip: '',
+        country: '',
+        website: '',
+      },
+      demographics: {
+        age: this.userGeneralInfoForm.get('age')?.value,
+        gender: this.userGeneralInfoForm.get('gender')?.value,
+        ethnicity: this.userGeneralInfoForm.get('ethnicity')?.value,
+        educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
+        occupation: this.userGeneralInfoForm.get('occupation')?.value,
+        incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,
+        maritalStatus: this.userGeneralInfoForm.get('maritalStatus')?.value,
+      },
+      scores: {
+        SAT: this.userScoreInfoForm.get('SAT')?.value,
+        ACT: this.userScoreInfoForm.get('ACT')?.value,
+        GPA: this.userScoreInfoForm.get('GPA')?.value,
+        AP: this.userScoreInfoForm.get('AP')?.value,
+        IB: this.userScoreInfoForm.get('IB')?.value,
+        PSAT10: this.userScoreInfoForm.get('PSAT10')?.value,
+        NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
+      },
+      collegePreferences:
+        this.userBasicCollegePreferencesForm.get('colleges')?.value,
+      majorPreferences: this.userBasicMajorPreferencesForm.get('majors')?.value,
+      careerPreferences:
+        this.userBasicCareerPreferencesForm.get('careers')?.value,
+      currentCourses: this.userCurrentCoursesForm.get('currentCourses')?.value,
+      Email: this.userInfo['email'],
+    };
+    return user;
+  }
+
   handleSubmission() {
     this.submitted = true;
     const user = this.userInfo['username'];
     const password = this.userInfo['password'];
-    this.apiCallService.login(user, password).subscribe((loggedIn) => {
-      if (loggedIn) {
-        this.router.navigate(['/home']);
-      } else {
-        this.showSnackBar();
-      }
-    });
+
+    this.authService
+      .createUser(this.makeUser())
+      .pipe(
+        switchMap((created) => {
+          console.log(created);
+          if (created) {
+            return this.authService.login(user, password);
+          }
+          return new Observable((observer) => {
+            observer.next(false);
+            observer.complete();
+          });
+        })
+      )
+      .subscribe((loggedIn) => {
+        if (loggedIn) {
+          this.router.navigate(['/home']);
+        } else {
+          this.showSnackBar();
+        }
+      });
   }
 }

@@ -75,10 +75,10 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
                 hashed = bcrypt.hashpw(
                     user['password'].encode('utf-8'), doc['salt'].encode('utf-8')).decode('utf-8')
                 if hashed == doc['password']:
-                    return func.HttpResponse(f"Login successful.")
+                    return func.HttpResponse(f"Login successful.", status_code=200)
                 else:
-                    return func.HttpResponse(f"Login failed.")
-        return func.HttpResponse(f"Login failed.")
+                    return func.HttpResponse(f"Login failed.", status_code=401)
+        return func.HttpResponse(f"Login failed.", status_code=401)
     else:
         return func.HttpResponse(
             "Login failed. Please provide a username and password in the request body.",

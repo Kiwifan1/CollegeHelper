@@ -109,18 +109,18 @@ export class RegisterPageComponent implements OnInit {
   createAccount() {
     this.authService
       .checkIfUserExists(this.userForm.get('email')?.value)
-      .subscribe(
-        (res: any) => {
+      .subscribe({
+        next: (res: any) => {
           if (res.exists) {
             console.log('User already exists');
           } else {
             this.register();
           }
         },
-        (err: any) => {
+        error: (err: any) => {
           console.error(err);
-        }
-      );
+        },
+      });
     this.register();
   }
 }

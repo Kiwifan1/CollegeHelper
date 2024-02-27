@@ -11,19 +11,15 @@
           (reset)="form.reset()"
         >
           <mat-form-field class="fill-card">
-            <mat-label>Email</mat-label>
+            <mat-label>Username</mat-label>
             <input
-              type="email"
+              type="text"
               matInput
               formControlName="username"
               placeholder="Ex. pat@example.com"
               required
             />
-            <mat-error *ngIf="invalidEmail()"
-              >Please enter a valid email address
-            </mat-error>
-
-            <mat-error *ngIf="emptyEmail()"
+            <mat-error *ngIf="emptyUsername()"
               >Email is <strong>required</strong>
             </mat-error>
           </mat-form-field>

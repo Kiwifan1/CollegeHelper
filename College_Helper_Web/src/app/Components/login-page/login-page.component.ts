@@ -40,7 +40,7 @@ export class ErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginPageComponent implements OnInit {
   form: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
@@ -81,15 +81,8 @@ export class LoginPageComponent implements OnInit {
       });
   }
 
-  emptyEmail() {
+  emptyUsername() {
     return this.form.get('username')?.hasError('required');
-  }
-
-  invalidEmail() {
-    return (
-      this.form.get('username')?.hasError('email') &&
-      !this.form.get('username')?.hasError('required')
-    );
   }
 
   invalidPassword() {

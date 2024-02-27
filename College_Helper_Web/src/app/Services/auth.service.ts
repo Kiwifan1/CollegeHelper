@@ -61,8 +61,6 @@ export class AuthService {
     // convert user to json but don't let it be a byte array
     const userJson = JSON.stringify(user);
     const url = environment.WEB_API_URL + '/create_user';
-    this.$http.post(url, userJson).subscribe((res) => {
-      console.log(res);
-    });
+    return this.$http.post(url, userJson);
   }
 }
