@@ -9,7 +9,7 @@ env_variables = json.load(open("local.settings.json"))
 cosmos_connection_var = env_variables["Values"]["CosmosDBConnectionString"]
 cosmos_client_readonly_key_var = env_variables["Values"]["CosmosClientReadonlyKey"]
 
-bp = func.Blueprint()
+user_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 
 CLIENT = CosmosClient.from_connection_string(
@@ -46,9 +46,9 @@ def hash(password: str, salt: str) -> str:
     return bcrypt.hashpw(password.encode(), salt.encode()).decode()
 
 
-@bp.route(route="test_doc_output")
-@bp.queue_output(arg_name="msg", queue_name="outqueue", connection="AzureWebJobsStorage")
-@bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="TEST", connection=cosmos_db_connection)
+@user_bp.route(route="test_doc_output")
+@user_bp.queue_output(arg_name="msg", queue_name="outqueue", connection="AzureWebJobsStorage")
+@user_bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="TEST", connection=cosmos_db_connection)
 def test_doc_output(req: func.HttpRequest, msg: func.Out[func.QueueMessage],
                     outputDocument: func.Out[func.Document]) -> func.HttpResponse:
     """This function takes a name from the request and adds it to a CosmosDB container and a queue.
@@ -83,8 +83,8 @@ def test_doc_output(req: func.HttpRequest, msg: func.Out[func.QueueMessage],
         )
 
 
-@bp.route(route="create_user", methods=["POST"])
-@bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
+@user_bp.route(route="create_user", methods=["POST"])
+@user_bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
 def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) -> func.HttpResponse:
     """This function takes a user from the request and adds it to a CosmosDB container.
 
@@ -114,8 +114,8 @@ def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
         )
 
 
-@bp.route(route="login", methods=["POST"])
-@bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
+@user_bp.route(route="login", methods=["POST"])
+@user_bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
 def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpResponse:
     """This function takes a user from the request and checks if it exists in the database.
 
@@ -145,8 +145,8 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
         )
 
 
-@bp.route(route="check_user_exists", methods=["POST"])
-@bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
+@user_bp.route(route="check_user_exists", methods=["POST"])
+@user_bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
 def check_user_exists(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpResponse:
     """This function takes a username from the request and checks if it exists in the database.
 
