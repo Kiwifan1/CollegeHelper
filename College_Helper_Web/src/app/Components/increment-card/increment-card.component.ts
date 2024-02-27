@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-increment-card',
@@ -13,7 +13,7 @@ export class IncrementCardComponent {
   agePressed: boolean = false;
   result: any;
 
-  constructor(private apiCallService: ApiCallService) {}
+  constructor(private apiCallService: AuthService) {}
 
   increment() {
     console.log('clicked!');

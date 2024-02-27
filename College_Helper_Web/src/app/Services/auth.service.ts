@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { User, defaultUser } from '../Objects/User/User';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiCallService {
+export class AuthService {
   constructor(private $http: HttpClient) {}
 
   incrementNumber(num: Number) {
@@ -43,10 +44,24 @@ export class ApiCallService {
   }
 
   login(username: string, password: string): boolean {
-    if (username === 'admin@admin.com' && password === 'admin') {
-      localStorage.setItem('user', username);
-      return true;
-    }
-    return false;
+    const user = defaultUser;
+    // convert user to json
+    const userJson = JSON.stringify(user);
+
+    const url = environment.WEB_API_URL + '/login';
+    this.$http.post(url, userJson).subscribe((res) => {
+      console.log(res);
+      localStorage.setItem('user', res.toString());
+    });
+    return true;
+  }
+
+  createUser(user: User) {
+    // convert user to json but don't let it be a byte array
+    const userJson = JSON.stringify(user);
+    const url = environment.WEB_API_URL + '/create_user';
+    this.$http.post(url, userJson).subscribe((res) => {
+      console.log(res);
+    });
   }
 }

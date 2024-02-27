@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiCallService } from './Services/api-call.service';
+import { AuthService } from './Services/auth.service';
+import { defaultUser } from './Objects/User/User';
 
 @Component({
   selector: 'app-root',
@@ -9,10 +10,11 @@ import { ApiCallService } from './Services/api-call.service';
 export class AppComponent implements OnInit {
   title = 'College_Helper';
 
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   ngOnInit() {
     this.setTheme();
+    this.authService.createUser(defaultUser); 
   }
 
   setTheme() {

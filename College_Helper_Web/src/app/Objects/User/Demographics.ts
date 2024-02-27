@@ -1,5 +1,3 @@
-import { Address } from '../Address';
-
 export interface Demographics {
   age: number | null;
   gender: Gender | null;
@@ -8,7 +6,6 @@ export interface Demographics {
   occupation: Occupation | null;
   incomeLevel: IncomeLevel | null;
   maritalStatus: MaritalStatus | null;
-  location: Address | null;
 }
 
 export enum Ethnicity {

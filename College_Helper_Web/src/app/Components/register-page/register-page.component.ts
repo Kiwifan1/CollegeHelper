@@ -10,7 +10,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 import { ErrorStateMatcher } from '../login-page/login-page.component';
 import { passwordMatchValidator } from '../common/validators';
 
@@ -43,7 +43,7 @@ export class RegisterPageComponent implements OnInit {
 
   matcher = new ErrorStateMatcher();
 
-  constructor(private router: Router, private apiCallService: ApiCallService) {}
+  constructor(private router: Router, private apiCallService: AuthService) {}
 
   ngOnInit(): void {}
 

@@ -6,10 +6,10 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { ApiCallService } from '../Services/api-call.service';
+import { AuthService } from '../Services/auth.service';
 
 export const notLoggedInGuard: CanActivateFn = (route, state) => {
-  const loginService = inject(ApiCallService);
+  const loginService = inject(AuthService);
   const snackBar = inject(MatSnackBar);
   const router = inject(Router);
 

@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { ApiCallService } from '../Services/api-call.service';
+import { AuthService } from '../Services/auth.service';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -8,7 +8,7 @@ import {
 } from '@angular/material/snack-bar';
 
 export const loginGuard: CanActivateFn = (route, state) => {
-  const apiService = inject(ApiCallService);
+  const apiService = inject(AuthService);
   const snackBar = inject(MatSnackBar);
   const router = inject(Router);
 

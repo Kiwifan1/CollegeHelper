@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Gender } from 'src/app/Objects/User/Demographics';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -81,7 +81,7 @@ export class QuestionnaireStepperComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(
-    private apiCallService: ApiCallService,
+    private apiCallService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}

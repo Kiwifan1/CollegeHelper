@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Route, Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-main-nav',
@@ -18,7 +18,7 @@ export class MainNavComponent {
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private apiCallService: ApiCallService
+    private apiCallService: AuthService
   ) {
     this.user = this.apiCallService.getUser();
   }

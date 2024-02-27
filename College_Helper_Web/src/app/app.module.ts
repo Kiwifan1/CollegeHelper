@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApiCallService } from './Services/api-call.service';
+import { AuthService } from './Services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { MatCardActions, MatCardModule } from '@angular/material/card';
@@ -104,7 +104,7 @@ import { ReviewComponent } from './Components/questionnaire-stepper/review/revie
     MatExpansionModule,
     MatCheckboxModule,
   ],
-  providers: [ApiCallService, provideHttpClient()],
+  providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

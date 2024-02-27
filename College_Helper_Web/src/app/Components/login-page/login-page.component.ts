@@ -16,7 +16,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 // standin class for error matching
 export class ErrorStateMatcher implements ErrorStateMatcher {
@@ -51,7 +51,7 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiCallService: ApiCallService,
+    private apiCallService: AuthService,
     private snackBar: MatSnackBar
   ) {}
 
