@@ -4,7 +4,7 @@ import json
 
 
 # blueprints
-from db_triggers import bp
+from College_Helper_Api.user_db_triggers import bp
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 app.register_blueprint(bp)
 
