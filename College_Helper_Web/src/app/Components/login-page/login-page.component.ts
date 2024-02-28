@@ -64,8 +64,9 @@ export class LoginPageComponent implements OnInit {
   submit() {
     this.authService
       .login(this.form.get('username')?.value, this.form.get('password')?.value)
-      .subscribe((loggedIn) => {
-        if (loggedIn) {
+      .subscribe((res: any) => {
+        if (res) {
+          this.authService.setUser(res);
           this.router.navigate(['/home']);
         } else {
           // display error message

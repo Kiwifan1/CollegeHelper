@@ -106,12 +106,47 @@ def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
         user['salt'] = salt
         user['password'] = hashed
         user['id'] = str(uuid.uuid4())
-
-        outputDocument.set(func.Document.from_dict(user))
-        return func.HttpResponse(f"User {user['username']} created successfully.", status_code=HTTPStatus.CREATED)
+        try:
+            outputDocument.set(func.Document.from_dict(user))
+            return func.HttpResponse(json.dumps(user), status_code=HTTPStatus.CREATED, mimetype="application/json")
+        except:
+            return func.HttpResponse(
+                "User creation failed. Please try again later.",
+                status_code=HTTPStatus.INTERNAL_SERVER_ERROR
+            )
     else:
         return func.HttpResponse(
             "User creation failed. Please provide a username and password in the request body.",
+            status_code=HTTPStatus.BAD_REQUEST
+        )
+
+
+@user_bp.route(route="update_user", methods=["PUT"])
+@user_bp.cosmos_db_output(arg_name="outputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
+def update_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) -> func.HttpResponse:
+    """This function takes a user from the request and updates it in a CosmosDB container.
+
+    Args:
+        req (func.HttpRequest): The request object.
+        outputDocument (func.Out[func.Document]): The CosmosDB output binding.
+
+    Returns:
+        func.HttpResponse: The response to the request.
+    """
+    logging.info('Python HTTP update_user function processed a request.')
+    user = req.get_json()
+    if user and 'id' in user:
+        try:
+            outputDocument.set(func.Document.from_dict(user))
+            return func.HttpResponse(json.dumps(user), status_code=HTTPStatus.OK, mimetype="application/json")
+        except:
+            return func.HttpResponse(
+                "User update failed. Please try again later.",
+                status_code=HTTPStatus.INTERNAL_SERVER_ERROR
+            )
+    else:
+        return func.HttpResponse(
+            "User update failed. Please provide an id in the request body.",
             status_code=HTTPStatus.BAD_REQUEST
         )
 
@@ -132,14 +167,19 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
     user = req.get_json()
     if user and 'password' in user and 'username' in user:
         # find user in database
-        query = "SELECT password, salt FROM c WHERE c.username = @username"
+        query = "SELECT * FROM c WHERE c.username = @username"
         params = [{'name': '@username', 'value': user['username']}]
-        items = query_cosmos_db(query, params, "USER")
-        if items:
-            if hash(user['password'], items[0]['salt']) == items[0]['password']:
-                return {"loginSuccess": True}
+        items = query_cosmos_db(query, params)
+        for item in items:  # only one item should be returned, so we can just get the first item
+            # get the first item
+            if hash(user['password'], item['salt']) == item['password']:
+                return func.HttpResponse(json.dumps({'loginSuccess': True}), status_code=HTTPStatus.OK, mimetype="application/json")
             else:
-                return {"loginSuccess": False}
+                return func.HttpResponse(
+                    {'loginSuccess': False},
+                    status_code=HTTPStatus.UNAUTHORIZED,
+                    mimetype="application/json"
+                )
     else:
         return func.HttpResponse(
             "Login failed. Please provide a username and password in the request body.",
@@ -148,8 +188,7 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
 
 
 @user_bp.route(route="check_user_exists", methods=["POST"])
-@user_bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
-def check_user_exists(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpResponse:
+def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
     """This function takes a username from the request and checks if it exists in the database.
 
     Args:
@@ -160,13 +199,17 @@ def check_user_exists(req: func.HttpRequest, inputDocument: func.DocumentList) -
         func.HttpResponse: The response to the request.
     """
     logging.info('Python HTTP trigger function processed a request.')
-    username = req.get_json()
-    if username and 'username' in username:
+    user_info = req.get_json()
+    if user_info and 'username' in user_info and 'email' in user_info:
         # check if username exists in database
-        query = "SELECT * FROM c WHERE c.username = @username"
-        params = [{'name': '@username', 'value': username['username']}]
-        items = query_cosmos_db(query, params, "USER")
-        return {"userExists": bool(items)}
+        query = "SELECT * FROM c WHERE c.username = @username OR c.email = @email"
+        params = [{'name': '@username', 'value': user_info['username']},
+                  {'name': '@email', 'value': user_info['email']}]
+        items = query_cosmos_db(query, params, cross_part=True)
+        for item in items:
+            return func.HttpResponse(json.dumps({'userExists': True}), status_code=HTTPStatus.FORBIDDEN, mimetype="application/json")
+        else:
+            return func.HttpResponse(json.dumps({'userExists': False}), status_code=HTTPStatus.OK, mimetype="application/json")
     else:
         return func.HttpResponse(
             "username check failed. Please provide an username in the request body.",
@@ -174,15 +217,18 @@ def check_user_exists(req: func.HttpRequest, inputDocument: func.DocumentList) -
         )
 
 
-def query_cosmos_db(query: str, params: list) -> list:
+def query_cosmos_db(query: str, params: list, cross_part=False) -> list:
     """This function takes a query and returns the results of the query from the CosmosDB.
 
     Args:
         query (str): The query to be executed.
         params (list): The parameters for the query.
+        cross_part (bool, optional): Whether the query is cross partition. Defaults to False.
 
     Returns:
         list: The results of the query.
     """
-    items = list(CONTAINER.query_items(query=query, parameters=params))
+    items = CONTAINER.query_items(
+        query=query, parameters=params, enable_cross_partition_query=cross_part)
+
     return items

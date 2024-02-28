@@ -1,7 +1,7 @@
 import azure.functions as func
 import logging
 import json
-from College_Helper_Api.user_db_triggers import user_bp
+from user_db_triggers import user_bp
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 

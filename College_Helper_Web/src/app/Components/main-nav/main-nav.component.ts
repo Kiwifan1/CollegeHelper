@@ -1,30 +1,33 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Route, Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { AuthService } from 'src/app/Services/auth.service';
+import { User } from 'src/app/Objects/User/User';
 
 @Component({
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.scss',
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnInit {
   @Input() sidenav: any;
 
   // TODO: replace with actual username grabbed from database when logging in
-  user!: string | null;
+  user: User | null = null;
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private apiCallService: AuthService
+    private authService: AuthService
   ) {
-    this.user = this.apiCallService.getUser();
+    this.user = this.authService.getUser();
   }
 
+  ngOnInit(): void {}
+
   isAuthenticated() {
-    return this.apiCallService.checkIfUserIsLoggedIn();
+    return this.authService.checkIfUserIsLoggedIn();
   }
 
   goToProfile() {
@@ -41,7 +44,7 @@ export class MainNavComponent {
   }
 
   logout() {
-    this.apiCallService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

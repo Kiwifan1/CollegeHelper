@@ -78,7 +78,7 @@ export class QuestionnaireStepperComponent implements OnInit {
     careerWorkLife: new FormControl(''),
   });
 
-  private userInfo: any = {};
+  private user!: User;
 
   submitted: boolean = false;
 
@@ -90,10 +90,8 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.removeItem('registrationComplete');
-    const info = localStorage.getItem('userInfo');
-    if (info) {
-      this.userInfo = JSON.parse(info);
-    } else {
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (!this.user) {
       this.showSnackBar();
     }
     localStorage.removeItem('userInfo');
@@ -110,59 +108,60 @@ export class QuestionnaireStepperComponent implements OnInit {
     );
   }
 
-  makeUser(): User {
-    const user: User = {
-      username: this.userInfo['username'],
-      password: this.userInfo['password'],
-      address: {
-        street: this.userGeneralInfoForm.get('location')?.value,
-        city: '',
-        state: '',
-        zip: '',
-        country: '',
-        website: '',
-      },
-      demographics: {
-        age: this.userGeneralInfoForm.get('age')?.value,
-        gender: this.userGeneralInfoForm.get('gender')?.value,
-        ethnicity: this.userGeneralInfoForm.get('ethnicity')?.value,
-        educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
-        occupation: this.userGeneralInfoForm.get('occupation')?.value,
-        incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,
-        maritalStatus: this.userGeneralInfoForm.get('maritalStatus')?.value,
-      },
-      scores: {
-        SAT: this.userScoreInfoForm.get('SAT')?.value,
-        ACT: this.userScoreInfoForm.get('ACT')?.value,
-        GPA: this.userScoreInfoForm.get('GPA')?.value,
-        AP: this.userScoreInfoForm.get('AP')?.value,
-        IB: this.userScoreInfoForm.get('IB')?.value,
-        PSAT10: this.userScoreInfoForm.get('PSAT10')?.value,
-        NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
-      },
-      collegePreferences:
-        this.userBasicCollegePreferencesForm.get('colleges')?.value,
-      majorPreferences: this.userBasicMajorPreferencesForm.get('majors')?.value,
-      careerPreferences:
-        this.userBasicCareerPreferencesForm.get('careers')?.value,
-      currentCourses: this.userCurrentCoursesForm.get('currentCourses')?.value,
-      Email: this.userInfo['email'],
+  makeUser() {
+    this.user.address = {
+      street: this.userGeneralInfoForm.get('location')?.value,
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
+      website: '',
     };
-    return user;
+
+    this.user.demographics = {
+      age: this.userGeneralInfoForm.get('age')?.value,
+      gender: this.userGeneralInfoForm.get('gender')?.value,
+      ethnicity: this.userGeneralInfoForm.get('ethnicity')?.value,
+      educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
+      occupation: this.userGeneralInfoForm.get('occupation')?.value,
+      incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,
+      maritalStatus: this.userGeneralInfoForm.get('maritalStatus')?.value,
+    };
+
+    this.user.scores = {
+      SAT: this.userScoreInfoForm.get('SAT')?.value,
+      ACT: this.userScoreInfoForm.get('ACT')?.value,
+      GPA: this.userScoreInfoForm.get('GPA')?.value,
+      AP: this.userScoreInfoForm.get('AP')?.value,
+      IB: this.userScoreInfoForm.get('IB')?.value,
+      PSAT10: this.userScoreInfoForm.get('PSAT10')?.value,
+      NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
+    };
+
+    this.user.collegePreferences = [
+      this.userBasicCollegePreferencesForm.get('colleges')?.value,
+    ];
+    this.user.majorPreferences = [
+      this.userBasicMajorPreferencesForm.get('majors')?.value,
+    ];
+    this.user.careerPreferences = [
+      this.userBasicCareerPreferencesForm.get('careers')?.value,
+    ];
   }
 
   handleSubmission() {
     this.submitted = true;
-    const user = this.userInfo['username'];
-    const password = this.userInfo['password'];
+    this.makeUser();
 
     this.authService
-      .createUser(this.makeUser())
+      .updateUser(this.user)
       .pipe(
-        switchMap((created) => {
-          console.log(created);
-          if (created) {
-            return this.authService.login(user, password);
+        switchMap((res: any) => {
+          if (res.userUpdateSuccess) {
+            return this.authService.login(
+              this.user.username,
+              this.user.password
+            );
           }
           return new Observable((observer) => {
             observer.next(false);

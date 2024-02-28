@@ -3,8 +3,9 @@ import { Demographics } from './Demographics';
 import { Scores } from './Scores';
 
 export interface User {
+  id: string;
   username: string;
-  Email: string;
+  email: string;
   password: string;
   address: Address;
   demographics: Demographics;
@@ -16,9 +17,10 @@ export interface User {
 }
 
 export const defaultUser: User = {
-  username: "test",
-  Email: "test@test.com",
-  password: "abc123",
+  id: "",
+  username: "",
+  email: "",
+  password: "",
   address: {
     street: null,
     city: null,
