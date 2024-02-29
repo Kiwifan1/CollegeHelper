@@ -16,6 +16,10 @@ export class AppComponent implements OnInit {
     this.setTheme();
   }
 
+  isAuthenticated() {
+    return this.authService.checkIfUserIsLoggedIn();
+  }
+
   setTheme() {
     const darkMode = localStorage.getItem('darkMode');
     if (darkMode === 'true') {

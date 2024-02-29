@@ -1,31 +1,34 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Route, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { AuthService } from 'src/app/Services/auth.service';
+import { User } from 'src/app/Objects/User/User';
 
 @Component({
   selector: 'app-main-nav',
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.scss',
 })
-export class MainNavComponent {
+export class MainNavComponent implements OnInit, OnChanges {
   @Input() sidenav: any;
-
-  // TODO: replace with actual username grabbed from database when logging in
-  user!: string | null;
+  
+  user: User | null = null;
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private apiCallService: AuthService
-  ) {
-    this.user = this.apiCallService.getUser();
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
+    this.user = this.authService.getUser();
   }
 
-  isAuthenticated() {
-    return this.apiCallService.checkIfUserIsLoggedIn();
+  ngOnChanges() {
+    this.user = this.authService.getUser();
   }
+
 
   goToProfile() {
     this.router.navigate(['/profile']);
@@ -41,7 +44,7 @@ export class MainNavComponent {
   }
 
   logout() {
-    this.apiCallService.logout();
+    this.authService.logout();
     this.router.navigate(['/login']);
   }
 }

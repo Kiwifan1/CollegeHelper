@@ -1,15 +1,12 @@
 import azure.functions as func
 import logging
 import json
-
-
-# blueprints
-from db_triggers import bp
-
+from user_db_triggers import user_bp
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-app.register_blueprint(bp)
 
+# blueprints
+app.register_blueprint(user_bp)
 
 @app.route(route="http_trigger")
 def http_trigger(req: func.HttpRequest) -> func.HttpResponse:

@@ -22,8 +22,18 @@ export class AuthService {
     return this.$http.post(url, content);
   }
 
+  setUser(user: User) {
+    const userJson = JSON.stringify(user);
+    localStorage.setItem('user', userJson);
+  }
+
   getUser() {
-    return localStorage.getItem('user');
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      return JSON.parse(userJson) as User;
+    } else {
+      return null;
+    }
   }
 
   checkIfUserIsLoggedIn() {
@@ -52,15 +62,20 @@ export class AuthService {
     return this.$http.post(url, payload);
   }
 
-  checkIfUserExists(email: string) {
-    const url = environment.WEB_API_URL + '/check_user';
-    return this.$http.post(url, { email: email });
+  checkIfUserExists(email: string, username: string) {
+    const url = environment.WEB_API_URL + '/check_user_exists';
+    return this.$http.post(url, { email: email, username: username });
   }
 
   createUser(user: User) {
-    // convert user to json but don't let it be a byte array
     const userJson = JSON.stringify(user);
     const url = environment.WEB_API_URL + '/create_user';
     return this.$http.post(url, userJson);
+  }
+
+  updateUser(user: User) {
+    const userJson = JSON.stringify(user);
+    const url = environment.WEB_API_URL + '/update_user';
+    return this.$http.put(url, userJson);
   }
 }

@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ErrorStateMatcher } from '../login-page/login-page.component';
 import { passwordMatchValidator } from '../common/validators';
+import { User, defaultUser } from 'src/app/Objects/User/User';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register-page',
@@ -41,9 +43,15 @@ export class RegisterPageComponent implements OnInit {
   registered: boolean = false;
   token: string = '';
 
+  user: User = defaultUser;
+
   matcher = new ErrorStateMatcher();
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private matSnackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -88,39 +96,65 @@ export class RegisterPageComponent implements OnInit {
   }
 
   register() {
-    // TODO: Implement
-    let userInfo = {
-      username: '',
-      email: '',
-      password: '',
-    };
-    const password = this.passwordForm.get('password')?.value;
-    const username = this.userForm.get('username')?.value;
-    const email = this.userForm.get('email')?.value;
-    userInfo.username = username;
-    userInfo.email = email;
-    userInfo.password = password ?? '';
-
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
+    localStorage.setItem('user', JSON.stringify(this.user));
     localStorage.setItem('registerComplete', 'true');
     this.router.navigate(['/questionnaire']);
   }
 
   createAccount() {
     this.authService
-      .checkIfUserExists(this.userForm.get('email')?.value)
+      .checkIfUserExists(
+        this.userForm.get('email')?.value,
+        this.userForm.get('username')?.value
+      )
+      .pipe(
+        switchMap((res: any) => {
+          if (res.userExists) {
+            return new Observable((observer) => {
+              observer.error('User already exists');
+            });
+          } else {
+            this.user.username = this.userForm.get('username')?.value ?? '';
+            this.user.email = this.userForm.get('email')?.value ?? '';
+            this.user.password = this.passwordForm.get('password')?.value ?? '';
+            return this.authService.createUser(this.user);
+          }
+        })
+      )
       .subscribe({
         next: (res: any) => {
-          if (res.exists) {
-            console.log('User already exists');
-          } else {
+          if (res !== null && res !== undefined) {
+            this.user.id = res.id;
             this.register();
+          } else {
+            this.matSnackBar.open('User could not be created', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
           }
         },
-        error: (err: any) => {
-          console.error(err);
+        error: (err: HttpErrorResponse) => {
+          // make a snackbar depending on the error
+          // if it is a forbidden error, then the user already exists
+          // if it is an unprocessable entity, then the user couldn't be created
+          if (err.status === 422) {
+            this.matSnackBar.open('User could not be created', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
+          } else if (err.status === 403) {
+            this.matSnackBar.open('Username/email already in use', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
+          }
         },
       });
-    this.register();
   }
 }
