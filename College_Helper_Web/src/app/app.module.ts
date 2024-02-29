@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ApiCallService } from './Services/api-call.service';
+import { AuthService } from './Services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { MatCardActions, MatCardModule } from '@angular/material/card';
@@ -38,6 +38,16 @@ import { CollegeDetailAdmissionsComponent } from './Components/college-search-pa
 import { CollegeDetailCostsComponent } from './Components/college-search-page/college-detail/college-detail-costs/college-detail-costs.component';
 import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
 import { MoneyPipe } from './Components/common/money.pipe';
+import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
+import { GeneralInfoComponent } from './Components/questionnaire-stepper/general-info/general-info.component';
+import { ScoreInfoComponent } from './Components/questionnaire-stepper/score-info/score-info.component';
+import { CollegeInfoComponent } from './Components/questionnaire-stepper/college-info/college-info.component';
+import { MajorInfoComponent } from './Components/questionnaire-stepper/major-info/major-info.component';
+import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,6 +65,13 @@ import { MoneyPipe } from './Components/common/money.pipe';
     CollegeDetailAdmissionsComponent,
     CollegeDetailCostsComponent,
     SettingsDialogComponent,
+    QuestionnaireStepperComponent,
+    GeneralInfoComponent,
+    ScoreInfoComponent,
+    CollegeInfoComponent,
+    MajorInfoComponent,
+    CareerInfoComponent,
+    ReviewComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,8 +101,10 @@ import { MoneyPipe } from './Components/common/money.pipe';
     MatAutocompleteModule,
     MatTabsModule,
     MoneyPipe,
+    MatExpansionModule,
+    MatCheckboxModule,
   ],
-  providers: [ApiCallService, provideHttpClient()],
+  providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

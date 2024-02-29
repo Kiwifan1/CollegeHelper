@@ -21,7 +21,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-main-nav [sidenav]="sidenav"></app-main-nav>
+    <app-main-nav *ngIf="isAuthenticated()" [sidenav]="sidenav"></app-main-nav>
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -16,7 +16,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ApiCallService } from 'src/app/Services/api-call.service';
+import { AuthService } from 'src/app/Services/auth.service';
 
 // standin class for error matching
 export class ErrorStateMatcher implements ErrorStateMatcher {
@@ -40,7 +40,7 @@ export class ErrorStateMatcher implements ErrorStateMatcher {
 })
 export class LoginPageComponent implements OnInit {
   form: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required, Validators.email]),
+    username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
 
@@ -51,46 +51,39 @@ export class LoginPageComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private apiCallService: ApiCallService,
+    private authService: AuthService,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    if (this.apiCallService.checkIfUserIsLoggedIn()) {
+    if (this.authService.checkIfUserIsLoggedIn()) {
       this.router.navigate(['/home']);
     }
   }
 
   submit() {
-    let loggedIn = this.apiCallService.login(
-      this.form.get('username')?.value,
-      this.form.get('password')?.value
-    );
+    this.authService
+      .login(this.form.get('username')?.value, this.form.get('password')?.value)
+      .subscribe((res: any) => {
+        if (res) {
+          this.authService.setUser(res);
+          this.router.navigate(['/home']);
+        } else {
+          // display error message
+          this.snackBar.open('Incorrect Password or Username', 'Close', {
+            duration: 5000,
+            horizontalPosition: this.horizontalPos,
+            verticalPosition: this.verticalPos,
+            politeness: 'assertive',
+          });
 
-    if (loggedIn) {
-      this.router.navigate(['/home']);
-    } else {
-      // display error message
-      this.snackBar.open('Incorrect Password or Username', 'Close', {
-        duration: 5000,
-        horizontalPosition: this.horizontalPos,
-        verticalPosition: this.verticalPos,
-        politeness: 'assertive',
+          this.form.reset();
+        }
       });
-
-      this.form.reset();
-    }
   }
 
-  emptyEmail() {
+  emptyUsername() {
     return this.form.get('username')?.hasError('required');
-  }
-
-  invalidEmail() {
-    return (
-      this.form.get('username')?.hasError('email') &&
-      !this.form.get('username')?.hasError('required')
-    );
   }
 
   invalidPassword() {
