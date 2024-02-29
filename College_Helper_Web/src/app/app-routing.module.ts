@@ -5,7 +5,6 @@ import { CollegeSearchPageComponent } from './Components/college-search-page/col
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
 import { RegisterPageComponent } from './Components/register-page/register-page.component';
-import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
 import { notLoggedInGuard } from './guards/not-logged-in.guard';
 import { questionnaireGuard } from './guards/questionnaire.guard';
@@ -19,11 +18,6 @@ const routes: Routes = [
   {
     path: 'college-search',
     component: CollegeSearchPageComponent,
-    canActivate: [loginGuard],
-  },
-  {
-    path: 'increment',
-    component: IncrementCardComponent,
     canActivate: [loginGuard],
   },
   {
