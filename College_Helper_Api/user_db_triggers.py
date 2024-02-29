@@ -2,20 +2,17 @@ import logging
 import bcrypt
 import uuid
 import json
+import os
 import azure.functions as func
 
 from azure.cosmos import CosmosClient
 from http import HTTPStatus
 
-env_variables = json.load(open("local.settings.json"))
-cosmos_connection_var = env_variables["Values"]["CosmosDBConnectionString"]
-cosmos_client_readonly_key_var = env_variables["Values"]["CosmosClientReadonlyKey"]
-
 user_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
+cosmos_readonly_key = "CosmosClientReadonlyKey"
 
-CLIENT = CosmosClient.from_connection_string(
-    cosmos_connection_var, credential=cosmos_client_readonly_key_var)
+CLIENT = CosmosClient.from_connection_string(os.environ[cosmos_db_connection], credential=os.environ[cosmos_readonly_key])
 DATABASE = CLIENT.get_database_client("CollegeHelperDB")
 CONTAINER = DATABASE.get_container_client("USER")
 
