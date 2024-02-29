@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Route, Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { AuthService } from 'src/app/Services/auth.service';
 import { User } from 'src/app/Objects/User/User';
@@ -10,25 +10,25 @@ import { User } from 'src/app/Objects/User/User';
   templateUrl: './main-nav.component.html',
   styleUrl: './main-nav.component.scss',
 })
-export class MainNavComponent implements OnInit {
+export class MainNavComponent implements OnInit, OnChanges {
   @Input() sidenav: any;
-
-  // TODO: replace with actual username grabbed from database when logging in
+  
   user: User | null = null;
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private authService: AuthService
-  ) {
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit(): void {
     this.user = this.authService.getUser();
   }
 
-  ngOnInit(): void {}
-
-  isAuthenticated() {
-    return this.authService.checkIfUserIsLoggedIn();
+  ngOnChanges() {
+    this.user = this.authService.getUser();
   }
+
 
   goToProfile() {
     this.router.navigate(['/profile']);

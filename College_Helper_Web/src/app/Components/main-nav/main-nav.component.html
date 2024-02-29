@@ -1,10 +1,10 @@
-<mat-toolbar class="position-fixed" *ngIf="isAuthenticated()">
+<mat-toolbar class="position-fixed" *ngIf="user">
   <button mat-icon-button (click)="sidenav.toggle()">
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer"></span>
   <span class="toolbar-spacer"></span>
-  <span>{{ user?.username  }}</span>
+  <span>{{ user.username }}</span>
   <button mat-icon-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -22,4 +22,4 @@
       <span>Logout</span>
     </button>
   </mat-menu>
-</mat-toolbar> 
+</mat-toolbar>

@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/Services/auth.service';
 import { ErrorStateMatcher } from '../login-page/login-page.component';
 import { passwordMatchValidator } from '../common/validators';
 import { User, defaultUser } from 'src/app/Objects/User/User';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-register-page',
@@ -46,7 +47,11 @@ export class RegisterPageComponent implements OnInit {
 
   matcher = new ErrorStateMatcher();
 
-  constructor(private router: Router, private authService: AuthService) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private matSnackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {}
 
@@ -122,11 +127,33 @@ export class RegisterPageComponent implements OnInit {
             this.user.id = res.id;
             this.register();
           } else {
-            console.log('User creation failed');
+            this.matSnackBar.open('User could not be created', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
           }
         },
-        error: (err: any) => {
-          console.error(err);
+        error: (err: HttpErrorResponse) => {
+          // make a snackbar depending on the error
+          // if it is a forbidden error, then the user already exists
+          // if it is an unprocessable entity, then the user couldn't be created
+          if (err.status === 422) {
+            this.matSnackBar.open('User could not be created', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
+          } else if (err.status === 403) {
+            this.matSnackBar.open('Username/email already in use', 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              politeness: 'assertive',
+            });
+          }
         },
       });
   }

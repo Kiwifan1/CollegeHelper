@@ -112,7 +112,7 @@ def create_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
         except:
             return func.HttpResponse(
                 "User creation failed. Please try again later.",
-                status_code=HTTPStatus.INTERNAL_SERVER_ERROR
+                status_code=HTTPStatus.UNPROCESSABLE_ENTITY
             )
     else:
         return func.HttpResponse(
@@ -173,7 +173,9 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
         for item in items:  # only one item should be returned, so we can just get the first item
             # get the first item
             if hash(user['password'], item['salt']) == item['password']:
-                return func.HttpResponse(json.dumps({'loginSuccess': True}), status_code=HTTPStatus.OK, mimetype="application/json")
+                item.pop('password')
+                item.pop('salt')
+                return func.HttpResponse(json.dumps(item), status_code=HTTPStatus.OK, mimetype="application/json")
             else:
                 return func.HttpResponse(
                     {'loginSuccess': False},
@@ -206,7 +208,7 @@ def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
         params = [{'name': '@username', 'value': user_info['username']},
                   {'name': '@email', 'value': user_info['email']}]
         items = query_cosmos_db(query, params, cross_part=True)
-        for item in items:
+        for item in list(items):
             return func.HttpResponse(json.dumps({'userExists': True}), status_code=HTTPStatus.FORBIDDEN, mimetype="application/json")
         else:
             return func.HttpResponse(json.dumps({'userExists': False}), status_code=HTTPStatus.OK, mimetype="application/json")
