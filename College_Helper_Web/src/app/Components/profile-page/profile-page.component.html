@@ -1,1 +1,105 @@
-<p>profile-page works!</p>
+<div class="page" *ngIf="user">
+  <div class="page-content">
+    <mat-card class="page-card">
+      <mat-card-header>
+        <mat-card-title>Profile</mat-card-title>
+        <mat-card-subtitle>
+          <mat-icon matPrefix>account_circle</mat-icon>
+          <span>{{ user.username }} | {{ user.email }}</span>
+          <button mat-raised-button color="primary" (click)="onSubmit()">
+            Save
+          </button>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="profileForm">
+          <div class="profile-info">
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>wc</mat-icon>
+                <mat-select formControlName="gender">
+                  <mat-option
+                    [value]="gender"
+                    *ngFor="let gender of genderOptions"
+                  >
+                    {{ gender }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>person</mat-icon>
+                <mat-select formControlName="ethnicity">
+                  <mat-option
+                    [value]="ethnicity"
+                    *ngFor="let ethnicity of ethnicityOptions"
+                  >
+                    {{ ethnicity }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>attach_money</mat-icon>
+                <mat-select formControlName="income">
+                  <mat-option
+                    [value]="income"
+                    *ngFor="let income of incomeOptions"
+                  >
+                    {{ income }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>school</mat-icon>
+                <mat-select formControlName="education">
+                  <mat-option
+                    [value]="education"
+                    *ngFor="let education of educationOptions"
+                  >
+                    {{ education }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>work</mat-icon>
+                <mat-select formControlName="occupation">
+                  <mat-option
+                    [value]="occupation"
+                    *ngFor="let occupation of occupationOptions"
+                  >
+                    {{ occupation }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div class="profile-info-item">
+              <mat-form-field class="profile-field">
+                <mat-icon matPrefix>home</mat-icon>
+                <mat-select formControlName="maritalStatus">
+                  <mat-option
+                    [value]="maritalStatus"
+                    *ngFor="let maritalStatus of maritalStatusOptions"
+                  >
+                    {{ maritalStatus }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

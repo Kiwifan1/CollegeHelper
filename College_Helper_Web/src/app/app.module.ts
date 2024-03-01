@@ -48,6 +48,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { ProfilePageComponent } from './Components/profile-page/profile-page.com
     ReviewComponent,
     HomePageComponent,
     ProfilePageComponent,
+    ConfirmPasswordDialogComponent,
   ],
   imports: [
     BrowserModule,

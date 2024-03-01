@@ -12,7 +12,8 @@ user_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
 
-CLIENT = CosmosClient.from_connection_string(os.environ[cosmos_db_connection], credential=os.environ[cosmos_readonly_key])
+CLIENT = CosmosClient.from_connection_string(
+    os.environ[cosmos_db_connection], credential=os.environ[cosmos_readonly_key])
 DATABASE = CLIENT.get_database_client("CollegeHelperDB")
 CONTAINER = DATABASE.get_container_client("USER")
 
@@ -132,10 +133,17 @@ def update_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
     """
     logging.info('Python HTTP update_user function processed a request.')
     user = req.get_json()
-    if user and 'id' in user:
+    if user and 'username' in user and 'password' in user and 'salt' in user:
         try:
-            outputDocument.set(func.Document.from_dict(user))
-            return func.HttpResponse(json.dumps(user), status_code=HTTPStatus.OK, mimetype="application/json")
+            query = "SELECT * FROM c where c.username = @username AND c.password = @password"
+            potential_pass = hash(user['password'], user['salt'])
+            params = [{'name': '@username', 'value': user['username']},
+                      {'name': '@password', 'value': potential_pass}]
+            items = query_cosmos_db(query, params)
+            # check if items has any elements:
+            if list(items) != []:
+                outputDocument.set(func.Document.from_dict(user))
+                return func.HttpResponse(json.dumps(user), status_code=HTTPStatus.OK, mimetype="application/json")
         except:
             return func.HttpResponse(
                 "User update failed. Please try again later.",

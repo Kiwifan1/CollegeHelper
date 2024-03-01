@@ -8,11 +8,18 @@ import { RegisterPageComponent } from './Components/register-page/register-page.
 import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
 import { notLoggedInGuard } from './guards/not-logged-in.guard';
 import { questionnaireGuard } from './guards/questionnaire.guard';
+import { HomePageComponent } from './Components/home-page/home-page.component';
+import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: PageNotFoundComponent,
+    component: HomePageComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
     canActivate: [loginGuard],
   },
   {
