@@ -10,6 +10,7 @@ import { FormControl } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { Observable, filter, of } from 'rxjs';
 import { College, testCollege } from 'src/app/Objects/College/College';
+import { CollegeService } from 'src/app/Services/college.service';
 
 @Component({
   selector: 'app-college-list',
@@ -19,36 +20,7 @@ import { College, testCollege } from 'src/app/Objects/College/College';
 export class CollegeListComponent implements OnInit {
   @Output() collegeSelected = new EventEmitter<College>();
 
-  colleges: College[] = [
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-  ];
+  colleges: College[] = [];
 
   filteredColleges = of(this.colleges);
 
@@ -57,9 +29,15 @@ export class CollegeListComponent implements OnInit {
   // for search bar
   searchForm: FormControl = new FormControl('');
 
-  constructor() {}
+  constructor(private collegeService: CollegeService) {}
 
   ngOnInit(): void {
+    this.collegeService.getColleges({}).subscribe((colleges) => {
+      console.log(colleges)
+      this.colleges = colleges;
+      this.filteredColleges = of(this.colleges);
+    });
+
     this.searchForm.valueChanges.subscribe((value) => {
       this.filteredColleges = this.filterColleges(value);
     });

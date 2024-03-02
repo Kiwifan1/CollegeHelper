@@ -139,7 +139,7 @@ def update_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
             potential_pass = hash(user['password'], user['salt'])
             params = [{'name': '@username', 'value': user['username']},
                       {'name': '@password', 'value': potential_pass}]
-            items = query_cosmos_db(query, params)
+            items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
             if list(items) != []:
                 outputDocument.set(func.Document.from_dict(user))
@@ -157,8 +157,7 @@ def update_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
 
 
 @user_bp.route(route="login", methods=["POST"])
-@user_bp.cosmos_db_input(arg_name="inputDocument", database_name="CollegeHelperDB", container_name="USER", connection=cosmos_db_connection)
-def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpResponse:
+def login(req: func.HttpRequest) -> func.HttpResponse:
     """This function takes a user from the request and checks if it exists in the database.
 
     Args:
@@ -174,7 +173,7 @@ def login(req: func.HttpRequest, inputDocument: func.DocumentList) -> func.HttpR
         # find user in database
         query = "SELECT * FROM c WHERE c.username = @username"
         params = [{'name': '@username', 'value': user['username']}]
-        items = query_cosmos_db(query, params)
+        items = query_cosmos_db(query, params, CONTAINER)
         for item in items:  # only one item should be returned, so we can just get the first item
             # get the first item
             if hash(user['password'], item['salt']) == item['password']:
@@ -212,7 +211,7 @@ def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
         query = "SELECT * FROM c WHERE c.username = @username OR c.email = @email"
         params = [{'name': '@username', 'value': user_info['username']},
                   {'name': '@email', 'value': user_info['email']}]
-        items = query_cosmos_db(query, params, cross_part=True)
+        items = query_cosmos_db(query, params, CONTAINER, cross_part=True)
         for item in list(items):
             return func.HttpResponse(json.dumps({'userExists': True}), status_code=HTTPStatus.FORBIDDEN, mimetype="application/json")
         else:
@@ -224,7 +223,7 @@ def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
         )
 
 
-def query_cosmos_db(query: str, params: list, cross_part=False) -> list:
+def query_cosmos_db(query: str, params: list, container, cross_part=False) -> list:
     """This function takes a query and returns the results of the query from the CosmosDB.
 
     Args:
@@ -235,7 +234,7 @@ def query_cosmos_db(query: str, params: list, cross_part=False) -> list:
     Returns:
         list: The results of the query.
     """
-    items = CONTAINER.query_items(
+    items = container.query_items(
         query=query, parameters=params, enable_cross_partition_query=cross_part)
 
     return items
