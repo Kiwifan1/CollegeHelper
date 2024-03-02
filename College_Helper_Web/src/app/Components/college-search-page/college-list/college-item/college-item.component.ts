@@ -11,7 +11,8 @@ export class CollegeItemComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   getCollegeName(): string {
     return this.college.name;

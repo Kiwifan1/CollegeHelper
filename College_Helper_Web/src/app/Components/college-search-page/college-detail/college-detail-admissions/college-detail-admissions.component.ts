@@ -36,8 +36,8 @@ export class CollegeDetailAdmissionsComponent implements OnInit {
     return this.college.academics;
   }
 
-  getValue(num: number | null) {
-    if (num && num == -1) {
+  getValue(num: number | null | undefined) {
+    if (!num || num == -1) {
       return 'Not Available';
     }
     return num;

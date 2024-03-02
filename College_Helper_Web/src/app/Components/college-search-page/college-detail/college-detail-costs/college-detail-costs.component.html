@@ -30,7 +30,7 @@
         <p class="label">Net price based on Family Income:</p>
         <table>
           <tr *ngFor="let incomePrice of getCost().netPricebyIncome">
-            <td>{{ incomePrice.income }}</td>
+            <td>{{ incomePrice.income }}:</td>
             <td>{{ incomePrice.netPrice | money }}</td>
           </tr>
         </table>
