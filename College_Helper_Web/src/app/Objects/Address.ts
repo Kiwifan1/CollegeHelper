@@ -1,8 +1,8 @@
 export interface Address {
-  street: string | undefined;
-  city: string | undefined;
-  province: string | undefined;
-  postCode: string | undefined;
-  country: string | undefined;
-  website: string | undefined;
+  street: string | null;
+  city: string | null;
+  province: string | null;
+  postCode: string | null;
+  country: string | null;
+  website: string | null;
 }

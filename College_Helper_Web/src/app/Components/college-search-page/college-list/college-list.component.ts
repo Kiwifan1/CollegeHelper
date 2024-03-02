@@ -9,7 +9,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core';
 import { Observable, filter, of } from 'rxjs';
-import { College, testCollege } from 'src/app/Objects/College/College';
+import { College } from 'src/app/Objects/College/College';
 import { CollegeService } from 'src/app/Services/college.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class CollegeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.collegeService.getColleges({}).subscribe((colleges) => {
-      console.log(colleges)
+      console.log(colleges);
       this.colleges = colleges;
       this.filteredColleges = of(this.colleges);
     });

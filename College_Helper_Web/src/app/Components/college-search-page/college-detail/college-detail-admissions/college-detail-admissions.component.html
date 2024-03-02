@@ -19,24 +19,24 @@
       <ul>
         <span class="label">Average SAT Scores:</span>
         <span class="value">
-          {{ getValue(getAdmissions()?.satRange?.satTotalRange?.min) }} -
-          {{ getValue(getAdmissions()?.satRange?.satTotalRange?.max) }}
+          {{ getValue(getAdmissions().satRange.satTotalRange.min) }} -
+          {{ getValue(getAdmissions().satRange.satTotalRange.max) }}
         </span>
         <ul>
           <table>
             <tr>
               <td><strong>Math:</strong></td>
               <td>
-                {{ getValue(getAdmissions()?.satRange?.satMathRange?.min) }} -
-                {{ getValue(getAdmissions()?.satRange?.satMathRange?.max) }}
+                {{ getValue(getAdmissions().satRange.satMath.min) }} -
+                {{ getValue(getAdmissions().satRange.satMath.max) }}
               </td>
             </tr>
             <tr>
               <td><strong>Reading:</strong></td>
               <td>
-                {{ getValue(getAdmissions()?.satRange?.satReadingRange?.min) }}
+                {{ getValue(getAdmissions().satRange.satReading.min) }}
                 -
-                {{ getValue(getAdmissions()?.satRange?.satReadingRange?.max) }}
+                {{ getValue(getAdmissions().satRange.satReading.max) }}
               </td>
             </tr>
           </table>
@@ -49,8 +49,8 @@
       <ul>
         <span class="label">Average ACT Scores:</span>
         <span class="value">
-          {{ getValue(getAdmissions()?.actRange?.compositeRange?.min) }} -
-          {{ getValue(getAdmissions()?.actRange?.compositeRange?.max) }}
+          {{ getValue(getAdmissions().actRange.actCompositeRange.min) }} -
+          {{ getValue(getAdmissions().actRange.actCompositeRange.max) }}
         </span>
       </ul>
     </div>
@@ -63,32 +63,35 @@
     <ul>
       <div class="info-item">
         <span class="label">Acceptance Rate:</span>
-        <span class="value">{{ getAdmissions()?.acceptanceRate?.rate }}</span>
+        <span class="value">{{
+          getAdmissions().acceptanceRate.acceptanceRate
+        }}</span>
         <p
           *ngIf="
-            getAdmissions()?.acceptanceRate?.description != 'Not Available'
+            getAdmissions().acceptanceRate.acceptanceDescription !=
+            'Not Available'
           "
         >
-          {{ getAdmissions()?.acceptanceRate?.description }}
+          {{ getAdmissions().acceptanceRate.acceptanceDescription }}
         </p>
         <ul>
           <table>
             <tr>
               <td>Applicants:</td>
               <td>
-                {{ getValue(getAdmissions()?.acceptanceRate?.applicantCount) }}
+                {{ getValue(getAdmissions().acceptanceRate.totalApplicants) }}
               </td>
             </tr>
             <tr>
               <td>Admitted:</td>
               <td>
-                {{ getValue(getAdmissions()?.acceptanceRate?.admittedCount) }}
+                {{ getValue(getAdmissions().acceptanceRate.admitted) }}
               </td>
             </tr>
             <tr>
               <td>Enrolled:</td>
               <td>
-                {{ getValue(getAdmissions()?.acceptanceRate?.enrolledCount) }}
+                {{ getValue(getAdmissions().acceptanceRate.enrolled) }}
               </td>
             </tr>
           </table>
@@ -97,17 +100,17 @@
       <!-- Graduation and Retention -->
       <div class="info-item">
         <span class="label">Graduation Rate:</span>
-        <span class="value">{{ getAcademics()?.graduationRate }}</span>
+        <span class="value">{{ getAcademics().graduationRate }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Retention Rate:</span>
-        <span class="value">{{ getAcademics()?.retentionRate }}</span>
+        <span class="value">{{ getAcademics().retentionRate }}</span>
       </div>
 
       <div class="info-item">
         <span class="label">Student Faculty Ratio:</span>
-        <span class="value">{{ getAcademics()?.studentFacultyRatio }}</span>
+        <span class="value">{{ getAcademics().studentsToFacultyRatio }}</span>
       </div>
     </ul>
   </div>

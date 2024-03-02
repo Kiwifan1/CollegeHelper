@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
-import { College, testCollege } from 'src/app/Objects/College/College';
+import { College } from 'src/app/Objects/College/College';
 
 @Component({
   selector: 'app-college-info',
@@ -12,18 +12,7 @@ export class CollegeInfoComponent implements OnInit {
   @Input() basicCollegeInfoForm!: FormGroup;
   @Input() advancedCollegeInfoForm!: FormGroup;
 
-  colleges = [
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-    testCollege,
-  ];
+  colleges!: College[];
 
   collegeNames: string[] = this.colleges.map((college) => college.name);
 
