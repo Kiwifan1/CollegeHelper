@@ -51,6 +51,7 @@ import { ProfilePageComponent } from './Components/profile-page/profile-page.com
 import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
+import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { ScholarshipItemComponent } from './Components/scholarship-search-page/s
     ConfirmPasswordDialogComponent,
     ScholarshipSearchPageComponent,
     ScholarshipItemComponent,
+    ScholarshipDetailPageComponent,
   ],
   imports: [
     BrowserModule,

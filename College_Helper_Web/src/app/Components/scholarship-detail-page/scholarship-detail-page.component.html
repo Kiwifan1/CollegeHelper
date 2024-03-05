@@ -1,0 +1,65 @@
+<div class="page">
+  <div class="page-content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <h3>
+            <strong>{{ scholarship.name }}</strong>
+          </h3>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <h4>
+            <strong> Amount: {{ scholarship.award | money }} </strong> | Open:
+            {{ scholarship.open_date | date : "MM/dd/yyyy" }} -
+            {{ scholarship.close_date | date : "MM/dd/yyyy" }}
+          </h4>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h4>
+          <strong> Description: </strong>
+        </h4>
+        <p>
+          {{ scholarship.description }}
+        </p>
+        <h4>
+          <strong> Requirements: </strong>
+        </h4>
+        <ul>
+          <li *ngFor="let requirement of scholarship.requirements">
+            {{ requirement }}
+          </li>
+        </ul>
+        <h4>
+          <strong> Deadline to Apply: </strong>
+          {{ scholarship.close_date | date : "MM/dd/yyyy" }}
+        </h4>
+        <div *ngIf="scholarship.website_link">
+          <h4>
+            <strong> Website: </strong>
+            <a [href]="scholarship.website_link" target="_blank"
+              >Visit Now</a
+            >
+          </h4>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+            mat-raised-button
+            color="secondary"
+            [routerLink]="['/scholarship-search']">
+            Back
+        </button>
+        <div class="fill-remaining-space"></div>
+        <a
+          mat-raised-button
+          color="primary"
+          [disabled]="!isWithinDate()"
+          href="{{ scholarship.website_link }}"
+        >
+          {{ isWithinDate() ? "Apply" : "Closed" }}
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

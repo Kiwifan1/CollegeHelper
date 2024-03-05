@@ -10,9 +10,19 @@ export class ScholarshipSearchPageComponent implements OnInit {
   constructor(private scholarshipService: ScholarshipService) {}
   scholarships: any[] = [];
   ngOnInit() {
-    this.scholarshipService.getScholarships().subscribe((scholarships: any) => {
-      this.scholarships = scholarships;
-      console.log(this.scholarships)
-    });
+    if (!localStorage.getItem('scholarships')) {
+      this.scholarshipService
+        .getScholarships()
+        .subscribe((scholarships: any) => {
+          scholarships.forEach((scholarship: any) => {
+            scholarship.name = scholarship.name.replace('_', '/');
+          });
+          this.scholarships = scholarships;
+
+          localStorage.setItem('scholarships', JSON.stringify(scholarships));
+        });
+    } else {
+      this.scholarships = JSON.parse(localStorage.getItem('scholarships')!);
+    }
   }
 }

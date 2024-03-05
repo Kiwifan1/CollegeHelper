@@ -12,4 +12,9 @@ export class ScholarshipService {
     let url = environment.WEB_API_URL + '/get_scholarships';
     return this.$http.get(url);
   }
+
+  getScholarship(id: string) {
+    let url = environment.WEB_API_URL + '/get_scholarship';
+    return this.$http.get(url, { params: { id: id } });
+  }
 }
