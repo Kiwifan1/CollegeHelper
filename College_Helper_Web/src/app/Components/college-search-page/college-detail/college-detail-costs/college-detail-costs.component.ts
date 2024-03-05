@@ -14,7 +14,7 @@ export class CollegeDetailCostsComponent implements OnInit {
   ngOnInit(): void {}
 
   getCost() {
-    return this.college.collegeBoard?.costs;
+    return this.college.costs;
   }
 
   getValue(value: number | undefined | null) {

@@ -4,8 +4,8 @@ import { GpaRange } from './GpaRange';
 import { SatRange } from './SatRange';
 
 export interface Admissions {
-  gpaRange: GpaRange;
-  satRange: SatRange;
-  actRange: ActRange;
-  acceptanceRate: AcceptanceRate;
+  gpaRange: GpaRange[];
+  satRange: SatRange | null;
+  actRange: ActRange | null; 
+  acceptanceRate: AcceptanceRate | null;
 }

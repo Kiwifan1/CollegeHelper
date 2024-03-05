@@ -112,8 +112,8 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.user.address = {
       street: this.userGeneralInfoForm.get('location')?.value,
       city: '',
-      state: '',
-      zip: '',
+      province: '',
+      postCode: '',
       country: '',
       website: '',
     };

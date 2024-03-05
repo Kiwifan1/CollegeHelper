@@ -1,5 +1,5 @@
 export interface Academics {
-  graduationRate: string;
-  retentionRate: string;
-  studentFacultyRatio: string;
+  graduationRate: string | null;
+  retentionRate: string | null;
+  studentsToFacultyRatio: string | null;
 }

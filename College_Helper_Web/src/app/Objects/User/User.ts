@@ -24,8 +24,8 @@ export const defaultUser: User = {
   address: {
     street: null,
     city: null,
-    state: null,
-    zip: null,
+    province: null,
+    postCode: null,
     country: null,
     website: null,
   },

@@ -2,9 +2,11 @@
   <mat-card-header>
     <mat-card-title>{{ college.name }}</mat-card-title>
     <mat-card-subtitle
-      >{{ college.generalInfo?.address?.city }} |
-      <a href="{{ college.generalInfo?.address?.website }}">Visit Website</a>
-      <p>{{ college.generalInfo?.history }}</p>
+      >{{ college.generalInformation.address.city }} |
+      <a href="{{ college.generalInformation.address.website }}"
+        >Visit Website</a
+      >
+      <p>{{ college.generalInformation.history }}</p>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-divider></mat-divider>

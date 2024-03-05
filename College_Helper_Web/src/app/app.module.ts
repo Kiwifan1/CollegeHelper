@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './Services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { MatCardActions, MatCardModule } from '@angular/material/card';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,11 +46,14 @@ import { CareerInfoComponent } from './Components/questionnaire-stepper/career-i
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
+import { HomePageComponent } from './Components/home-page/home-page.component';
+import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
+import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IncrementCardComponent,
     LoginPageComponent,
     CollegeSearchPageComponent,
     PageNotFoundComponent,
@@ -72,6 +74,10 @@ import { ReviewComponent } from './Components/questionnaire-stepper/review/revie
     MajorInfoComponent,
     CareerInfoComponent,
     ReviewComponent,
+    HomePageComponent,
+    ProfilePageComponent,
+    ConfirmPasswordDialogComponent,
+    ScholarshipSearchPageComponent,
   ],
   imports: [
     BrowserModule,

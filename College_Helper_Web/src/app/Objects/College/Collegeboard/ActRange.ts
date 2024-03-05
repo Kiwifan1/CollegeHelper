@@ -1,6 +1,6 @@
 export interface ActRange {
-  compositeRange: {
-    min: number;
-    max: number;
+  actCompositeRange: {
+    min: number | null;
+    max: number | null;
   };
 }

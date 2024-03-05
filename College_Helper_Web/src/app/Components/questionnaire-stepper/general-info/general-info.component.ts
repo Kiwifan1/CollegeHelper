@@ -26,9 +26,9 @@ export class GeneralInfoComponent implements OnInit {
 
   address: Address = {
     city: '',
-    state: '',
+    province: '',
     country: '',
-    zip: '',
+    postCode: '',
     street: '',
     website: null,
   };
@@ -49,9 +49,9 @@ export class GeneralInfoComponent implements OnInit {
         .getAddressFromLatLong(lat, long)
         .subscribe((res: any) => {
           this.address.city = res.address.city ?? '';
-          this.address.state = res.address.state ?? '';
+          this.address.province = res.address.state ?? '';
           this.address.country = res.address.country_code ?? '';
-          this.address.zip = res.address.postcode ?? '';
+          this.address.postCode = res.address.postcode ?? '';
           this.address.street = res.address.road ?? '';
 
           this.generalUserInfoForm.patchValue({
@@ -73,8 +73,8 @@ export class GeneralInfoComponent implements OnInit {
   }
 
   stringify(address: Address) {
-    const stateExists = address.state ? ' ' : '';
-    const zipExists = address.zip ? ', ' : '';
-    return `${address.street}, ${address.city}${stateExists}${address.state}${zipExists}${address.zip}`;
+    const stateExists = address.province ? ' ' : '';
+    const zipExists = address.postCode ? ', ' : '';
+    return `${address.street}, ${address.city}${stateExists}${address.province}${zipExists}${address.postCode}`;
   }
 }

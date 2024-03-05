@@ -7,7 +7,7 @@
       <ul>
         <p class="label">History:</p>
         <p class="value">
-          {{ college.generalInfo?.history }}
+          {{ college.generalInformation.history }}
         </p>
       </ul>
     </div>
@@ -17,28 +17,31 @@
       <ul>
         <p class="label">Address:</p>
         <address>
-          {{ college.generalInfo?.address?.street }} <br />
-          {{ college.generalInfo?.address?.city }},
-          {{ college.generalInfo?.address?.state }}
-          {{ college.generalInfo?.address?.country }}
-          {{ college.generalInfo?.address?.zip }}
+          {{ college.generalInformation.address.street }} <br />
+          {{ college.generalInformation.address.city }},
+          {{ college.generalInformation.address.province }}
+          {{ college.generalInformation.address.country }}
+          {{ college.generalInformation.address.postCode }}
         </address>
       </ul>
     </div>
 
     <!-- Funding, language and Accreditations -->
     <div class="info-item">
-
       <ul>
         <p class="label">Funding Type:</p>
-        <p class="value">{{ college.generalInfo?.funding }}</p>
+        <p class="value">{{ college.generalInformation.institutionFunding }}</p>
 
         <p class="label">Languages:</p>
-        <p class="value">{{ college.generalInfo?.languages }}</p>
+        <p class="value">{{ college.generalInformation.languages }}</p>
 
         <p class="label">Accreditations:</p>
         <ul>
-          <li *ngFor="let accreditation of college.generalInfo?.accreditations">
+          <li
+            *ngFor="
+              let accreditation of college.generalInformation.accreditingAgency
+            "
+          >
             {{ accreditation }}
           </li>
         </ul>

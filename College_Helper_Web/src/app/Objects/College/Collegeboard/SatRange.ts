@@ -1,14 +1,14 @@
 export interface SatRange {
   satTotalRange: {
-    min: number;
-    max: number;
+    min: number | null;
+    max: number | null;
   };
-  satMathRange: {
-    min: number;
-    max: number;
+  satMath: {
+    min: number | null;
+    max: number | null;
   };
-  satReadingRange: {
-    min: number;
-    max: number;
+  satReading: {
+    min: number | null;
+    max: number | null;
   };
 }
