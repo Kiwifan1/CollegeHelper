@@ -49,6 +49,7 @@ import { ReviewComponent } from './Components/questionnaire-stepper/review/revie
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
 import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
+import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { ConfirmPasswordDialogComponent } from './Components/common/confirm-pass
     HomePageComponent,
     ProfilePageComponent,
     ConfirmPasswordDialogComponent,
+    ScholarshipSearchPageComponent,
   ],
   imports: [
     BrowserModule,

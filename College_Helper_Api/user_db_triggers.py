@@ -5,7 +5,8 @@ import json
 import os
 import azure.functions as func
 
-from azure.cosmos import CosmosClient
+from azure.core.paging import ItemPaged, PageIterator
+from azure.cosmos import CosmosClient, ContainerProxy
 from http import HTTPStatus
 
 user_bp = func.Blueprint()
@@ -141,7 +142,8 @@ def update_user(req: func.HttpRequest, outputDocument: func.Out[func.Document]) 
                       {'name': '@password', 'value': potential_pass}]
             items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
-            if list(items) != []:
+            if items.next():
+                user['password'] = potential_pass
                 outputDocument.set(func.Document.from_dict(user))
                 return func.HttpResponse(json.dumps(user), status_code=HTTPStatus.OK, mimetype="application/json")
         except:
@@ -178,7 +180,6 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
             # get the first item
             if hash(user['password'], item['salt']) == item['password']:
                 item.pop('password')
-                item.pop('salt')
                 return func.HttpResponse(json.dumps(item), status_code=HTTPStatus.OK, mimetype="application/json")
             else:
                 return func.HttpResponse(
@@ -212,7 +213,7 @@ def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
         params = [{'name': '@username', 'value': user_info['username']},
                   {'name': '@email', 'value': user_info['email']}]
         items = query_cosmos_db(query, params, CONTAINER, cross_part=True)
-        for item in list(items):
+        if list(items) != []:
             return func.HttpResponse(json.dumps({'userExists': True}), status_code=HTTPStatus.FORBIDDEN, mimetype="application/json")
         else:
             return func.HttpResponse(json.dumps({'userExists': False}), status_code=HTTPStatus.OK, mimetype="application/json")
@@ -223,18 +224,23 @@ def check_user_exists(req: func.HttpRequest) -> func.HttpResponse:
         )
 
 
-def query_cosmos_db(query: str, params: list, container, cross_part=False) -> list:
+def query_cosmos_db(query: str, params: list, container: ContainerProxy, cross_part=False) -> ItemPaged:
     """This function takes a query and returns the results of the query from the CosmosDB.
 
     Args:
         query (str): The query to be executed.
         params (list): The parameters for the query.
+        container (ContainerProxy): The container to query from.
         cross_part (bool, optional): Whether the query is cross partition. Defaults to False.
 
     Returns:
-        list: The results of the query.
+        ItemPaged: The results of the query.
     """
+
     items = container.query_items(
-        query=query, parameters=params, enable_cross_partition_query=cross_part)
+        query=query,
+        parameters=params,
+        enable_cross_partition_query=cross_part if cross_part else None
+    )
 
     return items

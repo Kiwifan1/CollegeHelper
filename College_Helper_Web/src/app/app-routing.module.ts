@@ -10,6 +10,7 @@ import { notLoggedInGuard } from './guards/not-logged-in.guard';
 import { questionnaireGuard } from './guards/questionnaire.guard';
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
   {
     path: 'college-search',
     component: CollegeSearchPageComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'scholarship-search',
+    component: ScholarshipSearchPageComponent,
     canActivate: [loginGuard],
   },
   {
