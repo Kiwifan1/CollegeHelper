@@ -1,0 +1,9 @@
+.scholarship-content {
+  .scholarship-list {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+  overflow: auto;
+}

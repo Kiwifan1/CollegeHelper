@@ -1,0 +1,26 @@
+<mat-card class="scholarship-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h3>
+        <strong>{{ scholarship.name }}</strong>
+      </h3>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <h4>
+        <strong> Amount: {{ scholarship.award | money }} </strong> | Open:
+        {{ scholarship.open_date | date : "MM/dd/yyyy" }} -
+        {{ scholarship.close_date | date : "MM/dd/yyyy" }}
+      </h4>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <div class="spacer"></div>
+    <button
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/scholarship', scholarship.id]"
+    >
+      View Details
+    </button>
+  </mat-card-actions>
+</mat-card>

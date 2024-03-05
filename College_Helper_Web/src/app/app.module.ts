@@ -50,6 +50,7 @@ import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
 import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
+import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { ScholarshipSearchPageComponent } from './Components/scholarship-search-
     ProfilePageComponent,
     ConfirmPasswordDialogComponent,
     ScholarshipSearchPageComponent,
+    ScholarshipItemComponent,
   ],
   imports: [
     BrowserModule,

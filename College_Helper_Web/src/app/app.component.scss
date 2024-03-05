@@ -11,10 +11,6 @@ mat-list-item {
   }
 }
 
-mat-sidenav-content {
-  overflow: hidden;
-}
-
 .sidenav-container {
   display: flex;
   flex-direction: column;
@@ -29,7 +25,8 @@ mat-sidenav-content {
 }
 
 mat-sidenav-content {
-  overflow: hidden;
+  overflow-x: hidden;
+  // overflow: hidden;
 }
 
 .sidenav-container {

@@ -1,5 +1,11 @@
 <div class="page">
-    <div class="page-content">
-        <h2>Scholarship Page</h2>
+  <div class="page-content">
+    <div class="scholarship-content">
+      <div class="scholarship-list" *ngFor="let scholarship of scholarships">
+        <app-scholarship-item
+          [scholarship]="scholarship"
+        ></app-scholarship-item>
+      </div>
     </div>
+  </div>
 </div>
