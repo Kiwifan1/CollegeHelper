@@ -52,6 +52,7 @@ import { ConfirmPasswordDialogComponent } from './Components/common/confirm-pass
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
 import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
+import { DateColorPipe } from './Components/common/date-color.pipe';
 
 @NgModule({
   declarations: [
@@ -113,6 +114,7 @@ import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-
     MoneyPipe,
     MatExpansionModule,
     MatCheckboxModule,
+    DateColorPipe
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

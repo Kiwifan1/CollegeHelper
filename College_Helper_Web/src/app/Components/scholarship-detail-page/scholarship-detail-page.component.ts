@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 
 @Component({
   selector: 'app-scholarship-detail-page',
@@ -7,8 +8,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './scholarship-detail-page.component.scss',
 })
 export class ScholarshipDetailPageComponent implements OnInit {
-  scholarship: any;
-
+  scholarship: Scholarship = {} as Scholarship;
+  requirements: string[] = [];
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -17,18 +18,25 @@ export class ScholarshipDetailPageComponent implements OnInit {
 
   getScholarship() {
     this.route.data.subscribe((data: any) => {
-      data.scholarship.name = data.scholarship.name.replace('_', '/');
+      data.scholarship.scholarshipName = data.scholarship.scholarshipName.replace('_', '/');
       this.scholarship = data.scholarship;
-      console.log(this.scholarship);
     });
   }
 
   isWithinDate() {
-    let startDate = this.scholarship.open_date.split('/');
-    let endDate = this.scholarship.close_date.split('/');
+    let startDate = this.scholarship.scholarshipOpen.split('/');
+    let endDate = this.scholarship.scholarshipDeadline.split('/');
 
-    let start = new Date(startDate[2], startDate[0] - 1, startDate[1]);
-    let end = new Date(endDate[2], endDate[0] - 1, endDate[1]);
+    let start = new Date(
+      Number(startDate[2]),
+      Number(startDate[0]) - 1,
+      Number(startDate[1])
+    );
+    let end = new Date(
+      Number(endDate[2]),
+      Number(endDate[0]) - 1,
+      Number(endDate[1])
+    );
     let today = new Date();
 
     return today >= start && today <= end;

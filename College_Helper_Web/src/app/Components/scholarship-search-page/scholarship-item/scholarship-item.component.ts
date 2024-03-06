@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 
 @Component({
   selector: 'app-scholarship-item',
@@ -6,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrl: './scholarship-item.component.scss',
 })
 export class ScholarshipItemComponent implements OnInit {
-  @Input() scholarship: any;
+  @Input() scholarship!: Scholarship; 
 
   constructor() {}
 

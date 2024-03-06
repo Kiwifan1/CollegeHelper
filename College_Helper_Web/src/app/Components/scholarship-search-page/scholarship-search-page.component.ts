@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
 
 @Component({
@@ -8,14 +9,14 @@ import { ScholarshipService } from 'src/app/Services/scholarship.service';
 })
 export class ScholarshipSearchPageComponent implements OnInit {
   constructor(private scholarshipService: ScholarshipService) {}
-  scholarships: any[] = [];
+  scholarships: Scholarship[] = [];
   ngOnInit() {
     if (!localStorage.getItem('scholarships')) {
       this.scholarshipService
         .getScholarships()
         .subscribe((scholarships: any) => {
           scholarships.forEach((scholarship: any) => {
-            scholarship.name = scholarship.name.replace('_', '/');
+            scholarship.scholarshipName = scholarship.scholarshipName.replace('_', '/');
           });
           this.scholarships = scholarships;
 
