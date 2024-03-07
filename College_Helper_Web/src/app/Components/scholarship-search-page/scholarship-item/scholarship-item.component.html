@@ -3,9 +3,8 @@
     <mat-card-title>
       <h1>
         <strong>{{ scholarship.scholarshipName }}</strong>
-        <div class="fill-remaining-space"></div>
-        <h3>{{ scholarship.programOrgName }}</h3>
       </h1>
+      <h3>{{ scholarship.programOrgName }}</h3>
     </mat-card-title>
     <mat-card-subtitle>
       <h2>
@@ -17,24 +16,24 @@
   </mat-card-header>
   <mat-card-content>
     <div class="reqList">
-      <!-- inline list of whether essay is required, is need based, or is merit based -->
-      <li *ngIf="scholarship.isEssayRequired">
-        <mat-icon>edit</mat-icon>
-      </li>
-      <li *ngIf="scholarship.isNeedBased">
-        <mat-icon>attach_money</mat-icon>
-      </li>
-      <li *ngIf="scholarship.isMeritBased">
-        <mat-icon>star</mat-icon>
-      </li>
-      <div class="fill-remaining-space"></div>
       <button
         mat-raised-button
         color="primary"
-        [routerLink]="['/scholarship', scholarship.id]"
+        (click)="handleViewDetails()"
       >
         View Details
       </button>
+      <div class="fill-remaining-space"></div>
+      <!-- inline list of whether essay is required, is need based, or is merit based -->
+      <li *ngIf="scholarship.isEssayRequired">
+        <mat-icon matTooltip="Essay Required">edit</mat-icon>
+      </li>
+      <li *ngIf="scholarship.isNeedBased">
+        <mat-icon matTooltip="Need Based">attach_money</mat-icon>
+      </li>
+      <li *ngIf="scholarship.isMeritBased">
+        <mat-icon matTooltip="Merit Based">star</mat-icon>
+      </li>
     </div>
   </mat-card-content>
 </mat-card>

@@ -53,6 +53,8 @@ import { ScholarshipSearchPageComponent } from './Components/scholarship-search-
 import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
 import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
 import { DateColorPipe } from './Components/common/date-color.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +85,7 @@ import { DateColorPipe } from './Components/common/date-color.pipe';
     ScholarshipSearchPageComponent,
     ScholarshipItemComponent,
     ScholarshipDetailPageComponent,
+    ScholarshipClosedDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,7 +117,8 @@ import { DateColorPipe } from './Components/common/date-color.pipe';
     MoneyPipe,
     MatExpansionModule,
     MatCheckboxModule,
-    DateColorPipe
+    DateColorPipe,
+    MatTooltipModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

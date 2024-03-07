@@ -7,8 +7,8 @@
 }
 
 button {
-  // make inline with reqList
-  display: flex;
+  // force right
+  margin-left: auto;
 }
 
 .reqList {
@@ -25,7 +25,6 @@ button {
   }
   // don't let dots show up
   list-style-type: none;
-
   // make the list a little smaller
   font-size: 12px;
 }
