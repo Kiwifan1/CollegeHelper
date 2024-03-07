@@ -22,23 +22,64 @@
         <p>
           {{ scholarship.aboutPara }}
         </p>
-        <h4>
-          <strong> Requirements: </strong>
-        </h4>
-        <ul>
-          <li *ngFor="let requirement of scholarship.eligibilityCriteriaDescriptions">
-            {{ requirement }}
-          </li>
-        </ul>
-        <h4>
-          <strong> Deadline to Apply: </strong>
-          {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
-        </h4>
-        <div *ngIf="scholarship.applicationUrl">
-          <h4>
-            <strong> Website: </strong>
-            <a [href]="scholarship.programUrl" target="_blank">Visit Now</a>
-          </h4>
+        <div class="content-grid">
+          <div class="left">
+            <h4>
+              <strong> Requirements: </strong>
+            </h4>
+            <ul>
+              <li
+                *ngFor="
+                  let requirement of scholarship.eligibilityCriteriaDescriptions
+                "
+              >
+                {{ requirement }}
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <div *ngIf="scholarship.eligibilityCriteria.academics">
+              <h4>
+                <strong>Academic Requirements:</strong>
+              </h4>
+              <p *ngFor="let req of scholarship.eligibilityCriteria.academics">
+                {{ req.academicEligibility }}:
+                {{ req.academicEligibilityValue.toPrecision(2) }}
+              </p>
+              <br />
+              <h4>
+                <strong>Available for:</strong>
+                <span
+                  *ngIf="!scholarship.eligibilityCriteria.currentGradeLevel"
+                >
+                  All Grades</span
+                >
+                <ul>
+                  <li
+                    *ngFor="
+                      let grade of scholarship.eligibilityCriteria
+                        .currentGradeLevel
+                    "
+                  >
+                    {{ grade.currentGrade }}
+                  </li>
+                </ul>
+              </h4>
+            </div>
+          </div>
+          <div class="left"></div>
+          <div class="right">
+            <h4>
+              <strong> Deadline to Apply: </strong>
+              {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
+            </h4>
+            <div *ngIf="scholarship.applicationUrl">
+              <h4>
+                <strong> Website: </strong>
+                <a [href]="scholarship.programUrl" target="_blank">Visit Now</a>
+              </h4>
+            </div>
+          </div>
         </div>
       </mat-card-content>
       <mat-card-actions>
