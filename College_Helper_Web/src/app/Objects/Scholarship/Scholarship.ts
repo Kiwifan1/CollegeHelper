@@ -12,7 +12,7 @@ interface EligibilityCriteria {
   financialInformation: boolean | null;
   applicationRestriction: boolean | null;
   collegeAttendanceCriteria: boolean | null;
-  academics: Academics[] | null;
+  academics: ScholarshipAcademics[] | null;
   degreeSeeking: string[] | null;
   condition: boolean | null;
   fieldsOfStudy: FieldsOfStudy[] | null;
@@ -76,7 +76,7 @@ interface Situation {
   situationOther: string | null;
 }
 
-interface Academics {
+export interface ScholarshipAcademics {
   academicEligibility: string;
   academicEligibilityValue: number;
 }

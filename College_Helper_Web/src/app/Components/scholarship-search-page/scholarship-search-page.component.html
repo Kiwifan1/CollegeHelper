@@ -8,15 +8,15 @@
           ></app-scholarship-item>
         </div>
       </div>
+      <mat-paginator
+        #scholarshipPaginator
+        (page)="onPaginate($event)"
+        [length]="length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        [pageIndex]="pageIndex"
+      ></mat-paginator>
     </div>
   </div>
-  <mat-paginator
-    #scholarshipPaginator
-    (page)="onPaginate($event)"
-    [length]="length"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="pageSizeOptions"
-    [showFirstLastButtons]="true"
-    [pageIndex]="pageIndex"
-  ></mat-paginator>
 </div>
