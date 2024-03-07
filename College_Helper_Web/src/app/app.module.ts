@@ -55,6 +55,7 @@ import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-
 import { DateColorPipe } from './Components/common/date-color.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -119,6 +120,7 @@ import { ScholarshipClosedDialogComponent } from './Components/scholarship-searc
     MatCheckboxModule,
     DateColorPipe,
     MatTooltipModule,
+    MatPaginatorModule
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

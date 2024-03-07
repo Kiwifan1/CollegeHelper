@@ -8,22 +8,39 @@ import { ScholarshipService } from 'src/app/Services/scholarship.service';
   styleUrl: './scholarship-search-page.component.scss',
 })
 export class ScholarshipSearchPageComponent implements OnInit {
-  constructor(private scholarshipService: ScholarshipService) {}
   scholarships: Scholarship[] = [];
-  ngOnInit() {
-    if (!localStorage.getItem('scholarships')) {
-      this.scholarshipService
-        .getScholarships()
-        .subscribe((scholarships: any) => {
-          scholarships.forEach((scholarship: any) => {
-            scholarship.scholarshipName = scholarship.scholarshipName.replace('_', '/');
-          });
-          this.scholarships = scholarships;
+  pageSize = 10;
+  pageIndex = 0;
+  length = 0;
+  pageSizeOptions = [5, 10, 25, 100];
 
-          localStorage.setItem('scholarships', JSON.stringify(scholarships));
+  constructor(private scholarshipService: ScholarshipService) {}
+
+  ngOnInit() {
+    this.totalScholarships();
+    this.onPaginate({ pageIndex: this.pageIndex, pageSize: this.pageSize });
+  }
+
+  onPaginate($event: any) {
+    this.pageIndex = $event.pageIndex;
+    this.pageSize = $event.pageSize;
+    this.scholarshipService
+      .getScholarships(this.pageIndex, this.pageSize)
+      .subscribe((scholarships: any) => {
+        scholarships.forEach((scholarship: any) => {
+          scholarship.scholarshipName = scholarship.scholarshipName.replace(
+            '_',
+            '/'
+          );
         });
-    } else {
-      this.scholarships = JSON.parse(localStorage.getItem('scholarships')!);
-    }
+        this.scholarships = scholarships;
+      });
+  }
+
+  totalScholarships() {
+    this.scholarshipService.getNumScholarships().subscribe((num: any) => {
+      console.log(num)
+      this.length = num.length;
+    });
   }
 }

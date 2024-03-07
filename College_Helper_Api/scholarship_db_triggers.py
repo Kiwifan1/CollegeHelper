@@ -20,13 +20,23 @@ CONTAINER = DATABASE.get_container_client("SCHOLARSHIP")
 def get_scholarships(req: func.HttpRequest) -> func.HttpResponse:
     query = "SELECT * FROM c"
     params = []
-    # TODO: build query based on req parameters
+    # req will always have an offset and a limit
+    offset = req.params.get("offset")
+    limit = req.params.get("limit")
+
+    if not offset or not limit:
+        return func.HttpResponse("Error: Missing offset or limit", status_code=400)
+
+    query += " OFFSET @offset LIMIT @limit"
+    params.append({"name": "@offset", "value": int(offset)})
+    params.append({"name": "@limit", "value": int(limit)})
 
     try:
         scholarships = list(query_cosmos_db(query, params, CONTAINER, True))
         return func.HttpResponse(json.dumps(scholarships), status_code=200, mimetype="application/json")
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
 
 @schol_bp.route(route="get_scholarship", methods=["GET"])
 def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
@@ -42,5 +52,19 @@ def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
         if not scholarship:
             return func.HttpResponse("Error: Scholarship not found", status_code=404)
         return func.HttpResponse(json.dumps(scholarship[0]), status_code=200, mimetype="application/json")
+    except Exception as e:
+        return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+
+@schol_bp.route(route="get_num_scholarships", methods=["GET"])
+def get_num_scholarships(req: func.HttpRequest) -> func.HttpResponse:
+    query = "SELECT VALUE COUNT(1) FROM c"
+    params = []
+
+    try:
+        num_scholarships = list(query_cosmos_db(
+            query, params, CONTAINER, True))
+        # get length of list
+        return func.HttpResponse(json.dumps({"length": num_scholarships[0]}), status_code=200, mimetype="application/json")
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)

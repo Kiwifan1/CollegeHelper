@@ -1,9 +1,21 @@
-.scholarship-content {
-  .scholarship-list {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
+.scholarships {
+  .scholarship-content {
+    .scholarship-list {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    // make height so that it goes from below main-nav to right before the paginator
+    margin-top: 0px;
+    margin-bottom: 0px;
+    height: calc(90vh - 10px);
+    overflow: auto;
   }
-  overflow: auto;
+  margin-bottom: 0px;
+}
+
+mat-paginator {
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
