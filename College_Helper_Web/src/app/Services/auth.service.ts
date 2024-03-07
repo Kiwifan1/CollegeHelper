@@ -46,7 +46,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('user');
-
+    localStorage.removeItem('scholarships');
     if (localStorage.getItem('user')) {
       return false;
     }

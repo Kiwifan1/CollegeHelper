@@ -1,5 +1,22 @@
 <div class="page">
-    <div class="page-content">
-        <h2>Scholarship Page</h2>
+  <div class="page-content">
+    <div class="scholarships">
+      <div class="scholarship-content">
+        <div class="scholarship-list" *ngFor="let scholarship of scholarships">
+          <app-scholarship-item
+            [scholarship]="scholarship"
+          ></app-scholarship-item>
+        </div>
+      </div>
+      <mat-paginator
+        #scholarshipPaginator
+        (page)="onPaginate($event)"
+        [length]="length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        [pageIndex]="pageIndex"
+      ></mat-paginator>
     </div>
+  </div>
 </div>

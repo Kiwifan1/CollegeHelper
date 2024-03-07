@@ -50,6 +50,12 @@ import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
 import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
+import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
+import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
+import { DateColorPipe } from './Components/common/date-color.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -78,6 +84,9 @@ import { ScholarshipSearchPageComponent } from './Components/scholarship-search-
     ProfilePageComponent,
     ConfirmPasswordDialogComponent,
     ScholarshipSearchPageComponent,
+    ScholarshipItemComponent,
+    ScholarshipDetailPageComponent,
+    ScholarshipClosedDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -109,6 +118,9 @@ import { ScholarshipSearchPageComponent } from './Components/scholarship-search-
     MoneyPipe,
     MatExpansionModule,
     MatCheckboxModule,
+    DateColorPipe,
+    MatTooltipModule,
+    MatPaginatorModule
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

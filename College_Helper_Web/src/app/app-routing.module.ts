@@ -11,6 +11,8 @@ import { questionnaireGuard } from './guards/questionnaire.guard';
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
+import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
+import { scholarshipResolver } from './Resolvers/scholarship.resolver';
 
 const routes: Routes = [
   {
@@ -32,6 +34,12 @@ const routes: Routes = [
     path: 'scholarship-search',
     component: ScholarshipSearchPageComponent,
     canActivate: [loginGuard],
+  },
+  {
+    path: 'scholarship/:id',
+    component: ScholarshipDetailPageComponent,
+    canActivate: [loginGuard],
+    resolve: {scholarship: scholarshipResolver}
   },
   {
     path: 'login',
