@@ -36,38 +36,24 @@
                 {{ requirement }}
               </li>
             </ul>
+            <h4>
+              <strong>Application Information:</strong>
+            </h4>
+            <ul>
+              <li *ngIf="scholarship.isEssayRequired">
+                <span>Essay Required</span>
+              </li>
+              <li *ngIf="scholarship.isNeedBased">
+                <span>Need Based</span>
+              </li>
+              <li *ngIf="scholarship.isMeritBased">
+                <span>Merit Based</span>
+              </li>
+              <li *ngIf="!scholarship.applicationFee">
+                <span>No Application Fee</span>
+              </li>
+            </ul>
           </div>
-          <div class="right">
-            <div *ngIf="scholarship.eligibilityCriteria.academics">
-              <h4>
-                <strong>Academic Requirements:</strong>
-              </h4>
-              <p *ngFor="let req of scholarship.eligibilityCriteria.academics">
-                {{ req.academicEligibility }}:
-                {{ req.academicEligibilityValue.toPrecision(2) }}
-              </p>
-              <br />
-              <h4>
-                <strong>Available for:</strong>
-                <span
-                  *ngIf="!scholarship.eligibilityCriteria.currentGradeLevel"
-                >
-                  All Grades</span
-                >
-                <ul>
-                  <li
-                    *ngFor="
-                      let grade of scholarship.eligibilityCriteria
-                        .currentGradeLevel
-                    "
-                  >
-                    {{ grade.currentGrade }}
-                  </li>
-                </ul>
-              </h4>
-            </div>
-          </div>
-          <div class="left"></div>
           <div class="right">
             <h4>
               <strong> Deadline to Apply: </strong>

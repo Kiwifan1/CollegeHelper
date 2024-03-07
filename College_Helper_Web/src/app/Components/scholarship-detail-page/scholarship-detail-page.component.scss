@@ -8,8 +8,8 @@ mat-card {
 
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    grid-template-areas: "left right"
-                         "left right";
+    grid-template-areas: "left right";
 
+    // add a little space between the columns
+    column-gap: 10px;
 }
