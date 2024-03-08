@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
+import { LoadingService } from 'src/app/Services/loading.service';
 
 @Component({
   selector: 'app-scholarship-detail-page',
@@ -10,7 +11,10 @@ import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 export class ScholarshipDetailPageComponent implements OnInit {
   scholarship: Scholarship = {} as Scholarship;
   requirements: string[] = [];
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.getScholarship();
@@ -18,8 +22,10 @@ export class ScholarshipDetailPageComponent implements OnInit {
 
   getScholarship() {
     this.route.data.subscribe((data: any) => {
-      data.scholarship.scholarshipName = data.scholarship.scholarshipName.replace('_', '/');
+      data.scholarship.scholarshipName =
+        data.scholarship.scholarshipName.replace('_', '/');
       this.scholarship = data.scholarship;
+      this.loadingService.updateLoadingStatus(false);
     });
   }
 

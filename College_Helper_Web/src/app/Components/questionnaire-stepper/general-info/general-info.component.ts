@@ -10,6 +10,7 @@ import {
   Occupation,
 } from 'src/app/Objects/User/Demographics';
 import { GeoLocationService } from 'src/app/Services/geolocation.service';
+import { LoadingService } from 'src/app/Services/loading.service';
 
 @Component({
   selector: 'app-general-info',
@@ -37,7 +38,10 @@ export class GeneralInfoComponent implements OnInit {
 
   @Input() generalUserInfoForm!: FormGroup;
 
-  constructor(private geoLocationService: GeoLocationService) {}
+  constructor(
+    private geoLocationService: GeoLocationService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -57,6 +61,7 @@ export class GeneralInfoComponent implements OnInit {
           this.generalUserInfoForm.patchValue({
             location: this.stringify(this.address),
           });
+          this.loadingService.updateLoadingStatus(false);
         });
     });
   }
