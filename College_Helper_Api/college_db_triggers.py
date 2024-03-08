@@ -16,6 +16,7 @@ cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
 CONTAINER = DATABASE.get_container_client("COLLEGE")
 
+
 @college_bp.route(route="get_colleges", methods=["GET"])
 def get_colleges(req: func.HttpRequest) -> func.HttpResponse:
     query = "SELECT * FROM c"
@@ -23,6 +24,11 @@ def get_colleges(req: func.HttpRequest) -> func.HttpResponse:
     # build query based on req parameters
     # params: name, location, rating, page, limit, sort,
     params = []
+    offset = req.params.get("offset")
+    limit = req.params.get("limit")
+
+    if not offset or not limit:
+        return func.HttpResponse("Error: Missing offset or limit", status_code=400)
 
     if req.params.get('name'):
         query += f" WHERE c.name = @name AND"
@@ -42,12 +48,10 @@ def get_colleges(req: func.HttpRequest) -> func.HttpResponse:
     if req.params.get('sort'):
         query += f" ORDER BY @sort"
         params.append({"name": "sort", "value": req.params.get('sort')})
-    if req.params.get('page'):
-        query += f" OFFSET @page"
-        params.append({"name": "page", "value": int(req.params.get('page'))})
-    if req.params.get('limit'):
-        query += f" LIMIT @limit"
-        params.append({"name": "limit", "value": int(req.params.get('limit'))})
+
+    query += " OFFSET @offset LIMIT @limit"
+    params.append({"name": "@offset", "value": int(offset)})
+    params.append({"name": "@limit", "value": int(limit)})
 
     # execute query
     try:
