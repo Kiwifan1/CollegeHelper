@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
+import { LoadingService } from 'src/app/Services/loading.service';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
 
 @Component({
@@ -14,7 +15,10 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
-  constructor(private scholarshipService: ScholarshipService) {}
+  constructor(
+    private scholarshipService: ScholarshipService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit() {
     this.totalScholarships();
@@ -34,13 +38,14 @@ export class ScholarshipSearchPageComponent implements OnInit {
           );
         });
         this.scholarships = scholarships;
+        this.loadingService.updateLoadingStatus(false);
       });
   }
 
   totalScholarships() {
     this.scholarshipService.getNumScholarships().subscribe((num: any) => {
-      console.log(num)
       this.length = num.length;
+      this.loadingService.updateLoadingStatus(false);
     });
   }
 }

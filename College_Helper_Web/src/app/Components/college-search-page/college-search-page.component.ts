@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { College } from 'src/app/Objects/College/College';
+import { LoadingService } from 'src/app/Services/loading.service';
 
 @Component({
   selector: 'app-college-search-page',

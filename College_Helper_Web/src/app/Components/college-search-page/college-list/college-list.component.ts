@@ -11,6 +11,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 import { Observable, filter, of } from 'rxjs';
 import { College } from 'src/app/Objects/College/College';
 import { CollegeService } from 'src/app/Services/college.service';
+import { LoadingService } from 'src/app/Services/loading.service';
 
 @Component({
   selector: 'app-college-list',
@@ -29,13 +30,16 @@ export class CollegeListComponent implements OnInit {
   // for search bar
   searchForm: FormControl = new FormControl('');
 
-  constructor(private collegeService: CollegeService) {}
+  constructor(
+    private collegeService: CollegeService,
+    private loadingService: LoadingService
+  ) {}
 
   ngOnInit(): void {
     this.collegeService.getColleges({}).subscribe((colleges) => {
-      console.log(colleges);
       this.colleges = colleges;
       this.filteredColleges = of(this.colleges);
+      this.loadingService.updateLoadingStatus(false);
     });
 
     this.searchForm.valueChanges.subscribe((value) => {
