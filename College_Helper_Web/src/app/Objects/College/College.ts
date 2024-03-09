@@ -1,22 +1,5 @@
-interface Pin {
-  lon: string;
-  lat: string;
-}
-
-interface DegreeOffered {
-  degreeCode: string;
-  degreeDescription: string;
-}
-
-interface InstitutionType {
-  institutionTypeDescription: string;
-  institutionTypeCode: string;
-}
-
-interface CollegeMajor {
-  code: string;
-  name: string;
-}
+import { Division } from "./Course";
+import { Officer } from "./Officer";
 
 interface StudyOption {
   studyOptionDescription: string;
@@ -236,6 +219,10 @@ interface AdmissionsInfo {
 export interface College {
   orgId: string;
   name: string;
+  languages: string[];
+  history: string;
+  funding: string;
+  description: string | null;
   locationInfo: LocationInfo;
   schoolSetting: string;
   schoolTypeByDesignation: string;
@@ -259,7 +246,8 @@ export interface College {
   countryCode: string | null;
   ipedsId: string;
   socialMedia: SocialMedia;
-  collegeMajors: CollegeMajor[];
+  collegeMajors: Division[];
+  divisions: Division[];
   studyOptions: StudyOption[];
   highSchoolGpa: HighSchoolGpa;
   highSchoolRank: string;
@@ -275,6 +263,6 @@ export interface College {
   needBasedFinAidForIntlStudentsInd: boolean;
   nonNeedBasedFinAidForIntlStudentsInd: boolean;
   applicationsAccepted: string[];
-  degreesOffered: DegreeOffered[];
-  institutionTypes: InstitutionType[];
+  officers: Officer[];
+  accreditations: string[];
 }

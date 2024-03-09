@@ -7,7 +7,7 @@
       <ul>
         <p class="label">History:</p>
         <p class="value">
-          {{ college.generalInformation.history }}
+          {{ college.description }}
         </p>
       </ul>
     </div>
@@ -17,35 +17,18 @@
       <ul>
         <p class="label">Address:</p>
         <address>
-          {{ college.generalInformation.address.street }} <br />
-          {{ college.generalInformation.address.city }},
-          {{ college.generalInformation.address.province }}
-          {{ college.generalInformation.address.country }}
-          {{ college.generalInformation.address.postCode }}
+          {{ college.locationInfo.streetAddress }} <br />
+          {{ college.locationInfo.city }},
+          {{ college.locationInfo.state }}
+          {{ college.locationInfo.country }}
+          {{ college.locationInfo.zipCode }}
         </address>
       </ul>
     </div>
 
     <!-- Funding, language and Accreditations -->
     <div class="info-item">
-      <ul>
-        <p class="label">Funding Type:</p>
-        <p class="value">{{ college.generalInformation.institutionFunding }}</p>
-
-        <p class="label">Languages:</p>
-        <p class="value">{{ college.generalInformation.languages }}</p>
-
-        <p class="label">Accreditations:</p>
-        <ul>
-          <li
-            *ngFor="
-              let accreditation of college.generalInformation.accreditingAgency
-            "
-          >
-            {{ accreditation }}
-          </li>
-        </ul>
-      </ul>
+      <!-- FIX -->
     </div>
   </div>
   <div class="info">
@@ -72,7 +55,7 @@
       <ul>
         <p class="label">Degrees:</p>
         <ul>
-          <li *ngFor="let degree of college.degrees">
+          <li *ngFor="let degree of college.collegeMajors">
             {{ degree.name }}
             <ul>
               <li *ngFor="let field of degree.fieldsOfStudy">

@@ -10,30 +10,12 @@ import { Admissions } from 'src/app/Objects/College/Collegeboard/Admissions';
 export class CollegeDetailAdmissionsComponent implements OnInit {
   @Input() college!: College;
 
-  gpaRanges: string[] = [
-    '3.75+',
-    '3.5-3.74',
-    '3.25-3.49',
-    '3.0-3.24',
-    '2.5-2.99',
-    '2.0-2.49',
-    'Below 2.0',
-  ];
-
-  gpaValues!: any[];
-
   constructor() {}
 
-  ngOnInit(): void {
-    this.gpaValues = this.college.admissions.gpaRange;
-  }
+  ngOnInit(): void {}
 
   getAdmissions() {
-    return this.college.admissions;
-  }
-
-  getAcademics() {
-    return this.college.academics;
+    return this.college.admissionsInfo;
   }
 
   getValue(num: number | null | undefined) {
