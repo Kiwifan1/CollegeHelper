@@ -57,6 +57,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PercentPipe } from './Components/common/percent.pipe';
+import { AddressComponent } from './Components/questionnaire-stepper/general-info/address/address.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +91,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     ScholarshipItemComponent,
     ScholarshipDetailPageComponent,
     ScholarshipClosedDialogComponent,
+    AddressComponent,
   ],
   // ...
 
@@ -125,6 +129,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTooltipModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    InfiniteScrollModule,
+    PercentPipe,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

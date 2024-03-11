@@ -53,7 +53,7 @@ const routes: Routes = [
   {
     path: 'questionnaire',
     component: QuestionnaireStepperComponent,
-    canActivate: [questionnaireGuard, notLoggedInGuard],
+    canActivate: [questionnaireGuard],
   },
   { path: '404', component: PageNotFoundComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

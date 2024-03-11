@@ -9,7 +9,6 @@ import { FormGroup } from '@angular/forms';
 export class ReviewComponent implements OnInit {
   @Input() userGeneralInfoForm!: FormGroup;
   @Input() userScoreInfoForm!: FormGroup;
-  @Input() userBasicCollegePreferencesForm!: FormGroup;
   @Input() userAdvancedCollegePreferencesForm!: FormGroup;
   @Input() userBasicMajorPreferencesForm!: FormGroup;
   @Input() userAdvancedMajorPreferencesForm!: FormGroup;

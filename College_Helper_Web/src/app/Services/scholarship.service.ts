@@ -9,15 +9,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ScholarshipService {
-  constructor(
-    private $http: HttpClient,
-    private loadingService: LoadingService
-  ) {}
+  constructor(private $http: HttpClient) {}
 
   getScholarships(offset: number, limit: number): Observable<Scholarship[]> {
     let url = environment.WEB_API_URL + '/get_scholarships';
 
-    this.loadingService.updateLoadingStatus(true);
     return this.$http.get<Scholarship[]>(url, {
       params: { offset: offset, limit: limit },
     });
@@ -26,13 +22,11 @@ export class ScholarshipService {
   getScholarship(id: string): Observable<Scholarship> {
     let url = environment.WEB_API_URL + '/get_scholarship';
 
-    this.loadingService.updateLoadingStatus(true);
     return this.$http.get<Scholarship>(url, { params: { id: id } });
   }
 
   getNumScholarships() {
     let url = environment.WEB_API_URL + '/get_num_scholarships';
-    this.loadingService.updateLoadingStatus(true);
     return this.$http.get<Number>(url);
   }
 }

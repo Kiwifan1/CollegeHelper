@@ -9,14 +9,10 @@ import { LoadingService } from './loading.service';
   providedIn: 'root',
 })
 export class CollegeService {
-  constructor(
-    private $http: HttpClient,
-    private loadingService: LoadingService
-  ) {}
+  constructor(private $http: HttpClient) {}
 
   getColleges(params: any): Observable<College[]> {
     let url = environment.WEB_API_URL + '/get_colleges';
-    this.loadingService.updateLoadingStatus(true);
     return this.$http.get<College[]>(url, { params: params });
   }
 }

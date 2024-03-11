@@ -77,9 +77,7 @@ body {
 
 .page-content {
   margin: 10px;
-  margin-bottom: 0px;
   padding: 10px;
-  padding-bottom: 0px;
   float: left;
   // make width the rest of the page, but if window shrinks, keep a minimum width
   width: calc(100% - 20px);
@@ -95,10 +93,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.page-content {
-  flex-direction: column;
 }
 
 #loader {
@@ -176,10 +170,6 @@ body {
   text-align: right;
 }
 
-mat-panel-title {
-  font-weight: bold;
-  align-self: center;
-}
 
 .grid-container {
   display: grid;

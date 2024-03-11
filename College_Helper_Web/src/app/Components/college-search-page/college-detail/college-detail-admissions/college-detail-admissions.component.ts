@@ -10,30 +10,34 @@ import { Admissions } from 'src/app/Objects/College/Collegeboard/Admissions';
 export class CollegeDetailAdmissionsComponent implements OnInit {
   @Input() college!: College;
 
-  gpaRanges: string[] = [
-    '3.75+',
-    '3.5-3.74',
-    '3.25-3.49',
-    '3.0-3.24',
-    '2.5-2.99',
-    '2.0-2.49',
-    'Below 2.0',
-  ];
-
-  gpaValues!: any[];
-
   constructor() {}
 
-  ngOnInit(): void {
-    this.gpaValues = this.college.admissions.gpaRange;
-  }
+  ngOnInit(): void {}
 
   getAdmissions() {
-    return this.college.admissions;
+    return this.college.admissionsInfo;
   }
 
-  getAcademics() {
-    return this.college.academics;
+  getSatScores() {
+    return this.college.satScores;
+  }
+
+  getSatCompositeScores() {
+    return this.college.satCompositeScores;
+  }
+
+  getActScores() {
+    return this.college.actScores;
+  }
+  
+  handleScores(
+    num1: number | null | undefined,
+    num2: number | null | undefined
+  ) {
+    if (!num1 || num1 == -1 || !num2 || num2 == -1) {
+      return 'Not Available';
+    }
+    return num1 + ' - ' + num2;
   }
 
   getValue(num: number | null | undefined) {

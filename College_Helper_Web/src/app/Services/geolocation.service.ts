@@ -8,16 +8,11 @@ import { LoadingService } from './loading.service';
 })
 export class GeoLocationService {
   key = environment.GEO_API_KEY;
-  constructor(
-    private $http: HttpClient,
-    private loadingService: LoadingService
-  ) {}
+  constructor(private $http: HttpClient) {}
 
   getAddressFromLatLong(lat: number, long: number) {
     const url = environment.GEO_API_URL + '/reverse';
     let params = `?lat=${lat}&lon=${long}&api_key=${this.key}`;
-
-    this.loadingService.updateLoadingStatus(true);
     return this.$http.get(url + params);
   }
 }

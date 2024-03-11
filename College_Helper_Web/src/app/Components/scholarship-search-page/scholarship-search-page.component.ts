@@ -22,14 +22,15 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   ngOnInit() {
     this.totalScholarships();
-    this.onPaginate({ pageIndex: this.pageIndex, pageSize: this.pageSize });
+    this.onPaginate({ pageIndex: this.pageIndex * this.pageSize, pageSize: this.pageSize });
   }
 
   onPaginate($event: any) {
     this.pageIndex = $event.pageIndex;
     this.pageSize = $event.pageSize;
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService
-      .getScholarships(this.pageIndex, this.pageSize)
+      .getScholarships(this.pageIndex * this.pageSize, this.pageSize)
       .subscribe((scholarships: any) => {
         scholarships.forEach((scholarship: any) => {
           scholarship.scholarshipName = scholarship.scholarshipName.replace(
@@ -43,6 +44,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
   }
 
   totalScholarships() {
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService.getNumScholarships().subscribe((num: any) => {
       this.length = num.length;
       this.loadingService.updateLoadingStatus(false);

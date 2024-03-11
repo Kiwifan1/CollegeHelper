@@ -65,23 +65,14 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
-      <mat-label for="location">Location</mat-label>
-      <input
-        matInput
-        type="text"
-        class="form-control"
-        id="location"
-        formControlName="location"
-        placeholder="E.g. 12th Avenue, Las Vegas Nevada, 89101"
-      />
+    <div class="address">
+      <app-address [addressForms]="addressForms"></app-address>
       <button matSuffix mat-icon-button (click)="getLocation()">
         <mat-icon>location_on</mat-icon>
       </button>
-    </mat-form-field>
+    </div>
   </div>
-
   <div class="stepper-buttons">
-    <button mat-button matStepperNext>Next</button>
+    <button mat-button matStepperNext (click)="bindAddress()">Next</button>
   </div>
 </form>
