@@ -21,6 +21,7 @@ export class ScholarshipDetailPageComponent implements OnInit {
   }
 
   getScholarship() {
+    this.loadingService.updateLoadingStatus(true);
     this.route.data.subscribe((data: any) => {
       data.scholarship.scholarshipName =
         data.scholarship.scholarshipName.replace('_', '/');

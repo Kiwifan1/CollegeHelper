@@ -15,6 +15,12 @@
         #collegelist
         hideSingleSelectionIndicator
         [multiple]="false"
+        infiniteScroll
+        (scrolled)="onScroll()"
+        [infiniteScrollDisabled]="fullListDisplayed"
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        [scrollWindow]="false"
       >
         <mat-list-option
           *ngFor="let college of filteredColleges | async"

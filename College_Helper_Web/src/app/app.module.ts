@@ -57,6 +57,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatTooltipModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    InfiniteScrollModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

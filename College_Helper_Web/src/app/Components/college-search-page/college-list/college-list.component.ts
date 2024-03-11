@@ -20,8 +20,12 @@ import { LoadingService } from 'src/app/Services/loading.service';
 })
 export class CollegeListComponent implements OnInit {
   @Output() collegeSelected = new EventEmitter<College>();
+  initialLoad: number = 20;
+  fullListDisplayed: boolean = false;
 
   colleges: College[] = [];
+  limit: number = 20;
+  offset: number = 0;
 
   filteredColleges = of(this.colleges);
 
@@ -36,15 +40,33 @@ export class CollegeListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.collegeService.getColleges({}).subscribe((colleges) => {
-      this.colleges = colleges;
-      this.filteredColleges = of(this.colleges);
-      this.loadingService.updateLoadingStatus(false);
-    });
+    this.loadingService.updateLoadingStatus(true);
+    this.collegeService
+      .getColleges({ limit: this.limit, offset: this.offset })
+      .subscribe((colleges) => {
+        this.colleges = colleges;
+        this.filteredColleges = of(this.colleges);
+        this.loadingService.updateLoadingStatus(false);
+      });
 
     this.searchForm.valueChanges.subscribe((value) => {
       this.filteredColleges = this.filterColleges(value);
     });
+  }
+
+  onScroll() {
+    this.offset += this.limit;
+    if (this.initialLoad <= this.colleges.length) {
+      this.collegeService
+        .getColleges({ limit: this.limit, offset: this.offset })
+        .subscribe((colleges) => {
+          this.colleges = this.colleges.concat(colleges);
+          this.filteredColleges = of(this.colleges);
+          this.loadingService.updateLoadingStatus(false);
+        });
+    } else {
+      this.fullListDisplayed = true;
+    }
   }
 
   filterColleges(value: string) {

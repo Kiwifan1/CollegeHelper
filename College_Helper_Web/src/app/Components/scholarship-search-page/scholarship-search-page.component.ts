@@ -28,6 +28,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
   onPaginate($event: any) {
     this.pageIndex = $event.pageIndex;
     this.pageSize = $event.pageSize;
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService
       .getScholarships(this.pageIndex, this.pageSize)
       .subscribe((scholarships: any) => {
@@ -43,6 +44,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
   }
 
   totalScholarships() {
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService.getNumScholarships().subscribe((num: any) => {
       this.length = num.length;
       this.loadingService.updateLoadingStatus(false);
