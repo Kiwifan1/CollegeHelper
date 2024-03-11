@@ -13,18 +13,20 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
-  // all information is not required, but will be helpful for the user
-
   userGeneralInfoForm: FormGroup = new FormGroup({
-    age: new FormControl('', [Validators.min(0), Validators.max(120)]),
-    gender: new FormControl(''),
-    ethnicity: new FormControl(''),
-    nationality: new FormControl(''),
-    educationLevel: new FormControl(''),
-    occupation: new FormControl(''),
-    incomeLevel: new FormControl(''),
-    maritalStatus: new FormControl(''),
-    location: new FormControl(''),
+    age: new FormControl('', [
+      Validators.min(0),
+      Validators.max(120),
+      Validators.required,
+    ]),
+    gender: new FormControl('', [Validators.required]),
+    ethnicity: new FormControl('', [Validators.required]),
+    nationality: new FormControl('', [Validators.required]),
+    educationLevel: new FormControl('', [Validators.required]),
+    occupation: new FormControl('', [Validators.required]),
+    incomeLevel: new FormControl('', [Validators.required]),
+    maritalStatus: new FormControl('', [Validators.required]),
+    location: new FormControl('', [Validators.required]),
   });
 
   userScoreInfoForm: FormGroup = new FormGroup({
@@ -35,10 +37,6 @@ export class QuestionnaireStepperComponent implements OnInit {
     IB: new FormControl(''),
     PSAT10: new FormControl('', [Validators.min(320), Validators.max(1520)]),
     NMSQT: new FormControl('', [Validators.min(320), Validators.max(1520)]),
-  });
-
-  userBasicCollegePreferencesForm: FormGroup = new FormGroup({
-    colleges: new FormControl(['']),
   });
 
   userBasicMajorPreferencesForm: FormGroup = new FormGroup({
@@ -138,9 +136,6 @@ export class QuestionnaireStepperComponent implements OnInit {
       NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
     };
 
-    this.user.collegePreferences = [
-      this.userBasicCollegePreferencesForm.get('colleges')?.value,
-    ];
     this.user.majorPreferences = [
       this.userBasicMajorPreferencesForm.get('majors')?.value,
     ];

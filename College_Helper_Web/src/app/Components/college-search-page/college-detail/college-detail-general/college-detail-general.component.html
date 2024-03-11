@@ -2,7 +2,6 @@
 <div class="info-box">
   <div class="info">
     <h2 class="title">General Information:</h2>
-
     <!-- Address -->
     <div class="info-item">
       <ul>
@@ -16,10 +15,31 @@
         </address>
       </ul>
     </div>
+    <mat-divider></mat-divider>
+
+    <!-- College Info-->
+    <div class="info-item">
+      <ul>
+        <p>Setting: {{ college.collegeInfo.schoolSetting }}</p>
+        <p>Size: {{ college.collegeInfo.schoolSize }}</p>
+        <p *ngIf="college.collegeInfo.religiousAffiliation">
+          Religious Affiliation:
+          {{ college.collegeInfo.religiousAffiliation }}
+        </p>
+        <p>Type: {{ college.collegeInfo.schoolTypeByYears }} Year</p>
+      </ul>
+    </div>
 
     <!-- Funding, language and Accreditations -->
     <div class="info-item">
-      <!-- FIX -->
+      <ul>
+        <p class="label">Funding:</p>
+        <p>{{ college.funding }}</p>
+        <p class="label">Language(s):</p>
+        <span *ngFor="let lang of college.languages">{{ lang }},&nbsp;</span>
+        <p class="label">Accreditations:</p>
+        <span *ngFor="let acc of college.accreditations">{{ acc }},&nbsp;</span>
+      </ul>
     </div>
   </div>
   <div class="info">

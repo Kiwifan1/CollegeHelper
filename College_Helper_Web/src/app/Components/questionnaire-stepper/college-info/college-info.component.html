@@ -1,96 +1,64 @@
 <div>
-  <form [formGroup]="basicCollegeInfoForm">
+  <form [formGroup]="advancedCollegeInfoForm">
     <div class="form-group">
       <mat-form-field>
-        <mat-label>Colleges</mat-label>
+        <mat-label>Size</mat-label>
+        <mat-select formControlName="collegeSize">
+          <mat-option value="small">Small</mat-option>
+          <mat-option value="medium">Medium</mat-option>
+          <mat-option value="large">Large</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Location</mat-label>
         <input
           matInput
           type="text"
-          [formControl]="searchForm"
-          placeholder="Search for colleges"
-          [matAutocomplete]="auto"
+          formControlName="collegeLocation"
+          placeholder="e.g. Seattle, New York"
         />
-        <mat-icon matSuffix>search</mat-icon>
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            *ngFor="let college of filteredColleges | async"
-            [value]="college.name"
-            (onSelectionChange)="selectCollege(college.name)"
-          >
-            {{ college.name }}
-          </mat-option>
-        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Cost</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="collegeCost"
+          placeholder="e.g. 10000"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Sports</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="collegeSports"
+          placeholder="e.g. Soccer, Basketball"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Clubs</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="collegeClubs"
+          placeholder="e.g. Chess, Debate"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Greek Life?</mat-label>
+        <mat-select formControlName="collegeGreekLife">
+          <mat-option value="yes">Yes</mat-option>
+          <mat-option value="no">No</mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
   </form>
-
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title> Advanced College Preferences</mat-panel-title>
-      </mat-expansion-panel-header>
-      <form [formGroup]="advancedCollegeInfoForm">
-        <div class="form-group">
-          <mat-form-field>
-            <mat-label>Size</mat-label>
-            <mat-select formControlName="collegeSize">
-              <mat-option value="small">Small</mat-option>
-              <mat-option value="medium">Medium</mat-option>
-              <mat-option value="large">Large</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Location</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="collegeLocation"
-              placeholder="e.g. Seattle, New York"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Cost</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="collegeCost"
-              placeholder="e.g. 10000"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Sports</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="collegeSports"
-              placeholder="e.g. Soccer, Basketball"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Clubs</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="collegeClubs"
-              placeholder="e.g. Chess, Debate"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Greek Life?</mat-label>
-            <mat-select formControlName="collegeGreekLife">
-              <mat-option value="yes">Yes</mat-option>
-              <mat-option value="no">No</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
-    </mat-expansion-panel>
-  </mat-accordion>
 
   <div class="stepper-buttons">
     <button mat-button matStepperPrevious>Back</button>

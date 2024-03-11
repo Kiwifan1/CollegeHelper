@@ -16,23 +16,28 @@ export enum Ethnicity {
   NativeAmerican = 'Native American',
   PacificIslander = 'Pacific Islander',
   Other = 'Other',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum Gender {
   Male = 'Male',
   Female = 'Female',
   Other = 'Other',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum EducationLevel {
-  HSSR = 'High School Senior',
-  HSJR = 'High School Junior',
-  HSSO = 'High School Sophomore',
   HSFR = 'High School Freshman',
+  HSSO = 'High School Sophomore',
+  HSJR = 'High School Junior',
+  HSSR = 'High School Senior',
   COFR = 'College Freshman',
   COSO = 'College Sophomore',
   COJR = 'College Junior',
   COSR = 'College Senior',
+  Grad = 'Graduate',
+  Other = 'Other',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum Occupation {
@@ -41,6 +46,7 @@ export enum Occupation {
   Unemployed = 'Unemployed',
   Retired = 'Retired',
   Other = 'Other',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum MaritalStatus {
@@ -48,12 +54,14 @@ export enum MaritalStatus {
   Married = 'Married',
   Divorced = 'Divorced',
   Widowed = 'Widowed',
+  PreferNotToSay = 'Prefer not to say',
 }
 
 export enum IncomeLevel {
-  '0-30k' = '0-30k',
-  '30k-48k' = '30k-48k',
-  '48k-75k' = '48k-75k',
-  '75k-110k' = '75k-110k',
-  '>110k' = '>110k',
+  Below30K = '0-30k',
+  To48K = '30k-48k',
+  To75K = '48k-75k',
+  To110K = '75k-110k',
+  Above110K = '>110k',
+  PreferNotToSay = 'Prefer not to say',
 }

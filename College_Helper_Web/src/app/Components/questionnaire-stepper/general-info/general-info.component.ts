@@ -21,17 +21,25 @@ export class GeneralInfoComponent implements OnInit {
   genderEnums = Object.values(Gender);
   educationLevelEnums = Object.values(EducationLevel);
   ethnicityEnums = Object.values(Ethnicity);
-  incomeLevelEnums = Object.keys(IncomeLevel);
+  incomeLevelEnums = Object.values(IncomeLevel);
   maritalStatusEnums = Object.values(MaritalStatus);
   occupationEnums = Object.values(Occupation);
 
+  addressForm: FormGroup = new FormGroup({
+    street: new FormControl(''),
+    city: new FormControl(''),
+    province: new FormControl(''),
+    country: new FormControl(''),
+    postCode: new FormControl(''),
+  });
+
   address: Address = {
+    street: '',
     city: '',
     province: '',
     country: '',
     postCode: '',
-    street: '',
-    website: null,
+    website: '',
   };
 
   grabbedLocation = false;
@@ -44,28 +52,6 @@ export class GeneralInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {}
-
-  getLocation() {
-    navigator.geolocation.getCurrentPosition((position) => {
-      const lat = position.coords.latitude;
-      const long = position.coords.longitude;
-      this.loadingService.updateLoadingStatus(true);
-      this.geoLocationService
-        .getAddressFromLatLong(lat, long)
-        .subscribe((res: any) => {
-          this.address.city = res.address.city ?? '';
-          this.address.province = res.address.state ?? '';
-          this.address.country = res.address.country_code ?? '';
-          this.address.postCode = res.address.postcode ?? '';
-          this.address.street = res.address.road ?? '';
-
-          this.generalUserInfoForm.patchValue({
-            location: this.stringify(this.address),
-          });
-          this.loadingService.updateLoadingStatus(false);
-        });
-    });
-  }
 
   objectify(address: string) {
     const split = address.split(', ');
@@ -82,5 +68,25 @@ export class GeneralInfoComponent implements OnInit {
     const stateExists = address.province ? ' ' : '';
     const zipExists = address.postCode ? ', ' : '';
     return `${address.street}, ${address.city}${stateExists}${address.province}${zipExists}${address.postCode}`;
+  }
+
+  getLocation() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const lat = position.coords.latitude;
+      const long = position.coords.longitude;
+      this.loadingService.updateLoadingStatus(true);
+      this.geoLocationService
+        .getAddressFromLatLong(lat, long)
+        .subscribe((res: any) => {
+          this.addressForm.patchValue({
+            street: res.address.road ?? '',
+            city: res.address.city ?? '',
+            province: res.address.state ?? '',
+            country: res.address.country ?? '',
+            postCode: res.address.postcode ?? '',
+          });
+          this.loadingService.updateLoadingStatus(false);
+        });
+    });
   }
 }

@@ -9,42 +9,9 @@ import { College } from 'src/app/Objects/College/College';
   styleUrl: './college-info.component.scss',
 })
 export class CollegeInfoComponent implements OnInit {
-  @Input() basicCollegeInfoForm!: FormGroup;
   @Input() advancedCollegeInfoForm!: FormGroup;
-
-  colleges!: College[];
-
-  collegeNames: string[] = this.colleges.map((college) => college.name);
-
-  filteredColleges = of(this.colleges);
-  searchForm: FormControl = new FormControl('');
 
   constructor() {}
 
-  ngOnInit(): void {
-    this.searchForm.valueChanges.subscribe((value) => {
-      this.filterChange();
-    });
-  }
-
-  selectCollege(collegeName: string) {
-    // add college to form which is list of colleges
-    this.basicCollegeInfoForm.patchValue({
-      colleges: [...this.basicCollegeInfoForm.value.colleges, collegeName]
-    });
-  }
-
-  filterChange() {
-    this.filteredColleges = this.filterColleges(this.searchForm.value);
-  }
-
-  filterColleges(value: string) {
-    let filteredColleges: College[] = [];
-    this.colleges.forEach((college) => {
-      if (college.name.toLowerCase().includes(value.toLowerCase())) {
-        filteredColleges.push(college);
-      }
-    });
-    return of(filteredColleges);
-  }
+  ngOnInit(): void {}
 }
