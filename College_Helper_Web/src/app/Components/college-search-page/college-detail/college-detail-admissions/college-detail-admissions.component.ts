@@ -18,6 +18,28 @@ export class CollegeDetailAdmissionsComponent implements OnInit {
     return this.college.admissionsInfo;
   }
 
+  getSatScores() {
+    return this.college.satScores;
+  }
+
+  getSatCompositeScores() {
+    return this.college.satCompositeScores;
+  }
+
+  getActScores() {
+    return this.college.actScores;
+  }
+  
+  handleScores(
+    num1: number | null | undefined,
+    num2: number | null | undefined
+  ) {
+    if (!num1 || num1 == -1 || !num2 || num2 == -1) {
+      return 'Not Available';
+    }
+    return num1 + ' - ' + num2;
+  }
+
   getValue(num: number | null | undefined) {
     if (!num || num == -1) {
       return 'Not Available';

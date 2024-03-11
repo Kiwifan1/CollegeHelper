@@ -1,7 +1,9 @@
 <div class="info-box">
   <div class="info">
-    <h2 class="title-inline">Average Net Cost:&ensp;&ensp;</h2>
-    <span>{{ getValue(getCost().averageNetPrice) | money }}</span>
+    <h2 class="title-inline">
+      Average Net Cost:&ensp;&ensp;
+      <span>{{ getValue(getCost().averageNetPrice) | money }}</span>
+    </h2>
 
     <!-- Sticker Price -->
     <div class="info-item">
@@ -23,53 +25,52 @@
         </table>
       </ul>
     </div>
-
     <!-- Income Price -->
     <div class="info-item">
       <ul>
         <p class="label">Net price based on Family Income:</p>
         <table>
           <tr>
-            <td>$0-$30,000</td>
+            <td>$0-$30,000:</td>
             <td>
               {{
-                getValue(getCost().incomeNetPrice.averageNetPriceBelow30K)
+                getValue(getCost().netPriceByIncome.averageNetPriceBelow30K)
                   | money
               }}
             </td>
           </tr>
           <tr>
-            <td>$30,001-$48,000</td>
+            <td>$30,001-$48,000:</td>
             <td>
               {{
-                getValue(getCost().incomeNetPrice.averageNetPrice30To48K)
+                getValue(getCost().netPriceByIncome.averageNetPrice30To48K)
                   | money
               }}
             </td>
           </tr>
           <tr>
-            <td>$48,001-$75,000</td>
+            <td>$48,001-$75,000:</td>
             <td>
               {{
-                getValue(getCost().incomeNetPrice.averageNetPrice48To75K)
+                getValue(getCost().netPriceByIncome.averageNetPrice48To75K)
                   | money
               }}
             </td>
           </tr>
           <tr>
-            <td>$75,001-$110,000</td>
+            <td>$75,001-$110,000:</td>
             <td>
               {{
-                getValue(getCost().incomeNetPrice.averageNetPrice75To110K)
-                  | money 
+                getValue(getCost().netPriceByIncome.averageNetPrice75To110K)
+                  | money
               }}
             </td>
           </tr>
           <tr>
-            <td>$110,000+</td>
+            <td>$110,000+:</td>
             <td>
               {{
-                getValue(getCost().incomeNetPrice.averageNetPriceAbove110K)
+                getValue(getCost().netPriceByIncome.averageNetPriceAbove110K)
                   | money
               }}
             </td>

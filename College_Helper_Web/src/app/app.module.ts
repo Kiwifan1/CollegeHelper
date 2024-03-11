@@ -58,6 +58,7 @@ import { ScholarshipClosedDialogComponent } from './Components/scholarship-searc
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PercentPipe } from './Components/common/percent.pipe';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     MatPaginatorModule,
     MatProgressSpinnerModule,
     InfiniteScrollModule,
+    PercentPipe,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

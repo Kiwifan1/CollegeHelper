@@ -1,5 +1,5 @@
-import { Division } from "./Course";
-import { Officer } from "./Officer";
+import { Division } from './Course';
+import { Officer } from './Officer';
 
 interface StudyOption {
   studyOptionDescription: string;
@@ -80,9 +80,16 @@ interface FinancialAid {
   needBasedLoanAmount: number | null;
   nonNeedBasedAid: number | null;
   graduationDebt: number | null;
+  needBasedFinAidForIntlStudentsInd: boolean;
+  nonNeedBasedFinAidForIntlStudentsInd: boolean;
+  financialAidOfficePhoneNumber: string;
 }
 
-interface HighSchoolGpa {
+interface HighSchool {
+  gpaConsideration: string;
+  highSchoolRank: string;
+  prepCourses: string;
+  recommendations: string;
   gpa400: number | null;
   gpa375To399: number | null;
   gpa350To374: number | null;
@@ -103,16 +110,15 @@ interface TuitionInfo {
   booksAndSuppliesCost: number;
   estimatedPersonalExpenses: number | null;
   transportationCosts: number;
-  financialAidOfficePhoneNumber: string;
 }
 
-interface IncomeNetPrice {
+interface NetPriceByIncome {
   // added
-  averageNetPriceBelow30K: number;
-  averageNetPrice30To48K: number;
-  averageNetPrice48To75K: number;
-  averageNetPrice75To110K: number;
-  averageNetPriceAbove110K: number;
+  averageNetPriceBelow30K: number | null;
+  averageNetPrice30To48K: number | null;
+  averageNetPrice48To75K: number | null;
+  averageNetPrice75To110K: number | null;
+  averageNetPriceAbove110K: number | null;
 }
 
 interface SchoolSpecialization {
@@ -141,6 +147,7 @@ interface ApplicationInformation {
   locationCode: string;
   notificationDate: string | null;
   responseDeadline: string | null;
+  applicationsAccepted: string[];
 }
 
 interface ApplicantInformation {
@@ -171,6 +178,7 @@ interface Demographics {
   whitePercent: number | null;
   internationalPercent: number | null;
   outOfStatePercent: number;
+  studentFacultyRatio: number | null;
 }
 
 interface EnrollmentData {
@@ -187,6 +195,7 @@ interface LocationInfo {
   country: string;
   zipCode: string;
   countryName: string;
+  countryCode: string | null;
   lat: string;
   lon: string;
   streetAddress: string;
@@ -206,7 +215,17 @@ interface FinancialInfo {
   applicationFeeAmount: number;
   tuitionInfo: TuitionInfo;
   financialAid: FinancialAid;
-  incomeNetPrice: IncomeNetPrice;
+  netPriceByIncome: NetPriceByIncome;
+}
+
+interface CollegeInfo {
+  schoolSetting: string;
+  schoolTypeByDesignation: string;
+  schoolTypeByYears: number | null;
+  schoolSize: number | null;
+  graduationRate: number;
+  religiousAffiliation: string | null;
+  vocationalSchool: boolean;
 }
 
 interface AdmissionsInfo {
@@ -216,6 +235,19 @@ interface AdmissionsInfo {
   apScoreInformation: ApScoreInformation;
 }
 
+interface HousingInfo {
+  firstYearCollegeHousingPercent: number;
+  averageHousingCostForCampusLife: number;
+  housingOptions: HousingOption[];
+}
+
+interface UrlInfo {
+  vanityUri: string;
+  redirectUris: string[];
+  schoolUrl: string;
+  virtualTourVideoUrl: string;
+}
+
 export interface College {
   orgId: string;
   name: string;
@@ -223,46 +255,28 @@ export interface College {
   history: string;
   funding: string;
   description: string | null;
-  locationInfo: LocationInfo;
-  schoolSetting: string;
-  schoolTypeByDesignation: string;
-  schoolTypeByYears: number | null;
-  schoolSize: number | null;
-  graduationRate: number;
+  accreditations: string[];
   satOrAct: string;
+  ipedsId: string;
+  locationInfo: LocationInfo;
+  collegeInfo: CollegeInfo;
   satScores: SatScores;
   satCompositeScores: SatCompositeScores;
   actScores: ActScores;
   schoolSpecialization: SchoolSpecialization;
-  religiousAffiliation: string | null;
   financialInfo: FinancialInfo;
   contactInfo: ContactInfo;
   admissionsInfo: AdmissionsInfo;
-  vocationalSchool: boolean;
-  vanityUri: string;
-  redirectUris: string[];
-  schoolUrl: string;
-  virtualTourVideoUrl: string;
-  countryCode: string | null;
-  ipedsId: string;
+  urlInfo: UrlInfo;
   socialMedia: SocialMedia;
   collegeMajors: Division[];
   divisions: Division[];
   studyOptions: StudyOption[];
-  highSchoolGpa: HighSchoolGpa;
-  highSchoolRank: string;
-  prepCourses: string;
-  recommendations: string;
+  highSchool: HighSchool;
   studentSports: StudentSport[];
   enrollmentData: EnrollmentData;
   demographics: Demographics;
   studentActivities: StudentActivity[];
-  firstYearCollegeHousingPercent: number;
-  averageHousingCostForCampusLife: number;
-  housingOptions: HousingOption[];
-  needBasedFinAidForIntlStudentsInd: boolean;
-  nonNeedBasedFinAidForIntlStudentsInd: boolean;
-  applicationsAccepted: string[];
+  housingInfo: HousingInfo;
   officers: Officer[];
-  accreditations: string[];
 }

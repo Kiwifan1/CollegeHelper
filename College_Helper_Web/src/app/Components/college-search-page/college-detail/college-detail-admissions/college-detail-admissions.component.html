@@ -8,39 +8,39 @@
         <table>
           <tr>
             <td>0-0.99</td>
-            <td>{{ getValue(college.highSchoolGpa.gpaBelow100) }}</td>
+            <td>{{ college.highSchool.gpaBelow100 | pc }}</td>
           </tr>
           <tr>
             <td>1-1.99</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa100To199) }}</td>
+            <td>{{ college.highSchool.gpa100To199 | pc }}</td>
           </tr>
           <tr>
             <td>2-2.49</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa200To249) }}</td>
+            <td>{{ college.highSchool.gpa200To249 | pc }}</td>
           </tr>
           <tr>
             <td>2.5-2.99</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa250To299) }}</td>
+            <td>{{ college.highSchool.gpa250To299 | pc }}</td>
           </tr>
           <tr>
             <td>3-3.24</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa300To324) }}</td>
+            <td>{{ college.highSchool.gpa300To324 | pc }}</td>
           </tr>
           <tr>
             <td>3.25-3.49</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa325To349) }}</td>
+            <td>{{ college.highSchool.gpa325To349 | pc }}</td>
           </tr>
           <tr>
             <td>3.5-3.74</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa350To374) }}</td>
+            <td>{{ college.highSchool.gpa350To374 | pc }}</td>
           </tr>
           <tr>
             <td>3.75-3.99</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa375To399) }}</td>
+            <td>{{ college.highSchool.gpa375To399 | pc }}</td>
           </tr>
           <tr>
             <td>4.00+</td>
-            <td>{{ getValue(college.highSchoolGpa.gpa400) }}</td>
+            <td>{{ college.highSchool.gpa400 | pc }}</td>
           </tr>
         </table>
       </ul>
@@ -52,11 +52,10 @@
         <span class="label">Average SAT Scores:</span>
         <span class="value">
           {{
-            getValue(college.satCompositeScores.satCompositeScore25thPercentile)
-          }}
-          -
-          {{
-            getValue(college.satCompositeScores.satCompositeScore75thPercentile)
+            handleScores(
+              getSatCompositeScores().satCompositeScore25thPercentile,
+              getSatCompositeScores().satCompositeScore75thPercentile
+            )
           }}
         </span>
         <ul>
@@ -64,16 +63,23 @@
             <tr>
               <td><strong>Math:</strong></td>
               <td>
-                {{ getValue(college.satScores.rsatMathScore25thPercentile) }} -
-                {{ getValue(college.satScores.rsatMathScore75thPercentile) }}
+                {{
+                  handleScores(
+                    getSatScores().rsatMathScore25thPercentile,
+                    getSatScores().rsatMathScore75thPercentile
+                  )
+                }}
               </td>
             </tr>
             <tr>
               <td><strong>Reading:</strong></td>
               <td>
-                {{ getValue(college.satScores.rsatEbrwScore25thPercentile) }}
-                -
-                {{ getValue(college.satScores.rsatEbrwScore75thPercentile) }}
+                {{
+                  handleScores(
+                    getSatScores().rsatEbrwScore25thPercentile,
+                    getSatScores().rsatEbrwScore75thPercentile
+                  )
+                }}
               </td>
             </tr>
           </table>
@@ -86,8 +92,12 @@
       <ul>
         <span class="label">Average ACT Scores:</span>
         <span class="value">
-          {{ getValue(college.actScores.actCompositeScore25thPercentile) }} -
-          {{ getValue(college.actScores.actCompositeScore75thPercentile) }}
+          {{
+            handleScores(
+              getActScores().actCompositeScore25thPercentile,
+              getActScores().actCompositeScore75thPercentile
+            )
+          }}
         </span>
       </ul>
     </div>
@@ -100,12 +110,14 @@
     <ul>
       <div class="info-item">
         <span class="label">Acceptance Rate:</span>
-        <span class="value">{{ getAdmissions().acceptanceRate }}</span>
+        <span class="value">{{ getAdmissions().acceptanceRate | pc }}</span>
         <table>
           <tr>
             <td>Applicants:</td>
             <td>
-              {{ getAdmissions().applicantInformation.totalApplicants }}
+              {{
+                getValue(getAdmissions().applicantInformation.totalApplicants)
+              }}
             </td>
           </tr>
           <tr>
@@ -133,7 +145,7 @@
       <!-- Graduation and Retention -->
       <div class="info-item">
         <span class="label">Graduation Rate:</span>
-        <span class="value">{{ college.graduationRate }}</span>
+        <span class="value">{{ college.collegeInfo.graduationRate | pc }}</span>
       </div>
     </ul>
   </div>
