@@ -54,7 +54,6 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
     collegeSize: new FormControl(''),
-    collegeLocation: new FormControl(''),
     collegeCost: new FormControl(''),
     collegeSports: new FormControl(''),
     collegeClubs: new FormControl(''),
