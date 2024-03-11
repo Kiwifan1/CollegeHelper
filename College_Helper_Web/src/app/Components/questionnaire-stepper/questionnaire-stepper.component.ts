@@ -19,14 +19,13 @@ export class QuestionnaireStepperComponent implements OnInit {
       Validators.max(120),
       Validators.required,
     ]),
+    addresses: new FormControl(['']),
     gender: new FormControl('', [Validators.required]),
     ethnicity: new FormControl('', [Validators.required]),
-    nationality: new FormControl('', [Validators.required]),
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),
     incomeLevel: new FormControl('', [Validators.required]),
     maritalStatus: new FormControl('', [Validators.required]),
-    location: new FormControl('', [Validators.required]),
   });
 
   userScoreInfoForm: FormGroup = new FormGroup({
@@ -114,6 +113,8 @@ export class QuestionnaireStepperComponent implements OnInit {
       postCode: '',
       country: '',
       website: '',
+      latitude: '',
+      longitude: '',
     };
 
     this.user.demographics = {

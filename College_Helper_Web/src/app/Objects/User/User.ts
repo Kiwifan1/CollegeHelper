@@ -17,10 +17,10 @@ export interface User {
 }
 
 export const defaultUser: User = {
-  id: "",
-  username: "",
-  email: "",
-  password: "",
+  id: '',
+  username: '',
+  email: '',
+  password: '',
   address: {
     street: null,
     city: null,
@@ -28,6 +28,8 @@ export const defaultUser: User = {
     postCode: null,
     country: null,
     website: null,
+    latitude: null,
+    longitude: null,
   },
   demographics: {
     age: null,

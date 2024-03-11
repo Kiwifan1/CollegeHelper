@@ -66,13 +66,13 @@
     </mat-form-field>
 
     <div class="address">
-      <app-address [addressForm]="addressForm"></app-address>
+      <app-address [addressForms]="addressForms"></app-address>
       <button matSuffix mat-icon-button (click)="getLocation()">
         <mat-icon>location_on</mat-icon>
       </button>
     </div>
   </div>
   <div class="stepper-buttons">
-    <button mat-button matStepperNext>Next</button>
+    <button mat-button matStepperNext (click)="bindAddress()">Next</button>
   </div>
 </form>

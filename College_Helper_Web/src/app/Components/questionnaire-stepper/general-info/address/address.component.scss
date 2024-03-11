@@ -1,0 +1,34 @@
+.address-accordion {
+  h3 {
+    margin: 0;
+    padding: 0;
+  }
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  span {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.address-panels {
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+  form {
+    padding-top: 20px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 20px;
+  }
+}
+
+.add-address {
+  // center button
+  display: flex;
+  margin-top: 20px;
+}

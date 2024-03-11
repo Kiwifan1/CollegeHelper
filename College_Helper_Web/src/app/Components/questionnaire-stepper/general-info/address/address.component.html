@@ -1,35 +1,54 @@
-<mat-accordion>
+<mat-accordion class="address-accordion">
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
         <h3>Address</h3>
       </mat-panel-title>
       <mat-panel-description>
-        <p>Enter your address information</p>
+        <p>Enter any Addresses</p>
       </mat-panel-description>
     </mat-expansion-panel-header>
 
     <!-- Content -->
-    <form [formGroup]="addressForm">
-      <mat-form-field>
-        <mat-label for="street">Street</mat-label>
-        <input matInput formControlName="street" />
-      </mat-form-field>
+    <div class="address-panels">
+      <form
+        [formGroup]="addressForm"
+        *ngFor="let addressForm of addressForms; let i = index"
+      >
+        <h3>Address {{ i + 1 }}</h3>
+        <mat-form-field>
+          <mat-label for="street">Street</mat-label>
+          <input matInput formControlName="street" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label for="city">City</mat-label>
-        <input matInput formControlName="city" />
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label for="city">City</mat-label>
+          <input matInput formControlName="city" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label for="state">State</mat-label>
-        <input matInput formControlName="province" />
-      </mat-form-field>
+        <mat-form-field>
+          <mat-label for="state">State</mat-label>
+          <input matInput formControlName="province" />
+        </mat-form-field>
 
-      <mat-form-field>
-        <mat-label for="zip">Zip Code</mat-label>
-        <input matInput formControlName="postCode" />
-      </mat-form-field>
-    </form>
+        <mat-form-field>
+          <mat-label for="zip">Zip Code</mat-label>
+          <input matInput formControlName="postCode" />
+        </mat-form-field>
+        <button *ngIf="i != 0" mat-raised-button (click)="removeAddress(i)">
+          Remove
+        </button>
+        <mat-divider></mat-divider>
+      </form>
+    </div>
+    <div class="fill-remaining-space"></div>
+    <button
+      class="add-address"
+      color="primary"
+      mat-raised-button
+      (click)="addAddress()"
+    >
+      Add Address
+    </button>
   </mat-expansion-panel>
 </mat-accordion>

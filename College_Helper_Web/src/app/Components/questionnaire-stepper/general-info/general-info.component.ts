@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'src/app/Objects/Address';
 import {
   EducationLevel,
@@ -18,6 +18,9 @@ import { LoadingService } from 'src/app/Services/loading.service';
   styleUrl: './general-info.component.scss',
 })
 export class GeneralInfoComponent implements OnInit {
+  @Input() generalUserInfoForm!: FormGroup;
+  grabbedLocation = false;
+
   genderEnums = Object.values(Gender);
   educationLevelEnums = Object.values(EducationLevel);
   ethnicityEnums = Object.values(Ethnicity);
@@ -25,13 +28,15 @@ export class GeneralInfoComponent implements OnInit {
   maritalStatusEnums = Object.values(MaritalStatus);
   occupationEnums = Object.values(Occupation);
 
-  addressForm: FormGroup = new FormGroup({
-    street: new FormControl(''),
-    city: new FormControl(''),
-    province: new FormControl(''),
-    country: new FormControl(''),
-    postCode: new FormControl(''),
-  });
+  addressForms: FormGroup[] = [
+    new FormGroup({
+      street: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required]),
+      province: new FormControl('', [Validators.required]),
+      country: new FormControl('', [Validators.required]),
+      postCode: new FormControl('', [Validators.required]),
+    }),
+  ];
 
   address: Address = {
     street: '',
@@ -40,35 +45,15 @@ export class GeneralInfoComponent implements OnInit {
     country: '',
     postCode: '',
     website: '',
+    latitude: '',
+    longitude: '',
   };
-
-  grabbedLocation = false;
-
-  @Input() generalUserInfoForm!: FormGroup;
-
   constructor(
     private geoLocationService: GeoLocationService,
     private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {}
-
-  objectify(address: string) {
-    const split = address.split(', ');
-    return {
-      street: split[0],
-      city: split[1].split(' ')[0],
-      state: split[1].split(' ')[1],
-      zip: split[2],
-      website: null,
-    };
-  }
-
-  stringify(address: Address) {
-    const stateExists = address.province ? ' ' : '';
-    const zipExists = address.postCode ? ', ' : '';
-    return `${address.street}, ${address.city}${stateExists}${address.province}${zipExists}${address.postCode}`;
-  }
 
   getLocation() {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -78,15 +63,24 @@ export class GeneralInfoComponent implements OnInit {
       this.geoLocationService
         .getAddressFromLatLong(lat, long)
         .subscribe((res: any) => {
-          this.addressForm.patchValue({
+          this.addressForms[0].patchValue({
             street: res.address.road ?? '',
             city: res.address.city ?? '',
             province: res.address.state ?? '',
             country: res.address.country ?? '',
             postCode: res.address.postcode ?? '',
+            latitude: lat,
+            longitude: long,
           });
           this.loadingService.updateLoadingStatus(false);
         });
+    });
+  }
+
+  bindAddress() {
+    // add all the address forms to the user object
+    this.generalUserInfoForm.patchValue({
+      addresses: this.addressForms.map((address) => address.value),
     });
   }
 }
