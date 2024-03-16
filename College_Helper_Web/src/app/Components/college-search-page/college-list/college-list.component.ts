@@ -50,7 +50,7 @@ export class CollegeListComponent implements OnInit {
       });
 
     this.searchForm.valueChanges.subscribe((value) => {
-      this.filteredColleges = this.filterColleges(value);
+      this.filterColleges(value);
     });
   }
 
@@ -61,7 +61,7 @@ export class CollegeListComponent implements OnInit {
         .getColleges({ limit: this.limit, offset: this.offset })
         .subscribe((colleges) => {
           this.colleges = this.colleges.concat(colleges);
-          this.filteredColleges = of(this.colleges);
+          this.filterColleges(this.searchForm.value);
           this.loadingService.updateLoadingStatus(false);
         });
     } else {
@@ -76,7 +76,7 @@ export class CollegeListComponent implements OnInit {
         filteredColleges.push(college);
       }
     });
-    return of(filteredColleges);
+    this.filteredColleges = of(filteredColleges);
   }
 
   selectCollege(college: College) {
