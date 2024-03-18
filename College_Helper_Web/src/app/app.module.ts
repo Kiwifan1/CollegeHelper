@@ -59,6 +59,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { PercentPipe } from './Components/common/percent.pipe';
+import { AddressComponent } from './Components/questionnaire-stepper/general-info/address/address.component';
 
 @NgModule({
   declarations: [
@@ -90,6 +91,7 @@ import { PercentPipe } from './Components/common/percent.pipe';
     ScholarshipItemComponent,
     ScholarshipDetailPageComponent,
     ScholarshipClosedDialogComponent,
+    AddressComponent,
   ],
   // ...
 

@@ -5,4 +5,6 @@ export interface Address {
   postCode: string | null;
   country: string | null;
   website: string | null;
+  latitude: string | null;
+  longitude: string | null;
 }

@@ -26,11 +26,11 @@ mat-list-item {
 
 mat-sidenav-content {
   overflow-x: hidden;
-  overflow: hidden;
+  overflow-y:auto;
 }
 
 .sidenav-container {
-  height: 90%;
+  height: 100%;
 }
 
 .sidenav {
