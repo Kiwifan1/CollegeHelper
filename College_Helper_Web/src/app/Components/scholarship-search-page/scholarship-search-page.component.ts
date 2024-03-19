@@ -17,6 +17,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
+  filters: any = {};
+
   constructor(
     private scholarshipService: ScholarshipService,
     private loadingService: LoadingService,
@@ -36,7 +38,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
     this.pageSize = $event.pageSize;
     this.loadingService.updateLoadingStatus(true);
     this.scholarshipService
-      .getScholarships(this.pageIndex * this.pageSize, this.pageSize)
+      .getScholarships(
+        this.pageIndex * this.pageSize,
+        this.pageSize,
+        this.filters
+      )
       .subscribe((scholarships: any) => {
         scholarships.forEach((scholarship: any) => {
           scholarship.scholarshipName = scholarship.scholarshipName.replace(
@@ -51,15 +57,33 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   totalScholarships() {
     this.loadingService.updateLoadingStatus(true);
-    this.scholarshipService.getNumScholarships().subscribe((num: any) => {
+    this.scholarshipService.getNumScholarships(this.filters).subscribe((num: any) => {
       this.length = num.length;
       this.loadingService.updateLoadingStatus(false);
     });
   }
 
   openSeachDialog() {
-    this.dialog.open(ScholarshipSearchDialogComponent, {
-      width: '500px',
-    });
+    this.dialog
+      .open(ScholarshipSearchDialogComponent, {
+        width: '500px',
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.filters = result;
+          this.loadingService.updateLoadingStatus(true);
+          this.scholarshipService
+            .getScholarships(0, this.pageSize, this.filters)
+            .subscribe((scholarships: any) => {
+              scholarships.forEach((scholarship: any) => {
+                scholarship.scholarshipName =
+                  scholarship.scholarshipName.replace('_', '/');
+              });
+              this.scholarships = scholarships;
+              this.loadingService.updateLoadingStatus(false);
+            });
+        }
+      });
   }
 }
