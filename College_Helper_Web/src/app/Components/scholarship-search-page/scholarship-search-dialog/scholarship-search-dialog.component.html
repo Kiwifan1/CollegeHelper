@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>Search Criteria</h2>
+<mat-dialog-content class="scholarship-search-dialog">
+  <form [formGroup]="searchForm">
+    <div class="search-form">
+      <mat-form-field class="search-form-field">
+        <mat-label for="merit">Merit Based?</mat-label>
+        <mat-select
+          #merit
+          formControlName="meritBased"
+          placeholder="Merit Based?"
+        >
+          <mat-option [value]="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search-form-field">
+        <mat-label for="need">Need Based?</mat-label>
+        <mat-select #need formControlName="needBased" placeholder="Need Based?">
+          <mat-option [value]="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search-form-field">
+        <mat-label for="essay">Essay Required?</mat-label>
+        <mat-select
+          #essay
+          formControlName="essayRequired"
+          placeholder="Essay Required?"
+        >
+          <mat-option [value]="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-slider
+        min="{{ min }}"
+        max=" {{ max }}"
+        step="step"
+        thumbLabel="thumbLabel"
+        class="search-slider"
+        [displayWith]="displayFn"
+        discrete
+      >
+        <input [value]="minChoice" matSliderStartThumb />
+        <input [value]="maxChoice" matSliderEndThumb />
+      </mat-slider>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <div class="fill-remaining-space"></div>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="searchForm.value"
+  >
+    Search
+  </button>
+</mat-dialog-actions>

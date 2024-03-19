@@ -13,6 +13,7 @@ import { ProfilePageComponent } from './Components/profile-page/profile-page.com
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
 import { scholarshipResolver } from './Resolvers/scholarship.resolver';
+import { userResolver } from './Resolvers/user.resolver';
 
 const routes: Routes = [
   {

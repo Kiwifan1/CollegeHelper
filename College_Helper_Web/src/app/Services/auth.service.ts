@@ -32,8 +32,18 @@ export class AuthService {
     if (userJson) {
       return JSON.parse(userJson) as User;
     } else {
-      return null;
+      return {} as User;
     }
+  }
+
+  getUserFromServer() {
+    const url = environment.WEB_API_URL + '/get_user';
+    const user = this.getUser() as User;
+    return this.$http.post(url, {
+      username: user.username,
+      password: user.password,
+      salt: user.salt,
+    });
   }
 
   checkIfUserIsLoggedIn() {

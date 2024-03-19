@@ -13,6 +13,7 @@ import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ConfirmPasswordDialogComponent } from '../common/confirm-password-dialog/confirm-password-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-profile-page',
@@ -20,7 +21,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './profile-page.component.scss',
 })
 export class ProfilePageComponent implements OnInit {
-  user: User | null = null;
+  user!: User;
   editable: boolean = false;
   profileForm: FormGroup = new FormGroup({
     age: new FormControl(''),
@@ -61,6 +62,25 @@ export class ProfilePageComponent implements OnInit {
         occupation: new FormControl(this.user.demographics.occupation),
         maritalStatus: new FormControl(this.user.demographics.maritalStatus),
       });
+      this.profileForm.controls['age'].setValue(this.user.demographics.age);
+      this.profileForm.controls['gender'].setValue(
+        this.user.demographics.gender
+      );
+      this.profileForm.controls['ethnicity'].setValue(
+        this.user.demographics.ethnicity
+      );
+      this.profileForm.controls['income'].setValue(
+        this.user.demographics.incomeLevel
+      );
+      this.profileForm.controls['education'].setValue(
+        this.user.demographics.educationLevel
+      );
+      this.profileForm.controls['occupation'].setValue(
+        this.user.demographics.occupation
+      );
+      this.profileForm.controls['maritalStatus'].setValue(
+        this.user.demographics.maritalStatus
+      );
     }
   }
 
@@ -83,7 +103,7 @@ export class ProfilePageComponent implements OnInit {
         this.user.password = result;
         this.authService.updateUser(this.user).subscribe({
           next: (response) => {
-            console.log(response)
+            console.log(response);
             this.authService.setUser(this.user as User);
             this.snackBar.open('Profile Updated', 'Close', {
               duration: 3000,

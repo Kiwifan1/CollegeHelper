@@ -11,12 +11,18 @@ import { Observable } from 'rxjs';
 export class ScholarshipService {
   constructor(private $http: HttpClient) {}
 
-  getScholarships(offset: number, limit: number): Observable<Scholarship[]> {
+  getScholarships(
+    offset: number,
+    limit: number,
+    filters: any = {}
+  ): Observable<Scholarship[]> {
     let url = environment.WEB_API_URL + '/get_scholarships';
-
-    return this.$http.get<Scholarship[]>(url, {
-      params: { offset: offset, limit: limit },
-    });
+    const params = {
+      offset: offset,
+      limit: limit,
+      ...filters,
+    };
+    return this.$http.get<Scholarship[]>(url, { params: params });
   }
 
   getScholarship(id: string): Observable<Scholarship> {
@@ -25,8 +31,8 @@ export class ScholarshipService {
     return this.$http.get<Scholarship>(url, { params: { id: id } });
   }
 
-  getNumScholarships() {
+  getNumScholarships(filters: any = {}): Observable<Number> {
     let url = environment.WEB_API_URL + '/get_num_scholarships';
-    return this.$http.get<Number>(url);
+    return this.$http.get<Number>(url, { params: filters });
   }
 }

@@ -1,0 +1,25 @@
+.search-form {
+  // split into two columns
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  // center
+  justify-content: center;
+  align-items: center;
+
+  .search-form-field {
+    // make the input fields take up 2 columns
+    grid-column: 1 / 3;
+    margin: 10px;
+  }
+
+  .search-slider {
+    // make the slider take up all 3 columns
+    grid-column: 1 / 4;
+    margin: 10px;
+  }
+}
+
+.scholarship-search-dialog {
+  // make wider
+  width: 100%;
+}
