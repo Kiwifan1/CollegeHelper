@@ -1,0 +1,33 @@
+<h2 mat-dialog-title>Search Criteria</h2>
+<mat-dialog-content>
+  <form [formGroup]="searchForm">
+    <div class="search-form">
+      <mat-form-field class="search-form-field">
+        <mat-select formControlname="meritBased" placeholder="Merit Based?">
+          <mat-option vlaue="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search-form-field">
+        <mat-select formControlname="needBased" placeholder="Need Based?">
+          <mat-option vlaue="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field class="search-form-field">
+        <mat-select
+          formControlname="essayRequired"
+          placeholder="Essay Required?"
+        >
+          <mat-option vlaue="val" *ngFor="let val of requirements">
+            {{ val }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>

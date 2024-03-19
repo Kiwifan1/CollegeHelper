@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 import { LoadingService } from 'src/app/Services/loading.service';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
+import { ScholarshipSearchDialogComponent } from './scholarship-search-dialog/scholarship-search-dialog.component';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -17,7 +19,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   constructor(
     private scholarshipService: ScholarshipService,
-    private loadingService: LoadingService
+    private loadingService: LoadingService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -51,6 +54,12 @@ export class ScholarshipSearchPageComponent implements OnInit {
     this.scholarshipService.getNumScholarships().subscribe((num: any) => {
       this.length = num.length;
       this.loadingService.updateLoadingStatus(false);
+    });
+  }
+
+  openSeachDialog() {
+    this.dialog.open(ScholarshipSearchDialogComponent, {
+      width: '500px',
     });
   }
 }
