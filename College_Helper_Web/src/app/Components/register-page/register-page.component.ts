@@ -15,6 +15,7 @@ import { ErrorStateMatcher } from '../login-page/login-page.component';
 import { passwordMatchValidator } from '../common/validators';
 import { User, defaultUser } from 'src/app/Objects/User/User';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoadingService } from 'src/app/Services/loading.service';
 
 @Component({
   selector: 'app-register-page',
@@ -50,7 +51,8 @@ export class RegisterPageComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private matSnackBar: MatSnackBar
+    private matSnackBar: MatSnackBar,
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {}
@@ -102,6 +104,7 @@ export class RegisterPageComponent implements OnInit {
   }
 
   createAccount() {
+    this.loadingService.updateLoadingStatus(true);
     this.authService
       .checkIfUserExists(
         this.userForm.get('email')?.value,
@@ -125,6 +128,8 @@ export class RegisterPageComponent implements OnInit {
         next: (res: any) => {
           if (res !== null && res !== undefined) {
             this.user.id = res.id;
+            this.user.salt = res.salt;
+            this.loadingService.updateLoadingStatus(false);
             this.register();
           } else {
             this.matSnackBar.open('User could not be created', 'Close', {

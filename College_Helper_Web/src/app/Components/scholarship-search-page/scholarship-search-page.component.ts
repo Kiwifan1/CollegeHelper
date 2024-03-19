@@ -22,7 +22,10 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   ngOnInit() {
     this.totalScholarships();
-    this.onPaginate({ pageIndex: this.pageIndex * this.pageSize, pageSize: this.pageSize });
+    this.onPaginate({
+      pageIndex: this.pageIndex * this.pageSize,
+      pageSize: this.pageSize,
+    });
   }
 
   onPaginate($event: any) {

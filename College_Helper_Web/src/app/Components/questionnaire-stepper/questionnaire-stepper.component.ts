@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { Gender } from 'src/app/Objects/User/Demographics';
 import { User } from 'src/app/Objects/User/User';
@@ -81,8 +81,13 @@ export class QuestionnaireStepperComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.data.subscribe((data: any) => {
+      this.user = data.user;
+    });
+  }
 
   ngOnInit(): void {
     localStorage.removeItem('registrationComplete');
@@ -151,8 +156,9 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.authService
       .updateUser(this.user)
       .pipe(
-        switchMap((res: any) => {
-          if (res.userUpdateSuccess) {
+        switchMap((user: any) => {
+          if (user) {
+            this.authService.setUser(user);
             return this.authService.login(
               this.user.username,
               this.user.password
