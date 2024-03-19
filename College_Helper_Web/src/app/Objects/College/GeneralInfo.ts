@@ -2,9 +2,10 @@ import { Address } from '../Address';
 
 export interface GeneralInfo {
   address: Address;
-  funding: string;
+  institutionFunding: string;
   history: string;
   academicYear: string;
   languages: string[];
-  accreditations: string[];
+  accreditingAgency: string[];
+  studentBody: string;
 }

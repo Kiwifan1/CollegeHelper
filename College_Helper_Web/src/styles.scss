@@ -95,10 +95,6 @@ body {
   align-items: center;
 }
 
-.page-content {
-  flex-direction: column;
-}
-
 #loader {
   position: absolute;
   top: 0;
@@ -174,10 +170,6 @@ body {
   text-align: right;
 }
 
-mat-panel-title {
-  font-weight: bold;
-  align-self: center;
-}
 
 .grid-container {
   display: grid;

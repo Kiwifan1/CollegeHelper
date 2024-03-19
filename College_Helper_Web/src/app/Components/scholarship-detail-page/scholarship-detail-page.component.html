@@ -1,0 +1,91 @@
+<div class="page">
+  <div class="page-content">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          <h3>
+            <strong>{{ scholarship.scholarshipName }}</strong>
+          </h3>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <h4>
+            <strong> Amount: {{ scholarship.amountDisplay | money }} </strong>
+            | Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
+            {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
+          </h4>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <h4>
+          <strong> Description: </strong>
+        </h4>
+        <p>
+          {{ scholarship.aboutPara }}
+        </p>
+        <div class="content-grid">
+          <div class="left">
+            <h4>
+              <strong> Requirements: </strong>
+            </h4>
+            <ul>
+              <li
+                *ngFor="
+                  let requirement of scholarship.eligibilityCriteriaDescriptions
+                "
+              >
+                {{ requirement }}
+              </li>
+            </ul>
+            <h4>
+              <strong>Application Information:</strong>
+            </h4>
+            <ul>
+              <li *ngIf="scholarship.isEssayRequired">
+                <span>Essay Required</span>
+              </li>
+              <li *ngIf="scholarship.isNeedBased">
+                <span>Need Based</span>
+              </li>
+              <li *ngIf="scholarship.isMeritBased">
+                <span>Merit Based</span>
+              </li>
+              <li *ngIf="!scholarship.applicationFee">
+                <span>No Application Fee</span>
+              </li>
+            </ul>
+          </div>
+          <div class="right">
+            <h4>
+              <strong> Deadline to Apply: </strong>
+              {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
+            </h4>
+            <div *ngIf="scholarship.applicationUrl">
+              <h4>
+                <strong> Website: </strong>
+                <a [href]="scholarship.programUrl" target="_blank">Visit Now</a>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="secondary"
+          [routerLink]="['/scholarship-search']"
+        >
+          Back
+        </button>
+        <div class="fill-remaining-space"></div>
+        <a
+          mat-raised-button
+          color="primary"
+          [disabled]="!isWithinDate()"
+          href="{{ scholarship.applicationUrl }}"
+        >
+          {{ isWithinDate() ? "Apply" : "Closed" }}
+        </a>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,43 @@
+<mat-card class="scholarship-card">
+  <mat-card-header>
+    <mat-card-title>
+      <h1 class="scholarship-name">
+        <strong>{{ scholarship.scholarshipName }}</strong>
+      </h1>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="content-grid">
+      <div class="left">
+        <mat-card-subtitle>
+          <h3>{{ scholarship.programOrgName }}</h3>
+          <h2>
+            <strong> Amount: {{ scholarship.amountDisplay | money }} </strong> |
+            Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
+            {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
+          </h2>
+        </mat-card-subtitle>
+        <button mat-raised-button color="primary" (click)="handleViewDetails()">
+          View Details
+        </button>
+      </div>
+      <div class="right">
+        <div class="reqList">
+          <!-- inline list of whether essay is required, is need based, or is merit based -->
+          <li *ngIf="scholarship.isEssayRequired">
+            <mat-icon matTooltip="Essay Required">edit</mat-icon>
+          </li>
+          <li *ngIf="scholarship.isNeedBased">
+            <mat-icon matTooltip="Need Based">payments</mat-icon>
+          </li>
+          <li *ngIf="scholarship.isMeritBased">
+            <mat-icon matTooltip="Merit Based">star</mat-icon>
+          </li>
+          <li *ngIf="!scholarship.applicationFee">
+            <mat-icon matTooltip="No Application Fee">money_off</mat-icon>
+          </li>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

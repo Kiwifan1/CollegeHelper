@@ -5,15 +5,25 @@ import { CollegeSearchPageComponent } from './Components/college-search-page/col
 import { PageNotFoundComponent } from './Components/page-not-found/page-not-found.component';
 import { LoginPageComponent } from './Components/login-page/login-page.component';
 import { RegisterPageComponent } from './Components/register-page/register-page.component';
-import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
 import { notLoggedInGuard } from './guards/not-logged-in.guard';
 import { questionnaireGuard } from './guards/questionnaire.guard';
+import { HomePageComponent } from './Components/home-page/home-page.component';
+import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
+import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
+import { scholarshipResolver } from './Resolvers/scholarship.resolver';
+import { userResolver } from './Resolvers/user.resolver';
 
 const routes: Routes = [
   {
     path: 'home',
-    component: PageNotFoundComponent,
+    component: HomePageComponent,
+    canActivate: [loginGuard],
+  },
+  {
+    path: 'profile',
+    component: ProfilePageComponent,
     canActivate: [loginGuard],
   },
   {
@@ -22,9 +32,15 @@ const routes: Routes = [
     canActivate: [loginGuard],
   },
   {
-    path: 'increment',
-    component: IncrementCardComponent,
+    path: 'scholarship-search',
+    component: ScholarshipSearchPageComponent,
     canActivate: [loginGuard],
+  },
+  {
+    path: 'scholarship/:id',
+    component: ScholarshipDetailPageComponent,
+    canActivate: [loginGuard],
+    resolve: {scholarship: scholarshipResolver}
   },
   {
     path: 'login',
@@ -38,7 +54,7 @@ const routes: Routes = [
   {
     path: 'questionnaire',
     component: QuestionnaireStepperComponent,
-    canActivate: [questionnaireGuard, notLoggedInGuard],
+    canActivate: [questionnaireGuard],
   },
   { path: '404', component: PageNotFoundComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' },

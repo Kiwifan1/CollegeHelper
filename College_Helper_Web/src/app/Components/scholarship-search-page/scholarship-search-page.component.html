@@ -1,0 +1,33 @@
+<div class="page">
+  <div class="page-content">
+    <div class="scholarships">
+      <div class="scholarship-header">
+        <button
+          mat-raised-button
+          color="primary"
+          class="scholarship-search-button"
+          (click)="openSeachDialog()"
+        >
+        Advanced Search
+        <mat-icon matSuffix>search</mat-icon>
+      </button>
+      </div>
+      <div class="scholarship-content">
+        <div class="scholarship-list" *ngFor="let scholarship of scholarships">
+          <app-scholarship-item
+            [scholarship]="scholarship"
+          ></app-scholarship-item>
+        </div>
+      </div>
+      <mat-paginator
+        #scholarshipPaginator
+        (page)="onPaginate($event)"
+        [length]="length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="true"
+        [pageIndex]="pageIndex"
+      ></mat-paginator>
+    </div>
+  </div>
+</div>

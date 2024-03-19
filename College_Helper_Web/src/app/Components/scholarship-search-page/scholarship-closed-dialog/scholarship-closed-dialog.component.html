@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Are you sure?</h2>
+<mat-dialog-content>
+  <p>The scholarship you are trying to apply for is closed.</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Go Back</button>
+  <div class="fill-remaining-space"></div>
+  <button mat-button [mat-dialog-close]="true" (click)="routeToDetails()">
+    Continue Anyway
+  </button>
+</mat-dialog-actions>

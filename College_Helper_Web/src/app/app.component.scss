@@ -11,10 +11,6 @@ mat-list-item {
   }
 }
 
-mat-sidenav-content {
-  overflow: hidden;
-}
-
 .sidenav-container {
   display: flex;
   flex-direction: column;
@@ -29,13 +25,30 @@ mat-sidenav-content {
 }
 
 mat-sidenav-content {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y:auto;
 }
 
 .sidenav-container {
-  height: 90%;
+  height: 100%;
 }
 
 .sidenav {
   width: 200px;
+}
+
+.overlay-page {
+  // overlay the entire page
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  // center the content
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // make it pretty
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }

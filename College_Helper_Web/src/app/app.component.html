@@ -1,3 +1,6 @@
+<div class="overlay-page" *ngIf="isLoading">
+  <mat-spinner #loader></mat-spinner>
+</div>
 <mat-sidenav-container class="sidenav-container" autosize [hasBackdrop]="true">
   <mat-sidenav #sidenav [mode]="'over'" (click)="sidenav.toggle()">
     <mat-toolbar>
@@ -11,12 +14,16 @@
         <span mat-line>Home</span></mat-list-item
       >
       <mat-list-item routerLink="/college-search">
-        <mat-icon mat-list-icon>search</mat-icon>
-        <span mat-line>College Search</span></mat-list-item
+        <mat-icon mat-list-icon>school</mat-icon>
+        <span mat-line>Colleges</span></mat-list-item
       >
-      <mat-list-item routerLink="/increment">
-        <mat-icon mat-list-icon>add</mat-icon>
-        <span mat-line>Increment Card</span></mat-list-item
+      <mat-list-item routerLink="/scholarship-search">
+        <mat-icon mat-list-icon>attach_money</mat-icon>
+        <span mat-line>Scholarships</span>
+      </mat-list-item>
+      <mat-list-item routerLink="/profile">
+        <mat-icon mat-list-icon>account_circle</mat-icon>
+        <span mat-line>Profile</span></mat-list-item
       >
     </mat-nav-list>
   </mat-sidenav>

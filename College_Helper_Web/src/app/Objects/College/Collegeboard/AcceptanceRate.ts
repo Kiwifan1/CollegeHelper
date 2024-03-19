@@ -1,7 +1,7 @@
 export interface AcceptanceRate {
-  description: string;
-  rate: string;
-  applicantCount: number;
-  admittedCount: number;
-  enrolledCount: number;
+  acceptanceDescription: string | null;
+  acceptanceRate: string | null;
+  totalApplicants: number | null;
+  admitted: number | null;
+  enrolled: number | null;
 }

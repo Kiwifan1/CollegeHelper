@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { User, defaultUser } from '../Objects/User/User';
+import { User } from '../Objects/User/User';
 @Injectable({
   providedIn: 'root',
 })
@@ -32,8 +32,18 @@ export class AuthService {
     if (userJson) {
       return JSON.parse(userJson) as User;
     } else {
-      return null;
+      return {} as User;
     }
+  }
+
+  getUserFromServer() {
+    const url = environment.WEB_API_URL + '/get_user';
+    const user = this.getUser() as User;
+    return this.$http.post(url, {
+      username: user.username,
+      password: user.password,
+      salt: user.salt,
+    });
   }
 
   checkIfUserIsLoggedIn() {
@@ -46,7 +56,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('user');
-
+    localStorage.removeItem('scholarships');
     if (localStorage.getItem('user')) {
       return false;
     }

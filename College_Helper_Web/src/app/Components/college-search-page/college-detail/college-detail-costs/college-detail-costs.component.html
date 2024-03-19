@@ -1,7 +1,9 @@
 <div class="info-box">
   <div class="info">
-    <h2 class="title-inline">Average Net Cost:&ensp;&ensp;</h2>
-    <span>{{ getValue(getCost()?.avgNetPrice) | money }}</span>
+    <h2 class="title-inline">
+      Average Net Cost:&ensp;&ensp;
+      <span>{{ getValue(getCost().averageNetPrice) | money }}</span>
+    </h2>
 
     <!-- Sticker Price -->
     <div class="info-item">
@@ -10,46 +12,68 @@
         <table>
           <tr>
             <td>In-State:</td>
-            <td>{{ getValue(getCost()?.stickerPrice?.inState) | money }}</td>
+            <td>
+              {{ getValue(getCost().tuitionInfo.inStateTuition) | money }}
+            </td>
           </tr>
           <tr>
             <td>Out-of-State:</td>
-            <td>{{ getValue(getCost()?.stickerPrice?.outOfState) | money }}</td>
+            <td>
+              {{ getValue(getCost().tuitionInfo.outOfStateTuition) | money }}
+            </td>
           </tr>
         </table>
       </ul>
     </div>
-
     <!-- Income Price -->
     <div class="info-item">
       <ul>
         <p class="label">Net price based on Family Income:</p>
         <table>
           <tr>
-            <td>110k+:</td>
-            <td>{{ getValue(getCost()?.netPriceIncome?.['110k+']) | money}}</td>
-          </tr>
-          <tr>
-            <td>75-110k:</td>
+            <td>$0-$30,000:</td>
             <td>
-              {{ getValue(getCost()?.netPriceIncome?.['75-110k']) | money }}
+              {{
+                getValue(getCost().netPriceByIncome.averageNetPriceBelow30K)
+                  | money
+              }}
             </td>
           </tr>
           <tr>
-            <td>48-75k:</td>
+            <td>$30,001-$48,000:</td>
             <td>
-              {{ getValue(getCost()?.netPriceIncome?.['48-75k']) | money }}
+              {{
+                getValue(getCost().netPriceByIncome.averageNetPrice30To48K)
+                  | money
+              }}
             </td>
           </tr>
           <tr>
-            <td>30-48k:</td>
+            <td>$48,001-$75,000:</td>
             <td>
-              {{ getValue(getCost()?.netPriceIncome?.['30-48k']) | money }}
+              {{
+                getValue(getCost().netPriceByIncome.averageNetPrice48To75K)
+                  | money
+              }}
             </td>
           </tr>
           <tr>
-            <td>0-30k:</td>
-            <td>{{ getValue(getCost()?.netPriceIncome?.['<30k']) | money }}</td>
+            <td>$75,001-$110,000:</td>
+            <td>
+              {{
+                getValue(getCost().netPriceByIncome.averageNetPrice75To110K)
+                  | money
+              }}
+            </td>
+          </tr>
+          <tr>
+            <td>$110,000+:</td>
+            <td>
+              {{
+                getValue(getCost().netPriceByIncome.averageNetPriceAbove110K)
+                  | money
+              }}
+            </td>
           </tr>
         </table>
       </ul>
@@ -59,23 +83,32 @@
       <ul>
         <p class="label">Other Costs:</p>
         <table>
-          <tr *ngIf="getCost()?.otherCosts?.supplies">
+          <tr *ngIf="getCost().tuitionInfo.booksAndSuppliesCost">
             <td>Books and Supplies:</td>
-            <td>{{ getValue(getCost()?.otherCosts?.supplies) | money }}</td>
-          </tr>
-          <tr *ngIf="getCost()?.otherCosts?.housing">
-            <td>Room and Board:</td>
-            <td>{{ getValue(getCost()?.otherCosts?.housing) | money }}</td>
-          </tr>
-          <tr *ngIf="getCost()?.otherCosts?.transportation">
-            <td>Transportation:</td>
             <td>
-              {{ getValue(getCost()?.otherCosts?.transportation) | money }}
+              {{ getValue(getCost().tuitionInfo.booksAndSuppliesCost) | money }}
             </td>
           </tr>
-          <tr *ngIf="getCost()?.otherCosts?.personal">
+          <tr *ngIf="getCost().tuitionInfo?.averageHousingCost">
+            <td>Room and Board:</td>
+            <td>
+              {{ getValue(getCost().tuitionInfo.averageHousingCost) | money }}
+            </td>
+          </tr>
+          <tr *ngIf="getCost().tuitionInfo?.transportationCosts">
+            <td>Transportation:</td>
+            <td>
+              {{ getValue(getCost().tuitionInfo.transportationCosts) | money }}
+            </td>
+          </tr>
+          <tr *ngIf="getCost().tuitionInfo?.estimatedPersonalExpenses">
             <td>Other Expenses:</td>
-            <td>{{ getValue(getCost()?.otherCosts?.personal) | money }}</td>
+            <td>
+              {{
+                getValue(getCost().tuitionInfo.estimatedPersonalExpenses)
+                  | money
+              }}
+            </td>
           </tr>
         </table>
       </ul>

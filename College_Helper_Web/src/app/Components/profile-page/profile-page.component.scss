@@ -1,0 +1,31 @@
+.page-card {
+  // card that takes up the whole page
+  width: 99%;
+  height: 100%;
+}
+
+mat-card-subtitle {
+  // align icon and text to the left
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  mat-icon {
+    margin-right: 10px;
+  }
+  span {
+    margin-right: 10px;
+  }
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+
+  .profile-info-item {
+    // full of .form-fields that should be aligned to the left
+    flex-direction: row;
+    align-items: left;
+    margin: 10px;
+    width: 40%;
+  }
+}

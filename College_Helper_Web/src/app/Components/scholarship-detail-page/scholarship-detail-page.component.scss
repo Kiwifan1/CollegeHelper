@@ -1,0 +1,15 @@
+mat-card {
+  margin-right: 25px;
+}
+
+.content-grid {
+    // make grid layout for the content so that on the far left is .left
+    // and on the far right is .right
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "left right";
+
+    // add a little space between the columns
+    column-gap: 10px;
+}

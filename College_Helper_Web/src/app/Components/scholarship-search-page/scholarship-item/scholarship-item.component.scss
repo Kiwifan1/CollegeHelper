@@ -1,0 +1,61 @@
+.scholarship-card {
+  // round the corners of the card
+  border-radius: 15px;
+  margin-right: 20px;
+  height: 100%;
+  max-height: 300px;
+}
+
+button {
+  // force right
+  margin-left: auto;
+  margin-top: 15px;
+}
+
+.reqList {
+  // inline the list
+  display: flex;
+  // center the mat-icon in the list
+  align-items: center;
+  mat-icon {
+    margin-right: 5px;
+  }
+  li {
+    display: flex;
+    align-items: center;
+  }
+  // don't let dots show up
+  list-style-type: none;
+  // make the list a little smaller
+  font-size: 12px;
+}
+
+.content-grid {
+  // make a column layout for the content so that on the far left is .left
+  // and on the far right is .right
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  // make the left and right columns inline
+  .left,
+  .right {
+    display: flex;
+  }
+
+  .left {
+    // make the left column take up the most space
+    flex-grow: 1;
+  }
+
+  .right {
+    // make the right column take up the least space
+    flex-grow: 0;
+  }
+}
+
+.scholarship-name {
+  // make inline
+  display: flex;
+}

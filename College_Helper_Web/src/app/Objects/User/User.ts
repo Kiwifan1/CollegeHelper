@@ -10,6 +10,7 @@ export interface User {
   address: Address;
   demographics: Demographics;
   scores: Scores;
+  salt: string;
   collegePreferences: string[];
   majorPreferences: string[];
   careerPreferences: string[];
@@ -17,17 +18,20 @@ export interface User {
 }
 
 export const defaultUser: User = {
-  id: "",
-  username: "",
-  email: "",
-  password: "",
+  id: '',
+  username: '',
+  email: '',
+  password: '',
+  salt: '',
   address: {
     street: null,
     city: null,
-    state: null,
-    zip: null,
+    province: null,
+    postCode: null,
     country: null,
     website: null,
+    latitude: null,
+    longitude: null,
   },
   demographics: {
     age: null,

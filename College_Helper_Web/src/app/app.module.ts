@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthService } from './Services/auth.service';
 import { HttpClient, provideHttpClient } from '@angular/common/http';
-import { IncrementCardComponent } from './Components/increment-card/increment-card.component';
 import { MatCardActions, MatCardModule } from '@angular/material/card';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -47,11 +46,26 @@ import { CareerInfoComponent } from './Components/questionnaire-stepper/career-i
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
+import { HomePageComponent } from './Components/home-page/home-page.component';
+import { ProfilePageComponent } from './Components/profile-page/profile-page.component';
+import { ConfirmPasswordDialogComponent } from './Components/common/confirm-password-dialog/confirm-password-dialog.component';
+import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
+import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
+import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
+import { DateColorPipe } from './Components/common/date-color.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { PercentPipe } from './Components/common/percent.pipe';
+import { AddressComponent } from './Components/questionnaire-stepper/general-info/address/address.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { ScholarshipSearchDialogComponent } from './Components/scholarship-search-page/scholarship-search-dialog/scholarship-search-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    IncrementCardComponent,
     LoginPageComponent,
     CollegeSearchPageComponent,
     PageNotFoundComponent,
@@ -72,7 +86,17 @@ import { ReviewComponent } from './Components/questionnaire-stepper/review/revie
     MajorInfoComponent,
     CareerInfoComponent,
     ReviewComponent,
+    HomePageComponent,
+    ProfilePageComponent,
+    ConfirmPasswordDialogComponent,
+    ScholarshipSearchPageComponent,
+    ScholarshipItemComponent,
+    ScholarshipDetailPageComponent,
+    ScholarshipClosedDialogComponent,
+    AddressComponent,
+    ScholarshipSearchDialogComponent
   ],
+
   imports: [
     BrowserModule,
     CommonModule,
@@ -103,6 +127,14 @@ import { ReviewComponent } from './Components/questionnaire-stepper/review/revie
     MoneyPipe,
     MatExpansionModule,
     MatCheckboxModule,
+    DateColorPipe,
+    MatTooltipModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
+    InfiniteScrollModule,
+    PercentPipe,
+    MatSliderModule,
+    MatDialogModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

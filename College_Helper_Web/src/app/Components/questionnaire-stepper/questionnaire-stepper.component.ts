@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { Gender } from 'src/app/Objects/User/Demographics';
 import { User } from 'src/app/Objects/User/User';
@@ -13,18 +13,19 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
-  // all information is not required, but will be helpful for the user
-
   userGeneralInfoForm: FormGroup = new FormGroup({
-    age: new FormControl('', [Validators.min(0), Validators.max(120)]),
-    gender: new FormControl(''),
-    ethnicity: new FormControl(''),
-    nationality: new FormControl(''),
-    educationLevel: new FormControl(''),
-    occupation: new FormControl(''),
-    incomeLevel: new FormControl(''),
-    maritalStatus: new FormControl(''),
-    location: new FormControl(''),
+    age: new FormControl('', [
+      Validators.min(0),
+      Validators.max(120),
+      Validators.required,
+    ]),
+    addresses: new FormControl(['']),
+    gender: new FormControl('', [Validators.required]),
+    ethnicity: new FormControl('', [Validators.required]),
+    educationLevel: new FormControl('', [Validators.required]),
+    occupation: new FormControl('', [Validators.required]),
+    incomeLevel: new FormControl('', [Validators.required]),
+    maritalStatus: new FormControl('', [Validators.required]),
   });
 
   userScoreInfoForm: FormGroup = new FormGroup({
@@ -35,10 +36,6 @@ export class QuestionnaireStepperComponent implements OnInit {
     IB: new FormControl(''),
     PSAT10: new FormControl('', [Validators.min(320), Validators.max(1520)]),
     NMSQT: new FormControl('', [Validators.min(320), Validators.max(1520)]),
-  });
-
-  userBasicCollegePreferencesForm: FormGroup = new FormGroup({
-    colleges: new FormControl(['']),
   });
 
   userBasicMajorPreferencesForm: FormGroup = new FormGroup({
@@ -57,7 +54,6 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
     collegeSize: new FormControl(''),
-    collegeLocation: new FormControl(''),
     collegeCost: new FormControl(''),
     collegeSports: new FormControl(''),
     collegeClubs: new FormControl(''),
@@ -85,8 +81,13 @@ export class QuestionnaireStepperComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.data.subscribe((data: any) => {
+      this.user = data.user;
+    });
+  }
 
   ngOnInit(): void {
     localStorage.removeItem('registrationComplete');
@@ -112,10 +113,12 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.user.address = {
       street: this.userGeneralInfoForm.get('location')?.value,
       city: '',
-      state: '',
-      zip: '',
+      province: '',
+      postCode: '',
       country: '',
       website: '',
+      latitude: '',
+      longitude: '',
     };
 
     this.user.demographics = {
@@ -138,9 +141,6 @@ export class QuestionnaireStepperComponent implements OnInit {
       NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
     };
 
-    this.user.collegePreferences = [
-      this.userBasicCollegePreferencesForm.get('colleges')?.value,
-    ];
     this.user.majorPreferences = [
       this.userBasicMajorPreferencesForm.get('majors')?.value,
     ];
@@ -156,8 +156,9 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.authService
       .updateUser(this.user)
       .pipe(
-        switchMap((res: any) => {
-          if (res.userUpdateSuccess) {
+        switchMap((user: any) => {
+          if (user) {
+            this.authService.setUser(user);
             return this.authService.login(
               this.user.username,
               this.user.password
