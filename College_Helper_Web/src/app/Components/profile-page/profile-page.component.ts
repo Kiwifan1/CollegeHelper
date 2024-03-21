@@ -57,7 +57,9 @@ export class ProfilePageComponent implements OnInit {
     if (this.user) {
       this.profileForm = new FormGroup({
         age: new FormControl(this.user.demographics.age),
-        gender: new FormControl(this.user.demographics.gender),
+        gender: new FormControl(
+          this.user.demographics.demographicInfo.identities.genderIdentity
+        ),
         ethnicity: new FormControl(
           this.user.demographics.demographicInfo.identities.ethnicity
         ),
@@ -68,7 +70,7 @@ export class ProfilePageComponent implements OnInit {
       });
       this.profileForm.controls['age'].setValue(this.user.demographics.age);
       this.profileForm.controls['gender'].setValue(
-        this.user.demographics.gender
+        this.user.demographics.demographicInfo.identities.genderIdentity
       );
       this.profileForm.controls['ethnicity'].setValue(
         this.user.demographics.demographicInfo.identities.ethnicity
@@ -91,7 +93,8 @@ export class ProfilePageComponent implements OnInit {
   onSubmit() {
     if (this.user) {
       this.user.demographics.age = this.profileForm.value.age;
-      this.user.demographics.gender = this.profileForm.value.gender;
+      this.user.demographics.demographicInfo.identities.genderIdentity =
+        this.profileForm.value.gender;
       this.user.demographics.demographicInfo.identities.ethnicity =
         this.profileForm.value.ethnicity;
       this.user.demographics.educationLevel = this.profileForm.value.education;

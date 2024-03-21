@@ -1,13 +1,12 @@
-import { CitizenshipStatusesEnum } from '../enums/Citizenschip';
+import { CitizenshipStatusesEnum } from '../enums/Citizenship';
 import { DegreeSeekingEnum } from '../enums/DegreeSeekings';
-import { DemographicIdentities } from '../enums/Demographics';
+import { DemographicIdentities, GenderIdentityEnum } from '../enums/Demographics';
 import { FieldsOfStudyEnum } from '../enums/FieldsOfStudy';
 import { Interest } from '../enums/Interests';
 import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
 
 export interface Demographics {
   age: number | null;
-  gender: string | null;
   demographicInfo: DemographicInfo;
   educationLevel: EducationLevel | null;
   occupation: Occupation | null;

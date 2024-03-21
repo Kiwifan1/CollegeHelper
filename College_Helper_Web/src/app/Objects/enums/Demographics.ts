@@ -1,12 +1,11 @@
 export interface DemographicIdentities {
-  geographicalRegion: GeographicalRegionEnum[];
+  nationality: NationalityEnum[];
   ethnicity: EthnicityEnum[];
   genderIdentity: GenderIdentityEnum[];
   sexualOrientation: SexualOrientationEnum[];
 }
 
-export enum GeographicalRegionEnum {
-  'Prefer to Self-Identify',
+export enum NationalityEnum {
   'Alaska Native',
   'Native Pacific Islander',
   'Native Hawaiian',
@@ -40,18 +39,18 @@ export enum GeographicalRegionEnum {
   'Southeast Asian',
   'American Indian or Alaska Native',
   'African American',
-  'Black',
-  'White',
   'Native Hawaiian or Other Pacific Islander',
   'Chinese',
   'Finnish',
   'Bengal',
   'Arabic',
   'Syrian',
+  'Prefer to Self-Identify',
 }
 
 export enum EthnicityEnum {
-  'Prefer to Self-Identify',
+  'Caucasian',
+  'Black or African American',
   'Portuguese',
   'Saponi',
   'Penobscot',
@@ -82,7 +81,6 @@ export enum EthnicityEnum {
   'Ethiopian',
   'Vietnamese',
   'Filipino',
-  'Black or African American',
   'Maliseet',
   'Jamaican',
   'Yavapai',
@@ -126,9 +124,12 @@ export enum EthnicityEnum {
   'Jewish',
   'Micmacs',
   'Cheyenne',
+  'Prefer to Self-Identify',
 }
 
 export enum GenderIdentityEnum {
+  'Male',
+  'Female',
   'Nonbinary',
   'Transgender',
   'Transgender Male to Female',
@@ -140,20 +141,17 @@ export enum GenderIdentityEnum {
   'Lesbian',
   'Bisexual',
   'Two-Spirit',
-  'Female',
-  'Male',
   'Prefer to Self-Identify',
 }
 
 export enum SexualOrientationEnum {
+  'Heterosexual',
   'Gay',
   'LGBTQIA+',
-  'Heterosexual',
   'Prefer to Self-Identify',
 }
 
 export enum DemographicsEnum {
-  null,
   'Alaska Native',
   'Portuguese',
   'Saponi',

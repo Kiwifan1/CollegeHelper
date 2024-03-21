@@ -19,8 +19,15 @@ export class QuestionnaireStepperComponent implements OnInit {
       Validators.required,
     ]),
     addresses: new FormControl(['']),
-    gender: new FormControl('', [Validators.required]),
-    ethnicity: new FormControl('', [Validators.required]),
+    demographicInfo: new FormGroup({
+      identities: new FormGroup({
+        ethnicity: new FormControl('', [Validators.required]),
+        nationality: new FormControl('', [Validators.required]),
+        genderIdentity: new FormControl('', [Validators.required]),
+        sexualOrientation: new FormControl('', [Validators.required]),
+      }),
+      citizenships: new FormControl(['']),
+    }),
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),
     incomeLevel: new FormControl('', [Validators.required]),
@@ -39,10 +46,13 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   userBasicMajorPreferencesForm: FormGroup = new FormGroup({
     majors: new FormControl(['']),
+    degreeSeeking: new FormControl(['']),
+    fieldsOfStudy: new FormControl(['']),
   });
 
   userBasicCareerPreferencesForm: FormGroup = new FormGroup({
     careers: new FormControl(['']),
+    interests: new FormControl(['']),
   });
 
   userCurrentCoursesForm: FormGroup = new FormGroup({
@@ -122,10 +132,9 @@ export class QuestionnaireStepperComponent implements OnInit {
 
     this.user.demographics = {
       age: this.userGeneralInfoForm.get('age')?.value,
-      gender: this.userGeneralInfoForm.get('gender')?.value,
       demographicInfo: {
         identities: {
-          geographicalRegion: [],
+          nationality: [],
           genderIdentity: [],
           sexualOrientation: [],
           ethnicity: [this.userGeneralInfoForm.get('ethnicity')?.value],
