@@ -26,7 +26,7 @@ export class QuestionnaireStepperComponent implements OnInit {
         genderIdentity: new FormControl('', [Validators.required]),
         sexualOrientation: new FormControl('', [Validators.required]),
       }),
-      citizenships: new FormControl(['']),
+      citizenship: new FormControl([''], [Validators.required]),
     }),
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),

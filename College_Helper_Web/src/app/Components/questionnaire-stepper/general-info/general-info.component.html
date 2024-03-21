@@ -1,49 +1,3 @@
-<form [formGroup]="demographicForm">
-  <mat-form-field>
-    <mat-label for="citizenships">Citizenship</mat-label>
-    <mat-select formControlName="citizenships">
-      <mat-option *ngFor="let c of citizenshipEnums" [value]="c">{{
-        c
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
-
-<form [formGroup]="identityForm">
-  <mat-form-field>
-    <mat-label for="genderIdentity">Gender</mat-label>
-    <mat-select formControlName="genderIdentity">
-      <mat-option *ngFor="let g of genderEnums" [value]="g">{{ g }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label for="sexualOrientation">Sexual Orientation</mat-label>
-    <mat-select formControlName="sexualOrientation">
-      <mat-option *ngFor="let s of sexualOrientationEnums" [value]="s">{{
-        s
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label for="ethnicity">Ethnicity</mat-label>
-    <mat-select formControlName="ethnicity">
-      <mat-option *ngFor="let e of ethnicityEnums" [value]="e">{{
-        e
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label for="nationality">Nationality</mat-label>
-    <mat-select formControlName="nationality">
-      <mat-option *ngFor="let n of nationalityEnums" [value]="n">{{
-        n
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
 <form [formGroup]="generalUserInfoForm">
   <div class="form-group">
     <mat-form-field>
@@ -54,9 +8,56 @@
         class="form-control"
         id="age"
         formControlName="age"
-      />
-    </mat-form-field>
+        />
+      </mat-form-field>
+      
+      <form [formGroup]="demographicForm">
+        <mat-form-field>
+          <mat-label for="citizenship">Citizenship</mat-label>
+          <mat-select formControlName="citizenship">
+            <mat-option *ngFor="let c of citizenshipEnums" [value]="c">{{
+              c
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </form>
+    <form [formGroup]="identityForm">
+      <mat-form-field>
+        <mat-label for="genderIdentity">Gender</mat-label>
+        <mat-select formControlName="genderIdentity">
+          <mat-option *ngFor="let g of genderEnums" [value]="g">{{
+            g
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
+      <mat-form-field>
+        <mat-label for="sexualOrientation">Sexual Orientation</mat-label>
+        <mat-select formControlName="sexualOrientation">
+          <mat-option *ngFor="let s of sexualOrientationEnums" [value]="s">{{
+            s
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="ethnicity">Ethnicity</mat-label>
+        <mat-select formControlName="ethnicity">
+          <mat-option *ngFor="let e of ethnicityEnums" [value]="e">{{
+            e
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label for="nationality">Nationality</mat-label>
+        <mat-select formControlName="nationality">
+          <mat-option *ngFor="let n of nationalityEnums" [value]="n">{{
+            n
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
     <mat-form-field>
       <mat-label for="education">Educational Level</mat-label>
       <mat-select formControlName="educationLevel">

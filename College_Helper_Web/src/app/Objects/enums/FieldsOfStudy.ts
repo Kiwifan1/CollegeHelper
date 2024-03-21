@@ -1,5 +1,4 @@
 export enum FieldsOfStudyEnum {
-  null,
   'Wildlife Biology.',
   'Costume',
   'Energy Law',

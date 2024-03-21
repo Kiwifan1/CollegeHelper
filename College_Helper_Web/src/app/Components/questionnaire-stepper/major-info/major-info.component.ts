@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
+import { FieldsOfStudyEnum } from 'src/app/Objects/enums/FieldsOfStudy';
 
 @Component({
   selector: 'app-major-info',
@@ -11,21 +12,9 @@ export class MajorInfoComponent implements OnInit {
   @Input() basicMajorPreferencesForm!: FormGroup;
   @Input() advancedMajorPreferencesForm!: FormGroup;
 
-  majors = [
-    'Aerospace Engineering',
-    'Agricultural Engineering',
-    'Biomedical Engineering',
-    'Chemical Engineering',
-    'Civil Engineering',
-    'Computer Engineering',
-    'Electrical Engineering',
-    'Environmental Engineering',
-    'Industrial Engineering',
-    'Materials Engineering',
-    'Mechanical Engineering',
-    'Nuclear Engineering',
-  ];
-
+  majors: string[] = Object.values(FieldsOfStudyEnum).filter(
+    (value) => typeof value === 'string'
+  ).map(value => value.toString());
   filteredMajors = of(this.majors);
   searchForm: FormControl = new FormControl('');
 
@@ -46,7 +35,7 @@ export class MajorInfoComponent implements OnInit {
   filterMajors() {
     const searchValue = this.searchForm.value.toLowerCase();
     this.filteredMajors = of(
-      this.majors.filter((major) => major.toLowerCase().includes(searchValue))
+      this.majors.filter((major) => major.toString().toLowerCase().includes(searchValue))
     );
   }
 }
