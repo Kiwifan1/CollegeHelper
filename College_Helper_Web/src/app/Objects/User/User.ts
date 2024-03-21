@@ -35,9 +35,9 @@ export const defaultUser: User = {
   },
   demographics: {
     age: null,
+    gender: null,
     demographicInfo: {
-      gender: null,
-      demographics: {
+      identities: {
         geographicalRegion: [],
         genderIdentity: [],
         sexualOrientation: [],
