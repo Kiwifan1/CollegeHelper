@@ -4,10 +4,10 @@ import { of } from 'rxjs';
 
 @Component({
   selector: 'app-career-info',
-  templateUrl: './career-info.component.html',
-  styleUrl: './career-info.component.scss',
+  templateUrl: './interest-info.component.html',
+  styleUrl: './interest-info.component.scss',
 })
-export class CareerInfoComponent implements OnInit {
+export class InterestInfoComponent implements OnInit {
   @Input() basicCareerPreferencesForm!: FormGroup;
   @Input() advancedCareerPreferencesForm!: FormGroup;
 

@@ -12,9 +12,9 @@ export class MajorInfoComponent implements OnInit {
   @Input() basicMajorPreferencesForm!: FormGroup;
   @Input() advancedMajorPreferencesForm!: FormGroup;
 
-  majors: string[] = Object.values(FieldsOfStudyEnum).filter(
-    (value) => typeof value === 'string'
-  ).map(value => value.toString());
+  majors: string[] = Object.values(FieldsOfStudyEnum)
+    .filter((value) => typeof value === 'string')
+    .map((value) => value.toString());
   filteredMajors = of(this.majors);
   searchForm: FormControl = new FormControl('');
 
@@ -28,14 +28,16 @@ export class MajorInfoComponent implements OnInit {
 
   selectMajor(major: string) {
     this.basicMajorPreferencesForm.patchValue({
-      majors: major,
+      majors: [...this.basicMajorPreferencesForm.value.majors, major],
     });
   }
 
   filterMajors() {
     const searchValue = this.searchForm.value.toLowerCase();
     this.filteredMajors = of(
-      this.majors.filter((major) => major.toString().toLowerCase().includes(searchValue))
+      this.majors.filter((major) =>
+        major.toString().toLowerCase().includes(searchValue)
+      )
     );
   }
 }

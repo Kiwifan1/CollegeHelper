@@ -20,13 +20,13 @@ export class QuestionnaireStepperComponent implements OnInit {
     ]),
     addresses: new FormControl(['']),
     demographicInfo: new FormGroup({
+      citizenship: new FormControl('', [Validators.required]),
       identities: new FormGroup({
         ethnicity: new FormControl('', [Validators.required]),
         nationality: new FormControl('', [Validators.required]),
         genderIdentity: new FormControl('', [Validators.required]),
         sexualOrientation: new FormControl('', [Validators.required]),
       }),
-      citizenship: new FormControl([''], [Validators.required]),
     }),
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),

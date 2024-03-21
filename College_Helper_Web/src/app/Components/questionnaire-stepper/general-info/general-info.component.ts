@@ -118,7 +118,7 @@ export class GeneralInfoComponent implements OnInit {
   bindAddress() {
     // add all the address forms to the user object
     this.generalUserInfoForm.patchValue({
-      addresses: this.addressForms.map((address) => address.value),
+      addresses: this.addressForms.map((address) => address.value), 
     });
     console.log(this.generalUserInfoForm.value);
   }

@@ -8,19 +8,20 @@
         class="form-control"
         id="age"
         formControlName="age"
-        />
+      />
+    </mat-form-field>
+
+    <form [formGroup]="demographicForm">
+      <mat-form-field>
+        <mat-label for="citizenship">Citizenship</mat-label>
+        <mat-select formControlName="citizenship">
+          <mat-option *ngFor="let c of citizenshipEnums" [value]="c">{{
+            c
+          }}</mat-option>
+        </mat-select>
       </mat-form-field>
-      
-      <form [formGroup]="demographicForm">
-        <mat-form-field>
-          <mat-label for="citizenship">Citizenship</mat-label>
-          <mat-select formControlName="citizenship">
-            <mat-option *ngFor="let c of citizenshipEnums" [value]="c">{{
-              c
-            }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </form>
+    </form>
+    
     <form [formGroup]="identityForm">
       <mat-form-field>
         <mat-label for="genderIdentity">Gender</mat-label>

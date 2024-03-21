@@ -42,7 +42,7 @@ import { GeneralInfoComponent } from './Components/questionnaire-stepper/general
 import { ScoreInfoComponent } from './Components/questionnaire-stepper/score-info/score-info.component';
 import { CollegeInfoComponent } from './Components/questionnaire-stepper/college-info/college-info.component';
 import { MajorInfoComponent } from './Components/questionnaire-stepper/major-info/major-info.component';
-import { CareerInfoComponent } from './Components/questionnaire-stepper/career-info/career-info.component';
+import { InterestInfoComponent } from './Components/questionnaire-stepper/interest-info/interest-info.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ReviewComponent } from './Components/questionnaire-stepper/review/review.component';
@@ -84,7 +84,7 @@ import { ScholarshipSearchDialogComponent } from './Components/scholarship-searc
     ScoreInfoComponent,
     CollegeInfoComponent,
     MajorInfoComponent,
-    CareerInfoComponent,
+    InterestInfoComponent,
     ReviewComponent,
     HomePageComponent,
     ProfilePageComponent,
