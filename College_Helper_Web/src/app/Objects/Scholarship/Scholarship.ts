@@ -1,5 +1,5 @@
-import { MiscellaneousCriteriaEnum } from './enums/Miscellaneous';
-import { DemographicsEnum } from './enums/demographics';
+import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
+import { DemographicsEnum } from '../enums/Demographics';
 
 interface EligibilityCriteria {
   miscellaneous: MiscellaneousCriteria[] | null;

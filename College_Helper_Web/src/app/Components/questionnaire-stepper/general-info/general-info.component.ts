@@ -3,12 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'src/app/Objects/Address';
 import {
   EducationLevel,
-  Ethnicity,
-  Gender,
   IncomeLevel,
   MaritalStatus,
   Occupation,
 } from 'src/app/Objects/User/Demographics';
+import { EthnicityEnum, GenderIdentityEnum } from 'src/app/Objects/enums/Demographics';
 import { GeoLocationService } from 'src/app/Services/geolocation.service';
 import { LoadingService } from 'src/app/Services/loading.service';
 
@@ -21,12 +20,12 @@ export class GeneralInfoComponent implements OnInit {
   @Input() generalUserInfoForm!: FormGroup;
   grabbedLocation = false;
 
-  genderEnums = Object.values(Gender);
-  educationLevelEnums = Object.values(EducationLevel);
-  ethnicityEnums = Object.values(Ethnicity);
-  incomeLevelEnums = Object.values(IncomeLevel);
-  maritalStatusEnums = Object.values(MaritalStatus);
-  occupationEnums = Object.values(Occupation);
+  genderEnums = Object.keys(GenderIdentityEnum);
+  educationLevelEnums = Object.keys(EducationLevel);
+  ethnicityEnums = Object.keys(EthnicityEnum);
+  incomeLevelEnums = Object.keys(IncomeLevel);
+  maritalStatusEnums = Object.keys(MaritalStatus);
+  occupationEnums = Object.keys(Occupation);
 
   addressForms: FormGroup[] = [
     new FormGroup({

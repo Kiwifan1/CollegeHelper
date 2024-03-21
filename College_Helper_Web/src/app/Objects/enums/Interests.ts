@@ -226,3 +226,8 @@ export enum InterestOtherEnum {
   'Performing Arts',
   'Accounting',
 }
+
+export interface Interest {
+  interestCriteria: InterestCriteriaEnum;
+  interestOther: InterestOtherEnum;
+}

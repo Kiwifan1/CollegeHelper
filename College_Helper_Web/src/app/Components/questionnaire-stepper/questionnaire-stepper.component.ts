@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
-import { Gender } from 'src/app/Objects/User/Demographics';
 import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 
@@ -124,7 +123,19 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.user.demographics = {
       age: this.userGeneralInfoForm.get('age')?.value,
       gender: this.userGeneralInfoForm.get('gender')?.value,
-      ethnicity: this.userGeneralInfoForm.get('ethnicity')?.value,
+      demographicInfo: {
+        identities: {
+          geographicalRegion: [],
+          genderIdentity: [],
+          sexualOrientation: [],
+          ethnicity: [this.userGeneralInfoForm.get('ethnicity')?.value],
+        },
+        citizenships: [],
+        degreeSeeking: [],
+        fieldsOfStudy: [],
+        interests: [],
+        miscellaneousCriteria: [],
+      },
       educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
       occupation: this.userGeneralInfoForm.get('occupation')?.value,
       incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,

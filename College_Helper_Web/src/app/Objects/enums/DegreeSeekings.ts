@@ -13,5 +13,5 @@ export enum DegreeSeekingEnum {
   'Graduate Degree',
   "Bachelor's Degree",
   'MFA',
-  null
+  null,
 }
