@@ -1,3 +1,6 @@
+import { MiscellaneousCriteriaEnum } from './enums/Miscellaneous';
+import { DemographicsEnum } from './enums/demographics';
+
 interface EligibilityCriteria {
   miscellaneous: MiscellaneousCriteria[] | null;
   activity: Activity[] | null;
@@ -23,11 +26,11 @@ interface EligibilityCriteria {
   interests: Interest[] | null;
   studyAbroad: boolean | null;
   age: boolean | null;
-  demographics: string[] | null;
+  demographics: DemographicsEnum[] | null;
 }
 
 interface MiscellaneousCriteria {
-  miscellaneousCriteria: string;
+  miscellaneousCriteria: MiscellaneousCriteriaEnum;
 }
 
 interface Activity {
