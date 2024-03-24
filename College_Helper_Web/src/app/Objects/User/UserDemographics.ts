@@ -5,7 +5,7 @@ import { FieldsOfStudyEnum } from '../enums/FieldsOfStudy';
 import { Interest } from '../enums/Interests';
 import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
 
-export interface Demographics {
+export interface UserDemographics {
   age: number | null;
   demographicInfo: DemographicInfo;
   educationLevel: EducationLevel | null;

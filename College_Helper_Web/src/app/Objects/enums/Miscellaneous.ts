@@ -38,5 +38,4 @@ export enum MiscellaneousCriteriaEnum {
   'Completed Latin Studies In High School',
   'Fluent in Spanish',
   'Demonstrate Optimism and Determination',
-  null,
 }

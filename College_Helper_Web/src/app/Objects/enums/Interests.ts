@@ -42,7 +42,6 @@ export enum InterestCriteriaEnum {
   'Construction',
   'Chemistry',
   'Government',
-  null,
 }
 
 export enum InterestOtherEnum {

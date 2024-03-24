@@ -6,7 +6,7 @@ import {
   IncomeLevel,
   MaritalStatus,
   Occupation,
-} from 'src/app/Objects/User/Demographics';
+} from 'src/app/Objects/User/UserDemographics';
 import { CitizenshipStatusesEnum } from 'src/app/Objects/enums/Citizenship';
 import { DegreeSeekingEnum } from 'src/app/Objects/enums/DegreeSeekings';
 import {

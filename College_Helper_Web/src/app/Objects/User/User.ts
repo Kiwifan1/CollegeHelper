@@ -1,5 +1,5 @@
 import { Address } from '../Address';
-import { Demographics } from './Demographics';
+import { UserDemographics } from './UserDemographics';
 import { Scores } from './Scores';
 
 export interface User {
@@ -9,7 +9,7 @@ export interface User {
   password: string;
   salt: string;
   address: Address;
-  demographics: Demographics;
+  demographics: UserDemographics;
   scores: Scores;
   collegePreferences: string[];
   majorPreferences: string[];

@@ -6,7 +6,7 @@ import {
   IncomeLevel,
   MaritalStatus,
   Occupation,
-} from 'src/app/Objects/User/Demographics';
+} from 'src/app/Objects/User/UserDemographics';
 import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ConfirmPasswordDialogComponent } from '../common/confirm-password-dialog/confirm-password-dialog.component';
