@@ -62,6 +62,7 @@ import { PercentPipe } from './Components/common/percent.pipe';
 import { AddressComponent } from './Components/questionnaire-stepper/general-info/address/address.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { ScholarshipSearchDialogComponent } from './Components/scholarship-search-page/scholarship-search-dialog/scholarship-search-dialog.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
@@ -94,7 +95,7 @@ import { ScholarshipSearchDialogComponent } from './Components/scholarship-searc
     ScholarshipDetailPageComponent,
     ScholarshipClosedDialogComponent,
     AddressComponent,
-    ScholarshipSearchDialogComponent
+    ScholarshipSearchDialogComponent,
   ],
 
   imports: [
@@ -135,6 +136,7 @@ import { ScholarshipSearchDialogComponent } from './Components/scholarship-searc
     PercentPipe,
     MatSliderModule,
     MatDialogModule,
+    MatChipsModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

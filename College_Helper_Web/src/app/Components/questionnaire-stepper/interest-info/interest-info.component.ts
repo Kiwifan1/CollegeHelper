@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { of } from 'rxjs';
+import {
+  InterestCriteriaEnum,
+  InterestOtherEnum,
+} from 'src/app/Objects/enums/Interests';
 
 @Component({
   selector: 'app-career-info',
@@ -8,52 +12,55 @@ import { of } from 'rxjs';
   styleUrl: './interest-info.component.scss',
 })
 export class InterestInfoComponent implements OnInit {
-  @Input() basicCareerPreferencesForm!: FormGroup;
-  @Input() advancedCareerPreferencesForm!: FormGroup;
+  @Input() interestForm!: FormGroup;
 
-  careers = [
-    'Software Developer',
-    'Computer Systems Analyst',
-    'IT Manager',
-    'Database Administrator',
-    'Web Developer',
-    'Computer Network Architect',
-    'Computer Systems Administrator',
-    'Computer Programmer',
-    'Network and Computer Systems Administrator',
-    'Computer Network Support Specialist',
-  ];
+  interestCriterias: string[] = Object.values(InterestCriteriaEnum)
+    .filter((value) => typeof value === 'string')
+    .map((value) => value.toString());
 
-  filteredCareers = of(this.careers);
+  interestOthers: string[] = Object.values(InterestOtherEnum)
+    .filter((value) => typeof value === 'string')
+    .map((value) => value.toString());
 
-  searchForm: FormControl = new FormControl('');
+  filteredInterestCriterias = of(this.interestCriterias);
+  filteredInterestOthers = of(this.interestOthers);
+
+  criteriaSearchForm: FormControl = new FormControl('');
+  otherSearchForm: FormControl = new FormControl('');
 
   constructor() {}
 
   ngOnInit(): void {
-    this.searchForm.valueChanges.subscribe((value) => {
-      this.filterChange();
+    this.criteriaSearchForm.valueChanges.subscribe((value) => {
+      this.criteriaFilterChange('criteria');
+    });
+
+    this.otherSearchForm.valueChanges.subscribe((value) => {
+      this.criteriaFilterChange('other');
     });
   }
 
-  selectCareer(careerName: string) {
+  addInterest(careerName: string) {
     // add career to form which is list of careers
-    this.basicCareerPreferencesForm.patchValue({
-      careers: [...this.basicCareerPreferencesForm.value.careers, careerName],
+    this.interestForm.patchValue({
+      careers: [...this.interestForm.value.careers, careerName],
     });
   }
 
-  filterChange() {
-    this.filteredCareers = this.filterCareers(this.searchForm.value);
+  criteriaFilterChange(type: 'criteria' | 'other') {
+    this.filteredInterestCriterias = this.filterInterests(
+      this.criteriaSearchForm.value,
+      type
+    );
   }
 
-  filterCareers(value: string) {
-    let filteredCareers: string[] = [];
-    this.careers.forEach((career) => {
-      if (career.toLowerCase().includes(value.toLowerCase())) {
-        filteredCareers.push(career);
-      }
-    });
-    return of(filteredCareers);
+  filterInterests(value: string, type: 'criteria' | 'other') {
+    const interestType =
+      type === 'criteria' ? this.interestCriterias : this.interestOthers;
+
+    const filteredInterests = interestType.filter((interest) =>
+      interest.toLowerCase().includes(value.toLowerCase())
+    );
+    return of(filteredInterests);
   }
 }

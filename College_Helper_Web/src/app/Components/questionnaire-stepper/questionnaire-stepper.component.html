@@ -30,13 +30,10 @@
             ></app-major-info>
           </mat-step>
 
-          <mat-step [stepControl]="userBasicCareerPreferencesForm">
+          <mat-step [stepControl]="userInterestsForm">
             <ng-template matStepLabel>Career Preferences</ng-template>
             <app-career-info
-              [basicCareerPreferencesForm]="userBasicCareerPreferencesForm"
-              [advancedCareerPreferencesForm]="
-                userAdvancedCareerPreferencesForm
-              "
+              [interestForm]="userInterestsForm"
             ></app-career-info>
           </mat-step>
 
@@ -52,10 +49,7 @@
               [userAdvancedMajorPreferencesForm]="
                 userAdvancedMajorPreferencesForm
               "
-              [userBasicCareerPreferencesForm]="userBasicCareerPreferencesForm"
-              [userAdvancedCareerPreferencesForm]="
-                userAdvancedCareerPreferencesForm
-              "
+              [userBasicCareerPreferencesForm]="userInterestsForm"
               (submitQuestionnaire)="handleSubmission()"
             ></app-review>
           </mat-step>

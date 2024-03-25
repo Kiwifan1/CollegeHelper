@@ -50,7 +50,7 @@ export class QuestionnaireStepperComponent implements OnInit {
     fieldsOfStudy: new FormControl(['']),
   });
 
-  userBasicCareerPreferencesForm: FormGroup = new FormGroup({
+  userInterestsForm: FormGroup = new FormGroup({
     careers: new FormControl(['']),
     interests: new FormControl(['']),
   });
@@ -72,15 +72,6 @@ export class QuestionnaireStepperComponent implements OnInit {
   userAdvancedMajorPreferencesForm: FormGroup = new FormGroup({
     majorType: new FormControl(''),
     majorLocation: new FormControl(''),
-  });
-
-  userAdvancedCareerPreferencesForm: FormGroup = new FormGroup({
-    careerType: new FormControl(''),
-    careerLocation: new FormControl(''),
-    careerSalary: new FormControl(''),
-    careerHours: new FormControl(''),
-    careerBenefits: new FormControl(''),
-    careerWorkLife: new FormControl(''),
   });
 
   private user!: User;
@@ -165,7 +156,7 @@ export class QuestionnaireStepperComponent implements OnInit {
       this.userBasicMajorPreferencesForm.get('majors')?.value,
     ];
     this.user.careerPreferences = [
-      this.userBasicCareerPreferencesForm.get('careers')?.value,
+      this.userInterestsForm.get('careers')?.value,
     ];
   }
 

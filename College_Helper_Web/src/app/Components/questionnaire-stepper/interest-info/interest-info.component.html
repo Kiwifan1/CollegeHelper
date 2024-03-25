@@ -1,100 +1,26 @@
 <div>
-  <form [formGroup]="basicCareerPreferencesForm">
+  <form [formGroup]="interestForm">
     <mat-form-field>
-      <mat-label>Careers</mat-label>
+      <mat-label>Interests</mat-label>
       <input
         matInput
         type="text"
-        [formControl]="searchForm"
-        placeholder="Search for careers"
+        [formControl]="criteriaSearchForm"
+        placeholder="Search for interests"
         [matAutocomplete]="auto"
       />
       <mat-icon matSuffix>search</mat-icon>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option
-          *ngFor="let career of filteredCareers | async"
+          *ngFor="let career of filteredInterestCriterias | async"
           [value]="career"
-          (onSelectionChange)="selectCareer(career)"
+          (click)="addInterest(career)"
         >
           {{ career }}
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
   </form>
-
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title> Advanced Career Preferences</mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <form [formGroup]="advancedCareerPreferencesForm">
-        <div class="form-group">
-          <mat-form-field>
-            <mat-label>Job Type</mat-label>
-            <mat-select formControlName="careerType">
-              <mat-option value="stem">STEM</mat-option>
-              <mat-option value="humanities">Humanities</mat-option>
-              <mat-option value="business">Business</mat-option>
-              <mat-option value="other">Other</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Salary</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="careerSalary"
-              placeholder="e.g. 100000"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Location</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="careerLocation"
-              placeholder="e.g. Seattle, New York"
-            />
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Hours</mat-label>
-            <mat-select formControlName="careerHours">
-              <mat-option value="full-time">Full-time (40+ hours)</mat-option>
-              <mat-option value="part-time"
-                >Part-time (~20-30 hours)</mat-option
-              >
-              <mat-option value="contract">Contract (variable)</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Benefits</mat-label>
-            <mat-select formControlName="careerBenefits" multiple>
-              <mat-option value="health">Health</mat-option>
-              <mat-option value="dental">Dental</mat-option>
-              <mat-option value="vision">Vision</mat-option>
-              <mat-option value="retirement">Retirement</mat-option>
-              <mat-option value="other">Other</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Work/Life</mat-label>
-            <mat-select formControlName="careerWorkLife">
-              <mat-option value="remote">Remote</mat-option>
-              <mat-option value="in-person">In-person</mat-option>
-              <mat-option value="hybrid">Hybrid</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </form>
-    </mat-expansion-panel>
-  </mat-accordion>
-
   <div class="stepper-buttons">
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button>

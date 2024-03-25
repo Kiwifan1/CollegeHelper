@@ -4,6 +4,7 @@
       <mat-form-field>
         <mat-label>Majors</mat-label>
         <input
+          #searchInput
           matInput
           type="text"
           [formControl]="searchForm"
@@ -15,12 +16,25 @@
           <mat-option
             *ngFor="let major of filteredMajors | async"
             [value]="major"
-            (onSelectionChange)="selectMajor(major)"
+            (click)="addMajor(major)"
           >
             {{ major }}
           </mat-option>
         </mat-autocomplete>
+        <mat-error *ngIf="searchForm.invalid"
+          >Please enter a valid major</mat-error
+        >
       </mat-form-field>
+
+      <mat-chip-listbox>
+        <mat-chip
+          *ngFor="let major of selectedMajors"
+          (removed)="removeMajor(major)"
+        >
+          {{ major }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+      </mat-chip-listbox>
     </div>
   </form>
 

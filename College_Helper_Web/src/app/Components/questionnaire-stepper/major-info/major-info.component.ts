@@ -1,6 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { of } from 'rxjs';
+import { map, of, startWith } from 'rxjs';
 import { FieldsOfStudyEnum } from 'src/app/Objects/enums/FieldsOfStudy';
 
 @Component({
@@ -16,13 +23,19 @@ export class MajorInfoComponent implements OnInit {
     .filter((value) => typeof value === 'string')
     .map((value) => value.toString());
   filteredMajors = of(this.majors);
-  searchForm: FormControl = new FormControl('');
+  selectedMajors: string[] = [];
+  searchForm: FormControl = new FormControl(['']);
 
-  constructor() {}
+  constructor() {
+  }
 
   ngOnInit(): void {
-    this.searchForm.valueChanges.subscribe((value) => {
-      this.filterMajors();
+    this.searchForm.valueChanges.subscribe((value: string[] | string) => {
+      if (typeof value !== 'string' && value.length === 0) {
+        this.filteredMajors = of(this.majors);
+      } else if (typeof value === 'string') {
+        this.filterMajors(value);
+      }
     });
   }
 
@@ -32,11 +45,24 @@ export class MajorInfoComponent implements OnInit {
     });
   }
 
-  filterMajors() {
-    const searchValue = this.searchForm.value.toLowerCase();
+  addMajor(major: string) {
+    if (this.selectedMajors.includes(major)) return;
+    this.selectedMajors.push(major);
+    this.searchForm.setValue(this.selectedMajors);
+  }
+
+  removeMajor(major: string) {
+    this.selectedMajors = this.selectedMajors.filter(
+      (value) => value !== major
+    );
+    this.searchForm.setValue(this.selectedMajors);
+  }
+
+  filterMajors(value: string) {
+    // get last word in search form
     this.filteredMajors = of(
       this.majors.filter((major) =>
-        major.toString().toLowerCase().includes(searchValue)
+        major.toLowerCase().includes(value.toLowerCase())
       )
     );
   }
