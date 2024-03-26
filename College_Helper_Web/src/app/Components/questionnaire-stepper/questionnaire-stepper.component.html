@@ -2,8 +2,7 @@
   <div class="page-content">
     <mat-card class="card">
       <mat-card-content>
-        <mat-stepper>
-          <!--  [linear]="true" -->
+        <mat-stepper [linear]="true">
           <mat-step [stepControl]="userInfoForm">
             <ng-template matStepLabel>General Info</ng-template>
             <app-general-info [userInfoForm]="userInfoForm"></app-general-info>
@@ -35,7 +34,7 @@
 
           <mat-step>
             <ng-template matStepLabel>Review and Confirm</ng-template>
-            <app-review [userForm]="userForm"></app-review>
+            <app-review [userForm]="userForm" (submitQuestionnaire)="handleSubmission()"></app-review>
           </mat-step>
         </mat-stepper>
       </mat-card-content>
