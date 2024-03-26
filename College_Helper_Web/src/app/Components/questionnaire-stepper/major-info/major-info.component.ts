@@ -21,6 +21,7 @@ export class MajorInfoComponent implements OnInit {
   majors: string[] = Object.values(FieldsOfStudyEnum)
     .filter((value) => typeof value === 'string')
     .map((value) => value.toString());
+
   filteredMajors = of(this.majors);
   selectedMajors: string[] = [];
   searchForm: FormControl = new FormControl(['']);
@@ -29,31 +30,30 @@ export class MajorInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.searchForm.valueChanges.subscribe((value: string[] | string) => {
-      if (typeof value !== 'string' && value.length === 0) {
+      if (value && typeof value !== 'string') {
         this.filteredMajors = of(this.majors);
       } else if (typeof value === 'string') {
         this.filterMajors(value);
       }
+      this.updateMajorsForm();
     });
   }
 
-  selectMajor(major: string) {
-    this.majorsForm.patchValue({
-      majors: [...this.majorsForm.value.majors, major],
-    });
+  updateMajorsForm() {
+    this.majorsForm.value.fieldsOfStudy = this.selectedMajors;
   }
 
   addMajor(major: string) {
     if (this.selectedMajors.includes(major)) return;
     this.selectedMajors.push(major);
-    this.searchForm.setValue(this.selectedMajors);
+    this.searchForm.setValue(null);
+    this.filterMajors('');
   }
 
   removeMajor(major: string) {
     this.selectedMajors = this.selectedMajors.filter(
       (value) => value !== major
     );
-    this.searchForm.setValue(this.selectedMajors);
   }
 
   filterMajors(value: string) {

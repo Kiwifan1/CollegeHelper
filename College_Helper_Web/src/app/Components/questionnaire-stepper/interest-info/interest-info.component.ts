@@ -7,7 +7,7 @@ import {
 } from 'src/app/Objects/enums/Interests';
 
 @Component({
-  selector: 'app-career-info',
+  selector: 'app-interests-info',
   templateUrl: './interest-info.component.html',
   styleUrl: './interest-info.component.scss',
 })
@@ -22,6 +22,9 @@ export class InterestInfoComponent implements OnInit {
     .filter((value) => typeof value === 'string')
     .map((value) => value.toString());
 
+  selectedInterestCriterias: string[] = [];
+  selectedInterestOthers: string[] = [];
+
   filteredInterestCriterias = of(this.interestCriterias);
   filteredInterestOthers = of(this.interestOthers);
 
@@ -33,36 +36,63 @@ export class InterestInfoComponent implements OnInit {
   ngOnInit(): void {
     this.criteriaSearchForm.valueChanges.subscribe((value) => {
       this.filterChange('criteria');
+      this.updateInterestsForm();
     });
 
     this.otherSearchForm.valueChanges.subscribe((value) => {
       this.filterChange('other');
+      this.updateInterestsForm();
     });
+  }
+
+  updateInterestsForm() {
+    this.interestForm.value.criteriaInterests = this.selectedInterestCriterias;
+    this.interestForm.value.otherInterests = this.selectedInterestOthers;
   }
 
   addCriteriaInterest(interestName: string) {
-    this.interestForm.patchValue({
-      criteriaInterests: [...this.interestForm.value.interests, interestName],
-    });
+    if (this.selectedInterestCriterias.includes(interestName)) return;
+    this.selectedInterestCriterias.push(interestName);
+    this.criteriaSearchForm.setValue('');
+  }
+
+  removeCriteriaInterest(interestName: string) {
+    this.selectedInterestCriterias = this.selectedInterestCriterias.filter(
+      (value) => value !== interestName
+    );
+    this.criteriaSearchForm.setValue('');
   }
 
   addOtherInterest(interestName: string) {
-    this.interestForm.patchValue({
-      otherInterests: [...this.interestForm.value.interests, interestName],
-    });
+    if (this.selectedInterestOthers.includes(interestName)) return;
+    this.selectedInterestOthers.push(interestName);
+    this.otherSearchForm.setValue('');
+  }
+
+  removeOtherInterest(interestName: string) {
+    this.selectedInterestOthers = this.selectedInterestOthers.filter(
+      (value) => value !== interestName
+    );
+    this.otherSearchForm.setValue('');
   }
 
   filterChange(type: 'criteria' | 'other') {
-    this.filteredInterestCriterias = this.filterInterests(
-      this.criteriaSearchForm.value,
-      type
-    );
+    if (type === 'criteria') {
+      this.filteredInterestCriterias = this.filterInterests(
+        this.criteriaSearchForm.value,
+        type
+      );
+    } else {
+      this.filteredInterestOthers = this.filterInterests(
+        this.otherSearchForm.value,
+        type
+      );
+    }
   }
 
   filterInterests(value: string, type: 'criteria' | 'other') {
     const interestType =
       type === 'criteria' ? this.interestCriterias : this.interestOthers;
-
     const filteredInterests = interestType.filter((interest) =>
       interest.toLowerCase().includes(value.toLowerCase())
     );

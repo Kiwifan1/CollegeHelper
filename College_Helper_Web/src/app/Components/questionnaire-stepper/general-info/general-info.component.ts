@@ -24,7 +24,7 @@ import { LoadingService } from 'src/app/Services/loading.service';
   styleUrl: './general-info.component.scss',
 })
 export class GeneralInfoComponent implements OnInit {
-  @Input() userForm!: FormGroup;
+  @Input() userInfoForm!: FormGroup;
   grabbedLocation = false;
 
   demographicForm: FormGroup = new FormGroup({});
@@ -85,8 +85,8 @@ export class GeneralInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.demographicForm = this.userForm.get
-      ? (this.userForm.get('demographicInfo') as FormGroup)
+    this.demographicForm = this.userInfoForm.get
+      ? (this.userInfoForm.get('demographicInfo') as FormGroup)
       : new FormGroup({});
     this.identityForm = this.demographicForm.get
       ? (this.demographicForm.get('identities') as FormGroup)
@@ -117,9 +117,9 @@ export class GeneralInfoComponent implements OnInit {
 
   bindAddress() {
     // add all the address forms to the user object
-    this.userForm.patchValue({
+    this.userInfoForm.patchValue({
       addresses: this.addressForms.map((address) => address.value), 
     });
-    console.log(this.userForm.value);
+    console.log(this.userInfoForm.value);
   }
 }

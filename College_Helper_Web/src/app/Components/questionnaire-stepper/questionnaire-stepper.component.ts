@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
-  userForm: FormGroup = new FormGroup({
+  userInfoForm: FormGroup = new FormGroup({
     age: new FormControl('', [
       Validators.min(0),
       Validators.max(120),
@@ -49,17 +49,26 @@ export class QuestionnaireStepperComponent implements OnInit {
   });
 
   userInterestsForm: FormGroup = new FormGroup({
-    careers: new FormControl(['']),
-    interests: new FormControl(['']),
-  });
-
-  userCurrentCoursesForm: FormGroup = new FormGroup({
-    currentCourses: new FormControl(['']),
+    criteriaInterests: new FormControl(['']),
+    otherInterests: new FormControl(['']),
   });
 
   userCollegeForm: FormGroup = new FormGroup({
-    colleges: new FormControl(['']),
+    collegeSize: new FormControl('', [Validators.required]),
+    collegeCost: new FormControl('', [Validators.required]),
+    collegeSports: new FormControl('', [Validators.required]),
+    collegeClubs: new FormControl('', [Validators.required]),
+    collegeGreekLife: new FormControl('', [Validators.required]),
   });
+
+  userForm: FormGroup = new FormGroup({
+    userInfo: this.userInfoForm,
+    userScores: this.userScoreForm,
+    userMajors: this.userMajorsForm,
+    userInterests: this.userInterestsForm,
+    userCollege: this.userCollegeForm,
+  });
+
   private user!: User;
 
   submitted: boolean = false;
@@ -97,7 +106,7 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   makeUser() {
     this.user.address = {
-      street: this.userForm.get('location')?.value,
+      street: this.userInfoForm.get('location')?.value,
       city: '',
       province: '',
       postCode: '',
@@ -108,13 +117,13 @@ export class QuestionnaireStepperComponent implements OnInit {
     };
 
     this.user.demographics = {
-      age: this.userForm.get('age')?.value,
+      age: this.userInfoForm.get('age')?.value,
       demographicInfo: {
         identities: {
           nationality: [],
           genderIdentity: [],
           sexualOrientation: [],
-          ethnicity: [this.userForm.get('ethnicity')?.value],
+          ethnicity: [this.userInfoForm.get('ethnicity')?.value],
         },
         citizenships: [],
         degreeSeeking: [],
@@ -122,10 +131,10 @@ export class QuestionnaireStepperComponent implements OnInit {
         interests: [],
         miscellaneousCriteria: [],
       },
-      educationLevel: this.userForm.get('educationLevel')?.value,
-      occupation: this.userForm.get('occupation')?.value,
-      incomeLevel: this.userForm.get('incomeLevel')?.value,
-      maritalStatus: this.userForm.get('maritalStatus')?.value,
+      educationLevel: this.userInfoForm.get('educationLevel')?.value,
+      occupation: this.userInfoForm.get('occupation')?.value,
+      incomeLevel: this.userInfoForm.get('incomeLevel')?.value,
+      maritalStatus: this.userInfoForm.get('maritalStatus')?.value,
     };
 
     this.user.scores = {

@@ -2,10 +2,11 @@
   <div class="page-content">
     <mat-card class="card">
       <mat-card-content>
-        <mat-stepper [linear]="true">
-          <mat-step [stepControl]="userForm">
+        <mat-stepper>
+          <!--  [linear]="true" -->
+          <mat-step [stepControl]="userInfoForm">
             <ng-template matStepLabel>General Info</ng-template>
-            <app-general-info [userForm]="userForm"></app-general-info>
+            <app-general-info [userInfoForm]="userInfoForm"></app-general-info>
           </mat-step>
           <mat-step [stepControl]="userScoreForm">
             <ng-template matStepLabel>Grades</ng-template>
@@ -26,27 +27,15 @@
           </mat-step>
 
           <mat-step [stepControl]="userInterestsForm">
-            <ng-template matStepLabel>Career Preferences</ng-template>
-            <app-career-info
+            <ng-template matStepLabel>Interests</ng-template>
+            <app-interests-info
               [interestForm]="userInterestsForm"
-            ></app-career-info>
+            ></app-interests-info>
           </mat-step>
 
           <mat-step>
             <ng-template matStepLabel>Review and Confirm</ng-template>
-            <!-- <app-review
-              [userForm]="userForm"
-              [userScoreInfoForm]="userScoreInfoForm"
-              [userAdvancedCollegePreferencesForm]="
-                userAdvancedCollegePreferencesForm
-              "
-              [userMajorsForm]="userMajorsForm"
-              [userAdvancedMajorPreferencesForm]="
-                userAdvancedMajorPreferencesForm
-              "
-              [userBasicCareerPreferencesForm]="userInterestsForm"
-              (submitQuestionnaire)="handleSubmission()"
-            ></app-review> -->
+            <app-review [userForm]="userForm"></app-review>
           </mat-step>
         </mat-stepper>
       </mat-card-content>

@@ -1,5 +1,5 @@
 <div>
-  <div class="info">
+  <div class="info" *ngIf="userInfoForm">
     <!-- user general Info -->
     <div class="info-item">
       <ul>
@@ -7,86 +7,174 @@
         <table>
           <tr>
             <td>Age:</td>
-            <td>{{ userGeneralInfoForm.value.age }}</td>
+            <td>{{ userInfoForm.value.age }}</td>
           </tr>
-          <tr *ngIf="userGeneralInfoForm.value.gender">
+          <tr *ngIf="userInfoForm.value.gender">
             <td>Gender:</td>
-            <td>{{ userGeneralInfoForm.value.gender }}</td>
+            <td>{{ userInfoForm.value.gender }}</td>
           </tr>
           <tr>
             <td>Ethnicity:</td>
-            <td>{{ userGeneralInfoForm.value.ethnicity }}</td>
+            <td>
+              {{ userInfoForm.value.demographicInfo.identities.ethnicity }}
+            </td>
           </tr>
           <tr>
             <td>Nationality:</td>
-            <td>{{ userGeneralInfoForm.value.nationality }}</td>
+            <td>
+              {{ userInfoForm.value.demographicInfo.identities.nationality }}
+            </td>
+          </tr>
+          <tr>
+            <td>Gender Identity:</td>
+            <td>
+              {{ userInfoForm.value.demographicInfo.identities.genderIdentity }}
+            </td>
+          </tr>
+          <tr>
+            <td>Sexual Orientation</td>
+            <td>
+              {{
+                userInfoForm.value.demographicInfo.identities.sexualOrientation
+              }}
+            </td>
           </tr>
           <tr>
             <td>Education Level:</td>
-            <td>{{ userGeneralInfoForm.value.educationLevel }}</td>
+            <td>{{ userInfoForm.value.educationLevel }}</td>
           </tr>
           <tr>
             <td>Occupation:</td>
-            <td>{{ userGeneralInfoForm.value.occupation }}</td>
+            <td>{{ userInfoForm.value.occupation }}</td>
           </tr>
           <tr>
             <td>Income Level:</td>
-            <td>{{ userGeneralInfoForm.value.incomeLevel }}</td>
+            <td>{{ userInfoForm.value.incomeLevel }}</td>
           </tr>
           <tr>
             <td>Marital Status:</td>
-            <td>{{ userGeneralInfoForm.value.maritalStatus }}</td>
+            <td>{{ userInfoForm.value.maritalStatus }}</td>
           </tr>
-          <tr>
-            <td>Location:</td>
-            <td>{{ userGeneralInfoForm.value.location }}</td>
+          <tr
+            *ngFor="let address of userInfoForm.value.addresses; let i = index"
+          >
+            <td>Address {{ i + 1 }}:</td>
+            <td>{{ address | address }}</td>
           </tr>
         </table>
       </ul>
     </div>
   </div>
 
-  <div class="info">
+  <div class="info" *ngIf="userScoreForm">
     <div class="info-item">
       <ul>
         <p class="label">Grades:</p>
         <table>
           <tr>
             <td>GPA:</td>
-            <td>{{ userScoreInfoForm.value.GPA }}</td>
+            <td>{{ userScoreForm.value.GPA }}</td>
           </tr>
           <tr>
             <td>SAT Score:</td>
-            <td>{{ userScoreInfoForm.value.SAT }}</td>
+            <td>{{ userScoreForm.value.SAT }}</td>
           </tr>
           <tr>
             <td>ACT Score:</td>
-            <td>{{ userScoreInfoForm.value.ACT }}</td>
+            <td>{{ userScoreForm.value.ACT }}</td>
           </tr>
           <tr>
             <td>Number of AP classes completed:</td>
-            <td>{{ userScoreInfoForm.value.AP }}</td>
+            <td>{{ userScoreForm.value.AP }}</td>
           </tr>
           <tr>
             <td>Number of IB classes completed:</td>
-            <td>{{ userScoreInfoForm.value.IB }}</td>
+            <td>{{ userScoreForm.value.IB }}</td>
           </tr>
           <tr>
             <td>PSAT10 Score:</td>
-            <td>{{ userScoreInfoForm.value.PSAT10 }}</td>
+            <td>{{ userScoreForm.value.PSAT10 }}</td>
           </tr>
           <tr>
             <td>PSAT/NMSQT Score:</td>
-            <td>{{ userScoreInfoForm.value.NMSQT }}</td>
+            <td>{{ userScoreForm.value.NMSQT }}</td>
           </tr>
         </table>
       </ul>
     </div>
   </div>
 
-  <div class="info"></div>
+  <div class="info" *ngIf="userMajorsForm">
+    <div class="info-item" *ngIf="userMajorsForm.value.fieldsOfStudy != ''">
+      <ul>
+        <p class="label">Majors:</p>
+        <li *ngFor="let major of userMajorsForm.value.fieldsOfStudy">
+          {{ major }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info" *ngIf="userInterestsForm">
+    <div
+      class="info-item"
+      *ngIf="userInterestsForm.value.criteriaInterests != ''"
+    >
+      <ul>
+        <p class="label">Primary Interests:</p>
+        <li *ngFor="let interest of userInterestsForm.value.criteriaInterests">
+          {{ interest }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="info-item" *ngIf="userInterestsForm.value.otherInterests != ''">
+      <ul>
+        <p class="label">Other Interests:</p>
+        <li *ngFor="let interest of userInterestsForm.value.otherInterests">
+          {{ interest }}
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="info" *ngIf="userCollegeForm">
+    <div class="info-item">
+      <ul>
+        <p class="label">College Preferences:</p>
+        <table>
+          <tr>
+            <td>Size:</td>
+            <td>{{ userCollegeForm.value.collegeSize }}</td>
+          </tr>
+          <tr>
+            <td>Budget:</td>
+            <td>{{ userCollegeForm.value.collegeCost }}</td>
+          </tr>
+          <tr>
+            <td>Sports:</td>
+            <td *ngFor="let sport of userCollegeForm.value.collegeSports">
+              {{ sport }}
+            </td>
+          </tr>
+          <tr>
+            <td>Clubs:</td>
+            <td *ngFor="let club of userCollegeForm.value.collegeClubs">
+              {{ club }}
+            </td>
+          </tr>
+          <tr>
+            <td>Greek Life:</td>
+            <td>{{ userCollegeForm.value.collegeGreekLife }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+
   <div class="stepper-buttons">
     <button mat-button matStepperPrevious>Back</button>
+    <div class="fill-remaining-space"></div>
     <button mat-button type="submit" (click)="submitForms()">Submit</button>
   </div>
 </div>

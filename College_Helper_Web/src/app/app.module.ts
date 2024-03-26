@@ -36,7 +36,7 @@ import { CollegeDetailGeneralComponent } from './Components/college-search-page/
 import { CollegeDetailAdmissionsComponent } from './Components/college-search-page/college-detail/college-detail-admissions/college-detail-admissions.component';
 import { CollegeDetailCostsComponent } from './Components/college-search-page/college-detail/college-detail-costs/college-detail-costs.component';
 import { SettingsDialogComponent } from './Components/main-nav/settings-dialog/settings-dialog.component';
-import { MoneyPipe } from './Components/common/money.pipe';
+import { MoneyPipe } from './Components/common/pipes/money.pipe';
 import { QuestionnaireStepperComponent } from './Components/questionnaire-stepper/questionnaire-stepper.component';
 import { GeneralInfoComponent } from './Components/questionnaire-stepper/general-info/general-info.component';
 import { ScoreInfoComponent } from './Components/questionnaire-stepper/score-info/score-info.component';
@@ -52,17 +52,18 @@ import { ConfirmPasswordDialogComponent } from './Components/common/confirm-pass
 import { ScholarshipSearchPageComponent } from './Components/scholarship-search-page/scholarship-search-page.component';
 import { ScholarshipItemComponent } from './Components/scholarship-search-page/scholarship-item/scholarship-item.component';
 import { ScholarshipDetailPageComponent } from './Components/scholarship-detail-page/scholarship-detail-page.component';
-import { DateColorPipe } from './Components/common/date-color.pipe';
+import { DateColorPipe } from './Components/common/pipes/date-color.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ScholarshipClosedDialogComponent } from './Components/scholarship-search-page/scholarship-closed-dialog/scholarship-closed-dialog.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
-import { PercentPipe } from './Components/common/percent.pipe';
+import { PercentPipe } from './Components/common/pipes/percent.pipe';
 import { AddressComponent } from './Components/questionnaire-stepper/general-info/address/address.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { ScholarshipSearchDialogComponent } from './Components/scholarship-search-page/scholarship-search-dialog/scholarship-search-dialog.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { AddressPipe } from './Components/common/pipes/address.pipe';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSliderModule,
     MatDialogModule,
     MatChipsModule,
+    AddressPipe,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
