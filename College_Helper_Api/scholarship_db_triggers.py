@@ -10,7 +10,7 @@ from azure.cosmos import CosmosClient, ContainerProxy
 from http import HTTPStatus
 from user_db_triggers import CLIENT, DATABASE, query_cosmos_db, hash
 
-from model.clustering import predict_scholarship_scores
+from model.utils import append_scores
 
 schol_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
@@ -174,16 +174,9 @@ def predict_scholarships(
     container_name="SCHOLARSHIP",
     connection=cosmos_db_connection,
 )
-@schol_bp.cosmos_db_output(
-    arg_name="updatedUser",
-    database_name="CollegeHelperDB",
-    container_name="USER",
-    connection=cosmos_db_connection,
-)
 def process_prediction_request(
     msg: func.QueueMessage,
     scholarships: func.DocumentList,
-    updatedUser: func.Out[func.Document],
 ) -> None:
     if not msg or not msg.get_body() or not scholarships:
         return
@@ -191,11 +184,12 @@ def process_prediction_request(
     user = json.loads(msg.get_body().decode("utf-8"))
     scholarships = [s.data for s in scholarships]
 
-    user_preds = predict_scholarship_scores(user, scholarships)
+    user_preds = append_scores(user, scholarships)
 
     # update user with new predictions
     user["scholarshipScores"] = user_preds
-    updatedUser.set(user)
 
-    logging.info(f"Updated user: {user}")
-    pass
+    DATABASE.get_container_client("USER").upsert_item(user)
+
+    logging.info(f"Updated user: {user['id']}")
+    return

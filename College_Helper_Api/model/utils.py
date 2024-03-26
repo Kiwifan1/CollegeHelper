@@ -1,10 +1,10 @@
-import json
 import pandas as pd
-from azure.core.paging import ItemPaged
-from azure.cosmos import ContainerProxy
+import json
 
-# with open('updated_app_info.json', 'r') as data:
-#     scholarships = json.load(data)
+## scholarships =
+##Load in whole scholarship json from database
+## student_responses =
+##Load in whole student response from database
 
 
 def decide_schol_type(value):
@@ -34,6 +34,9 @@ def decide_schol_type(value):
 
 
 def calc_merit_score(scholarship, student_responses):
+    ### This function will calculate the merit score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     merit_score = 0
     if (
         scholarship["eligibilityCriteria"]["academics"] is not None
@@ -112,6 +115,9 @@ def calc_need_score(student_responses):
 
 
 def calc_activity_score(scholarship, student_responses):
+    ### This function will calculate the activity score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     activity_score = 0
     if (
         scholarship["eligibilityCriteria"]["activity"] is not None
@@ -128,6 +134,9 @@ def calc_activity_score(scholarship, student_responses):
 
 
 def calc_grade_level_score(scholarship, student_responses):
+    ### This function will calculate the grade level score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     grade_level_score = 0
     if (
         scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None
@@ -140,6 +149,9 @@ def calc_grade_level_score(scholarship, student_responses):
 
 
 def calc_school_score(scholarship, student_responses):
+    ### This function will calculate the school score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     school_score = 0
     if (
         scholarship["eligibilityCriteria"]["currentSchool"] is not None
@@ -156,6 +168,9 @@ def calc_school_score(scholarship, student_responses):
 
 
 def calc_study_score(scholarship, student_responses):
+    ### This function will calculate the study score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     study_score = 0
     if (
         scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None
@@ -169,6 +184,9 @@ def calc_study_score(scholarship, student_responses):
 
 
 def calc_location_score(scholarship, student_responses):
+    ### This function will calculate the location score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     location_score = 0
     if (
         scholarship["eligibilityCriteria"]["locations"] is not None
@@ -225,101 +243,102 @@ def calc_expected_value(scholarship, student_responses):
     ## scholarship: dictionary of 1 individual scholarship
     ## student_responses: dictionary of 1 individual student's responses
     score = aggrigate_values(scholarship, student_responses)
-    award_amount = scholarship["amountDisplay"]
-    try:
-        award_amount = int(award_amount.replace(",", ""))
-        expected_value = score * award_amount
-
-    except:
+    award_amount = scholarship["awardMax"]
+    if award_amount is None:
         expected_value = score * 1000
+    else:
+        expected_value = score * award_amount
     if scholarship["isEssayRequired"] == True:
         expected_value = expected_value / 2
     return expected_value
 
 
-# test_scholarship = scholarships["15-to-finish-scholarship"]
-# student_responses = {
-#   "id": "123456789",
-#   "username": "student123",
-#   "email": "student123@example.com",
-#   "password": "hashedpassword123",
-#   "salt": "somesaltvalue",
-#   "address": {
-#     "street": "123 Main St",
-#     "city": "Springfield",
-#     "province": "State",
-#     "postCode": "12345",
-#     "country": "USA",
-#     "website": "www.student123.com",
-#     "latitude": 40.7128,
-#     "longitude": -74.0060
-#   },
-#   "demographics": {
-#     "age": 20,
-#     "demographicInfo": {
-#       "identities": {
-#         "nationality": ["American"],
-#         "genderIdentity": ["Male"],
-#         "sexualOrientation": ["Heterosexual"],
-#         "ethnicity": ["Caucasian"]
-#       },
-#       "citizenships": ["USA"],
-#       "degreeSeeking": ["Undergraduate"],
-#       "fieldsOfStudy": ["Computer Science", "Mathematics"],
-#       "interests": ["Programming", "Reading", "Hiking", "Basketball", "Sports"],
-#       "miscellaneousCriteria": ["First-generation college student"]
-#     },
-#     "educationLevel": "High School Graduate",
-#     "occupation": "Student",
-#     "incomeLevel": 'null',
-#     "maritalStatus": "Single"
-#   },
-#   "scores": {
-#     "SAT": 1350,
-#     "ACT": 30,
-#     "GPA": 3.8,
-#     "AP": [ "Computer Science A", "Calculus BC" ],
-#     "IB": 'null',
-#     "PSAT10": 1200,
-#     "NMSQT": 'null'
-#   },
-#   "collegePreferences": ["Stanford University", "Massachusetts Institute of Technology"],
-#   "majorPreferences": ["Computer Science", "Mathematics"],
-#   "careerPreferences": ["Software Engineer", "Data Scientist"],
-#   "currentCourses": ["Introduction to Computer Science", "Calculus I"]
-# } 
-
-
-def predict_scholarship_scores(student: dict, scholarships: list[dict]) -> dict:
+def append_scores(student_responses, scholarships) -> dict:
+    ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
+    ### scholarships: list of dictionaries of all scholarships
+    ### student_responses: dictionary of 1 student response
     scores = []
-    schol_names = []
-
     for scholarship in scholarships:
-        scores.append(calc_expected_value(scholarships[scholarship], student))
-        schol_names.append(scholarship)
 
-    return {}
+        score = {
+            "schol_id": scholarship["id"],
+            "score": calc_expected_value(scholarship, student_responses),
+        }
+        scores.append(score)
+
+    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
+    val = {"user_id": student_responses["id"], "scores": scores}
+    return val
 
 
-def get_top_scholarships(df, n):
-    return df[:n]
-
-
-"""
 def filter_eligibility(scholarship, student_responses):
-   
-    if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
-        if(calc_grade_level_score(scholarship, student_responses)) == 0:
+
+    if scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None:
+        if (calc_grade_level_score(scholarship, student_responses)) == 0:
             return 0
-        
-    if scholarship['eligibilityCriteria']['currentSchool'] is not None:
-       if(calc_school_score(scholarship, student_responses)) == 0:
+
+    if scholarship["eligibilityCriteria"]["currentSchool"] is not None:
+        if (calc_school_score(scholarship, student_responses)) == 0:
             return 0
-    if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None:
-        if(calc_study_score(scholarship, student_responses)) == 0:
+    if scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None:
+        if (calc_study_score(scholarship, student_responses)) == 0:
             return 0
-    if scholarship['eligibilityCriteria']['locations'] is not None:
-       if(calc_location_score(scholarship, student_responses))
+    if scholarship["eligibilityCriteria"]["locations"] is not None:
+        if (calc_location_score(scholarship, student_responses)) == 0:
             return 0
-            
-            """
+
+
+# Sample student json response following given schema
+student_responses = {
+    "id": "123456789",
+    "username": "student123",
+    "email": "student123@example.com",
+    "password": "hashedpassword123",
+    "salt": "somesaltvalue",
+    "address": {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "province": "State",
+        "postCode": "12345",
+        "country": "USA",
+        "website": "www.student123.com",
+        "latitude": 40.7128,
+        "longitude": -74.0060,
+    },
+    "demographics": {
+        "age": 20,
+        "demographicInfo": {
+            "identities": {
+                "nationality": ["American"],
+                "genderIdentity": ["Male"],
+                "sexualOrientation": ["Heterosexual"],
+                "ethnicity": ["Caucasian"],
+            },
+            "citizenships": ["USA"],
+            "degreeSeeking": ["Undergraduate"],
+            "fieldsOfStudy": ["Computer Science", "Mathematics"],
+            "interests": ["Programming", "Reading", "Hiking", "Basketball", "Sports"],
+            "miscellaneousCriteria": ["First-generation college student"],
+        },
+        "educationLevel": "High School Graduate",
+        "occupation": "Student",
+        "incomeLevel": "null",
+        "maritalStatus": "Single",
+    },
+    "scores": {
+        "SAT": 1350,
+        "ACT": 30,
+        "GPA": 3.8,
+        "AP": ["Computer Science A", "Calculus BC"],
+        "IB": "null",
+        "PSAT10": 1200,
+        "NMSQT": "null",
+    },
+    "collegePreferences": [
+        "Stanford University",
+        "Massachusetts Institute of Technology",
+    ],
+    "majorPreferences": ["Computer Science", "Mathematics"],
+    "careerPreferences": ["Software Engineer", "Data Scientist"],
+    "currentCourses": ["Introduction to Computer Science", "Calculus I"],
+}
