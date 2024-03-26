@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
 import { User } from 'src/app/Objects/User/User';
+import { Interest, InterestOtherEnum } from 'src/app/Objects/enums/Interests';
 import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
@@ -12,6 +13,18 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
+  identityForm: FormGroup = new FormGroup({
+    ethnicity: new FormControl('', [Validators.required]),
+    nationality: new FormControl('', [Validators.required]),
+    genderIdentity: new FormControl('', [Validators.required]),
+    sexualOrientation: new FormControl('', [Validators.required]),
+  });
+
+  demographicInfoForm: FormGroup = new FormGroup({
+    citizenship: new FormControl('', [Validators.required]),
+    identities: this.identityForm,
+  });
+
   userInfoForm: FormGroup = new FormGroup({
     age: new FormControl('', [
       Validators.min(0),
@@ -19,15 +32,7 @@ export class QuestionnaireStepperComponent implements OnInit {
       Validators.required,
     ]),
     addresses: new FormControl(['']),
-    demographicInfo: new FormGroup({
-      citizenship: new FormControl('', [Validators.required]),
-      identities: new FormGroup({
-        ethnicity: new FormControl('', [Validators.required]),
-        nationality: new FormControl('', [Validators.required]),
-        genderIdentity: new FormControl('', [Validators.required]),
-        sexualOrientation: new FormControl('', [Validators.required]),
-      }),
-    }),
+    demographicInfo: this.demographicInfoForm,
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),
     incomeLevel: new FormControl('', [Validators.required]),
@@ -105,31 +110,44 @@ export class QuestionnaireStepperComponent implements OnInit {
   }
 
   makeUser() {
-    this.user.address = {
-      street: this.userInfoForm.get('location')?.value,
-      city: '',
-      province: '',
-      postCode: '',
-      country: '',
-      website: '',
-      latitude: '',
-      longitude: '',
-    };
+    this.user.addresses = this.userInfoForm.get('addresses')?.value;
+
+    // bind the interests to an Interest[] object
+    let interests: Interest[] = [];
+    for (let interest of this.userInterestsForm.get('criteriaInterests')
+      ?.value) {
+      interests.push({
+        interestCriteria: interest,
+        interestOther: InterestOtherEnum.null,
+      });
+    }
+
+    // update the interests with the other interests, keeping the criteria interests
+    for (
+      let i = 0;
+      i < this.userInterestsForm.get('otherInterests')?.value.length;
+      i++
+    ) {
+      interests[i].interestOther =
+        this.userInterestsForm.get('otherInterests')?.value[i];
+    }
 
     this.user.demographics = {
       age: this.userInfoForm.get('age')?.value,
       demographicInfo: {
+        citizenships: [this.demographicInfoForm.get('citizenship')?.value],
         identities: {
-          nationality: [],
-          genderIdentity: [],
-          sexualOrientation: [],
-          ethnicity: [this.userInfoForm.get('ethnicity')?.value],
+          ethnicity: [this.identityForm.get('ethnicity')?.value],
+          nationality: [this.identityForm.get('nationality')?.value],
+          genderIdentity: [this.identityForm.get('genderIdentity')?.value],
+          sexualOrientation: [
+            this.identityForm.get('sexualOrientation')?.value,
+          ],
         },
-        citizenships: [],
-        degreeSeeking: [],
-        fieldsOfStudy: [],
-        interests: [],
+        fieldsOfStudy: this.userMajorsForm.get('fieldsOfStudy')?.value,
+        interests: interests,
         miscellaneousCriteria: [],
+        degreeSeeking: [],
       },
       educationLevel: this.userInfoForm.get('educationLevel')?.value,
       occupation: this.userInfoForm.get('occupation')?.value,

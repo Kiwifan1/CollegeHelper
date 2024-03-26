@@ -223,6 +223,7 @@ export enum InterestOtherEnum {
   'Japanese culture',
   'Performing Arts',
   'Accounting',
+  null
 }
 
 export interface Interest {

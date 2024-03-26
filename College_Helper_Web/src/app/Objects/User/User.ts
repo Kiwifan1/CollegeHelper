@@ -8,7 +8,7 @@ export interface User {
   email: string;
   password: string;
   salt: string;
-  address: Address;
+  addresses: Address[];
   demographics: UserDemographics;
   scores: Scores;
   collegePreferences: string[];
@@ -23,7 +23,7 @@ export const defaultUser: User = {
   email: '',
   password: '',
   salt: '',
-  address: {
+  addresses: [{
     street: null,
     city: null,
     province: null,
@@ -32,7 +32,7 @@ export const defaultUser: User = {
     website: null,
     latitude: null,
     longitude: null,
-  },
+  }],
   demographics: {
     age: null,
     demographicInfo: {
