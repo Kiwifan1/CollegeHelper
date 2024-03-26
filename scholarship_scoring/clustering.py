@@ -33,38 +33,45 @@ def calc_merit_score(scholarship, student_responses):
     merit_score = 0
     if scholarship['eligibilityCriteria']['academics'] is not None and student_responses is not None:
         for val in scholarship['eligibilityCriteria']['academics']:
+            
             if val['academicEligibility'] == 'Minimum GPA':
-                if student_responses['GPA'] >= val['academicEligibilityValue']:
-                    merit_score += (((student_responses['GPA'] - val['academicEligibilityValue'])/student_responses['GPA'])+1)**2
-                else:
-                    merit_score += 0
+                if student_responses['scores']['GPA'] is not None:
+                    if student_responses['scores']['GPA'] >= val['academicEligibilityValue']:
+                        merit_score += (((student_responses['scores']['GPA'] - val['academicEligibilityValue'])/student_responses['scores']['GPA'])+1)**2
+                    else:
+                        merit_score += 0
+                        
             if val['academicEligibility'] == 'Minimum Overall SAT':
-                if student_responses['SAT'] >= val['academicEligibilityValue']:
-                    merit_score += (((student_responses['SAT'] - val['academicEligibilityValue'])/student_responses['SAT'])+1)**2
-                else:
-                    merit_score += 0
+                if student_responses['scores']['SAT'] is not None:
+                    if student_responses['scores']['SAT'] >= val['academicEligibilityValue']:
+                        merit_score += (((student_responses['scores']['SAT'] - val['academicEligibilityValue'])/student_responses['scores']['SAT'])+1)**2
+                    else:
+                        merit_score += 0
+                        
             if val['academicEligibility'] == 'Minimum ACT':
-                if student_responses['ACT'] >= val['academicEligibilityValue']:
-                    merit_score += (((student_responses['ACT'] - val['academicEligibilityValue'])/student_responses['ACT'])+1)**2
-                else:
-                    merit_score += 0
+                if student_responses['scores']['ACT'] is not None:
+                    if student_responses['scores']['ACT'] >= val['academicEligibilityValue']:
+                        merit_score += (((student_responses['scores']['ACT'] - val['academicEligibilityValue'])/student_responses['scores']['ACT'])+1)**2
+                    else:
+                        merit_score += 0
             
     return merit_score
 
 
-
+'''
 def calc_need_score(student_responses):
     need_score = 0
     if student_responses['need'] is not None:
         need_score += ((student_responses['need']/10)+1)**2           
     
     return need_score
+'''
 
 def calc_activity_score(scholarship, student_responses):
     activity_score = 0
-    if scholarship['eligibilityCriteria']['activity'] is not None and student_responses['activities'] is not None:
+    if scholarship['eligibilityCriteria']['activity'] is not None and student_responses['demographics']['demographicInfo']['interests'] is not None:
         for val in scholarship['eligibilityCriteria']['activity']:
-            if val in student_responses['activities']:
+            if val['activity'] in student_responses['demographics']['demographicInfo']['interests']:
                 activity_score += 1
     return activity_score
 
@@ -78,18 +85,23 @@ def calc_grade_level_score(scholarship, student_responses):
 
 def calc_school_score(scholarship, student_responses):
     school_score = 0
-    if scholarship['eligibilityCriteria']['currentSchool'] is not None and student_responses['school'] is not None:
+    if scholarship['eligibilityCriteria']['currentSchool'] is not None and student_responses['collegePreferences'] is not None:
         for val in scholarship['eligibilityCriteria']['currentSchool']:
-            if val == student_responses['school']:
-                school_score += 1
+            try:
+                for vals in val['school']:
+                    if vals['schoolName'] in student_responses['collegePreferences']:
+                        school_score += 1
+            except:
+                pass
     return school_score
 
 def calc_study_score(scholarship, student_responses):
     study_score = 0
-    if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None and student_responses['study'] is not None:
+    if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None and student_responses['majorPreferences'] is not None:
         for val in scholarship['eligibilityCriteria']['fieldsOfStudy']:
-            if val == student_responses['study']:
-                study_score += 1
+            if val['fieldName'] in student_responses['majorPreferences']:
+                    study_score += 1
+        
     return study_score
 
 def calc_location_score(scholarship, student_responses):
@@ -111,24 +123,31 @@ def aggrigate_values(scholarship, student_responses):
     if "Merit" in schol_types:
         score += calc_merit_score(scholarship, student_responses)
         i+=1
+    '''
     if "Need" in schol_types:   
         score += calc_need_score(student_responses)
         i += 1
+    '''
     if scholarship['eligibilityCriteria']['activity'] is not None:
         score += calc_activity_score(scholarship, student_responses)
         i += 1
+    '''   
     if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
         score += calc_grade_level_score(scholarship, student_responses)
         i += 1
+    '''    
     if scholarship['eligibilityCriteria']['currentSchool'] is not None:
         score += calc_school_score(scholarship, student_responses)
         i += 1
     if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None:
         score += calc_study_score(scholarship, student_responses)
         i += 1
+    '''
     if scholarship['eligibilityCriteria']['locations'] is not None:
         score += calc_location_score(scholarship, student_responses)
         i += 1
+        
+    '''
     if i != 0:
         score = score/i
     return score
@@ -152,31 +171,75 @@ def calc_expected_value(scholarship, student_responses):
 
 
 test_scholarship = scholarships["15-to-finish-scholarship"]
-student_responses = {'GPA': 3.5, 'SAT': 1200, 'ACT': 25, 'need': 5, 'activities': ['volleyball', 'band'], 'grade_level': 'Freshman', 'school': 'University of Iowa', 'study': 'Computer Science', 'location': 'Iowa'}
-print(aggrigate_values(test_scholarship, student_responses))
-print(calc_expected_value(test_scholarship, student_responses))
+student_responses = {
+  "id": "123456789",
+  "username": "student123",
+  "email": "student123@example.com",
+  "password": "hashedpassword123",
+  "salt": "somesaltvalue",
+  "address": {
+    "street": "123 Main St",
+    "city": "Springfield",
+    "province": "State",
+    "postCode": "12345",
+    "country": "USA",
+    "website": "www.student123.com",
+    "latitude": 40.7128,
+    "longitude": -74.0060
+  },
+  "demographics": {
+    "age": 20,
+    "demographicInfo": {
+      "identities": {
+        "nationality": ["American"],
+        "genderIdentity": ["Male"],
+        "sexualOrientation": ["Heterosexual"],
+        "ethnicity": ["Caucasian"]
+      },
+      "citizenships": ["USA"],
+      "degreeSeeking": ["Undergraduate"],
+      "fieldsOfStudy": ["Computer Science", "Mathematics"],
+      "interests": ["Programming", "Reading", "Hiking", "Basketball", "Sports"],
+      "miscellaneousCriteria": ["First-generation college student"]
+    },
+    "educationLevel": "High School Graduate",
+    "occupation": "Student",
+    "incomeLevel": 'null',
+    "maritalStatus": "Single"
+  },
+  "scores": {
+    "SAT": 1350,
+    "ACT": 30,
+    "GPA": 3.8,
+    "AP": [ "Computer Science A", "Calculus BC" ],
+    "IB": 'null',
+    "PSAT10": 1200,
+    "NMSQT": 'null'
+  },
+  "collegePreferences": ["Stanford University", "Massachusetts Institute of Technology"],
+  "majorPreferences": ["Computer Science", "Mathematics"],
+  "careerPreferences": ["Software Engineer", "Data Scientist"],
+  "currentCourses": ["Introduction to Computer Science", "Calculus I"]
+}
+
 scores = []
 schol_names = []
+
 for scholarship in scholarships:
     scores.append(calc_expected_value(scholarships[scholarship], student_responses))
     schol_names.append(scholarship)
     
-    
+  
 df = pd.DataFrame({'Scholarship': schol_names, 'Expected Value': scores})
 
 df = df.sort_values(by='Expected Value', ascending=False, ignore_index=True)
 
-print(df)
 
-
-for i in range(0, 10):
-    print(df['Scholarship'][i])
-    print(df['Expected Value'][i])
-    
-#sorted_schol_list = sorted(schol_list)
-
-#print(sorted_schol_list)
-def filter_eligability(scholarship, student_responses):
+def get_top_scholarships(df, n):
+    return df[:n]
+print(get_top_scholarships(df, 10))
+'''
+def filter_eligibility(scholarship, student_responses):
    
     if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
         if(calc_grade_level_score(scholarship, student_responses)) == 0:
@@ -191,3 +254,5 @@ def filter_eligability(scholarship, student_responses):
     if scholarship['eligibilityCriteria']['locations'] is not None:
        if(calc_location_score(scholarship, student_responses))
             return 0
+            
+            '''
