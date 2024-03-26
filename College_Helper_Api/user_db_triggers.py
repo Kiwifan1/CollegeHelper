@@ -273,7 +273,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         ):  # only one item should be returned, so we can just get the first item
             # get the first item
             if hash(user["password"], item["salt"]) == item["password"]:
-                item.pop("password")
+                item['password'] = user['password']
                 return func.HttpResponse(
                     json.dumps(item),
                     status_code=HTTPStatus.OK,

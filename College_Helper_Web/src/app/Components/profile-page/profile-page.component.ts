@@ -3,17 +3,19 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
   EducationLevel,
-  Ethnicity,
-  Gender,
   IncomeLevel,
   MaritalStatus,
   Occupation,
-} from 'src/app/Objects/User/Demographics';
+} from 'src/app/Objects/User/UserDemographics';
 import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 import { ConfirmPasswordDialogComponent } from '../common/confirm-password-dialog/confirm-password-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import {
+  EthnicityEnum,
+  GenderIdentityEnum,
+} from 'src/app/Objects/enums/Demographics';
 
 @Component({
   selector: 'app-profile-page',
@@ -33,8 +35,8 @@ export class ProfilePageComponent implements OnInit {
     maritalStatus: new FormControl(''),
   });
 
-  genderOptions = Object.values(Gender);
-  ethnicityOptions = Object.values(Ethnicity);
+  genderOptions = Object.values(GenderIdentityEnum);
+  ethnicityOptions = Object.values(EthnicityEnum);
   incomeOptions = Object.values(IncomeLevel);
   educationOptions = Object.values(EducationLevel);
   occupationOptions = Object.values(Occupation);
@@ -55,8 +57,12 @@ export class ProfilePageComponent implements OnInit {
     if (this.user) {
       this.profileForm = new FormGroup({
         age: new FormControl(this.user.demographics.age),
-        gender: new FormControl(this.user.demographics.gender),
-        ethnicity: new FormControl(this.user.demographics.ethnicity),
+        gender: new FormControl(
+          this.user.demographics.demographicInfo.identities.genderIdentity
+        ),
+        ethnicity: new FormControl(
+          this.user.demographics.demographicInfo.identities.ethnicity
+        ),
         income: new FormControl(this.user.demographics.incomeLevel),
         education: new FormControl(this.user.demographics.educationLevel),
         occupation: new FormControl(this.user.demographics.occupation),
@@ -64,10 +70,10 @@ export class ProfilePageComponent implements OnInit {
       });
       this.profileForm.controls['age'].setValue(this.user.demographics.age);
       this.profileForm.controls['gender'].setValue(
-        this.user.demographics.gender
+        this.user.demographics.demographicInfo.identities.genderIdentity
       );
       this.profileForm.controls['ethnicity'].setValue(
-        this.user.demographics.ethnicity
+        this.user.demographics.demographicInfo.identities.ethnicity
       );
       this.profileForm.controls['income'].setValue(
         this.user.demographics.incomeLevel
@@ -87,8 +93,10 @@ export class ProfilePageComponent implements OnInit {
   onSubmit() {
     if (this.user) {
       this.user.demographics.age = this.profileForm.value.age;
-      this.user.demographics.gender = this.profileForm.value.gender;
-      this.user.demographics.ethnicity = this.profileForm.value.ethnicity;
+      this.user.demographics.demographicInfo.identities.genderIdentity =
+        this.profileForm.value.gender;
+      this.user.demographics.demographicInfo.identities.ethnicity =
+        this.profileForm.value.ethnicity;
       this.user.demographics.educationLevel = this.profileForm.value.education;
       this.user.demographics.incomeLevel = this.profileForm.value.income;
       this.user.demographics.occupation = this.profileForm.value.occupation;

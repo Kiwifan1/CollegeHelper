@@ -1,0 +1,82 @@
+<div>
+  <form [formGroup]="interestForm">
+    <mat-form-field>
+      <mat-label>Interests</mat-label>
+      <mat-chip-grid #criteriaChipGrid>
+        <mat-chip-row
+          (removed)="removeCriteriaInterest(criteria)"
+          *ngFor="let criteria of selectedInterestCriterias"
+        >
+          {{ criteria }}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip-row>
+      </mat-chip-grid>
+      <input
+        matInput
+        type="text"
+        [matChipInputFor]="criteriaChipGrid"
+        [formControl]="criteriaSearchForm"
+        placeholder="e.g. Poetry, Computer Science, etc."
+        [matAutocomplete]="autoCriteria"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-autocomplete #autoCriteria="matAutocomplete">
+        <mat-option
+          *ngFor="let career of filteredInterestCriterias | async"
+          [value]="career"
+          (click)="addCriteriaInterest(career)"
+        >
+          {{ career }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Other Interests</mat-panel-title>
+        <mat-panel-description>
+          Select the interests that you would like to explore further
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-chip-grid #otherChipGrid class="other-interests">
+          <mat-chip-row
+            (removed)="removeOtherInterest(otherInterest)"
+            *ngFor="let otherInterest of selectedInterestOthers"
+          >
+            {{ otherInterest }}
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip-row>
+        </mat-chip-grid>
+
+        <input
+          matInput
+          type="text"
+          [matChipInputFor]="otherChipGrid"
+          [formControl]="otherSearchForm"
+          placeholder="e.g. Welding, Content Creation, etc."
+          [matAutocomplete]="autoOther"
+        />
+
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-autocomplete #autoOther="matAutocomplete">
+          <mat-option
+            *ngFor="let otherInterest of filteredInterestOthers | async"
+            [value]="otherInterest"
+            (click)="addOtherInterest(otherInterest)"
+          >
+            {{ otherInterest }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="stepper-buttons">
+    <button mat-button matStepperPrevious>Back</button>
+    <div class="fill-remaining-space"></div>
+    <button mat-button matStepperNext>Next</button>
+  </div>
+</div>

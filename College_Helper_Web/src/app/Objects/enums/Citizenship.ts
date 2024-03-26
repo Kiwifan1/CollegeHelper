@@ -1,0 +1,18 @@
+export enum CitizenshipStatusesEnum {
+  'U.S. Citizen',
+  'U.S. National',
+  'Not a U.S. Citizen',
+  'Pending DACA Application',
+  'Canadian Citizen',
+  'Asylum-Seeker or Asylee',
+  'Conditional Permanent Resident',
+  'FAFSA-Eligible Non-Citizen',
+  'Humanitarian Parolee',
+  'Refugee',
+  'Permanent Resident',
+  'Cuban or Haitian Entrant',
+  'Current DACA Status',
+  'California AB 540',
+  'Other',
+  'Prefer to Self-Identify',
+}

@@ -1,5 +1,5 @@
 import { Address } from '../Address';
-import { Demographics } from './Demographics';
+import { UserDemographics } from './UserDemographics';
 import { Scores } from './Scores';
 
 export interface User {
@@ -7,10 +7,10 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  address: Address;
-  demographics: Demographics;
-  scores: Scores;
   salt: string;
+  addresses: Address[];
+  demographics: UserDemographics;
+  scores: Scores;
   collegePreferences: string[];
   majorPreferences: string[];
   careerPreferences: string[];
@@ -23,7 +23,7 @@ export const defaultUser: User = {
   email: '',
   password: '',
   salt: '',
-  address: {
+  addresses: [{
     street: null,
     city: null,
     province: null,
@@ -32,11 +32,22 @@ export const defaultUser: User = {
     website: null,
     latitude: null,
     longitude: null,
-  },
+  }],
   demographics: {
     age: null,
-    gender: null,
-    ethnicity: null,
+    demographicInfo: {
+      identities: {
+        nationality: [],
+        genderIdentity: [],
+        sexualOrientation: [],
+        ethnicity: [],
+      },
+      citizenships: [],
+      degreeSeeking: [],
+      fieldsOfStudy: [],
+      interests: [],
+      miscellaneousCriteria: [],
+    },
     educationLevel: null,
     occupation: null,
     incomeLevel: null,
