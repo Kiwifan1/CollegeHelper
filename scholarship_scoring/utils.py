@@ -1,8 +1,11 @@
-import json
+
 import pandas as pd
-with open('updated_app_info.json', 'r') as data:
-    scholarships = json.load(data)
-    
+import json
+## scholarships =
+##Load in whole scholarship json from database
+## student_responses = 
+##Load in whole student response from database
+
 def decide_schol_type(value):
     
     ## This function will decide the type of scholarship based on the eligibility criteria
@@ -30,6 +33,9 @@ def decide_schol_type(value):
 
 
 def calc_merit_score(scholarship, student_responses):
+    ### This function will calculate the merit score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     merit_score = 0
     if scholarship['eligibilityCriteria']['academics'] is not None and student_responses is not None:
         for val in scholarship['eligibilityCriteria']['academics']:
@@ -68,6 +74,9 @@ def calc_need_score(student_responses):
 '''
 
 def calc_activity_score(scholarship, student_responses):
+    ### This function will calculate the activity score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     activity_score = 0
     if scholarship['eligibilityCriteria']['activity'] is not None and student_responses['demographics']['demographicInfo']['interests'] is not None:
         for val in scholarship['eligibilityCriteria']['activity']:
@@ -76,6 +85,9 @@ def calc_activity_score(scholarship, student_responses):
     return activity_score
 
 def calc_grade_level_score(scholarship, student_responses):
+    ### This function will calculate the grade level score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     grade_level_score = 0
     if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None and student_responses['grade_level'] is not None:
         for val in scholarship['eligibilityCriteria']['currentGradeLevel']:
@@ -84,6 +96,9 @@ def calc_grade_level_score(scholarship, student_responses):
     return grade_level_score
 
 def calc_school_score(scholarship, student_responses):
+    ### This function will calculate the school score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     school_score = 0
     if scholarship['eligibilityCriteria']['currentSchool'] is not None and student_responses['collegePreferences'] is not None:
         for val in scholarship['eligibilityCriteria']['currentSchool']:
@@ -96,6 +111,9 @@ def calc_school_score(scholarship, student_responses):
     return school_score
 
 def calc_study_score(scholarship, student_responses):
+    ### This function will calculate the study score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     study_score = 0
     if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None and student_responses['majorPreferences'] is not None:
         for val in scholarship['eligibilityCriteria']['fieldsOfStudy']:
@@ -105,6 +123,9 @@ def calc_study_score(scholarship, student_responses):
     return study_score
 
 def calc_location_score(scholarship, student_responses):
+    ### This function will calculate the location score of a scholarship based on the student's responses for applicable scholarships
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
     location_score = 0
     if scholarship['eligibilityCriteria']['locations'] is not None and student_responses['location'] is not None:
         for val in scholarship['eligibilityCriteria']['locations']:
@@ -169,8 +190,50 @@ def calc_expected_value(scholarship, student_responses):
         expected_value = expected_value/2
     return expected_value
 
+def append_scores(student_responses, scholarships) -> dict:
+    ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
+    ### scholarships: dictionary of all scholarships
+    ### student_responses: dictionary of 1 student response
+    scores = []
+    for scholarship in scholarships:
+        
+        score = {
+                    "schol_id": scholarships[scholarship]["id"],
+                    "score": calc_expected_value(scholarships[scholarship], student_responses),
+                }
+        scores.append(score)
+        
+    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
+    val = {"user_id": student_responses["id"], "scores": scores}
+    return val
+        
+    #df = pd.DataFrame({'Scholarship': schol_names, 'Expected Value': scores})
 
-test_scholarship = scholarships["15-to-finish-scholarship"]
+    #df = df.sort_values(by='Expected Value', ascending=False, ignore_index=True)
+    
+
+
+
+def filter_eligibility(scholarship, student_responses):
+   
+    if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
+        if(calc_grade_level_score(scholarship, student_responses)) == 0:
+            return 0
+        
+    if scholarship['eligibilityCriteria']['currentSchool'] is not None:
+       if(calc_school_score(scholarship, student_responses)) == 0:
+            return 0
+    if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None:
+        if(calc_study_score(scholarship, student_responses)) == 0:
+            return 0
+    if scholarship['eligibilityCriteria']['locations'] is not None:
+       if(calc_location_score(scholarship, student_responses)) == 0:
+            return 0
+            
+     
+            
+            
+# Sample student json response following given schema          
 student_responses = {
   "id": "123456789",
   "username": "student123",
@@ -221,38 +284,3 @@ student_responses = {
   "careerPreferences": ["Software Engineer", "Data Scientist"],
   "currentCourses": ["Introduction to Computer Science", "Calculus I"]
 }
-
-scores = []
-schol_names = []
-
-for scholarship in scholarships:
-    scores.append(calc_expected_value(scholarships[scholarship], student_responses))
-    schol_names.append(scholarship)
-    
-  
-df = pd.DataFrame({'Scholarship': schol_names, 'Expected Value': scores})
-
-df = df.sort_values(by='Expected Value', ascending=False, ignore_index=True)
-
-
-def get_top_scholarships(df, n):
-    return df[:n]
-print(get_top_scholarships(df, 10))
-'''
-def filter_eligibility(scholarship, student_responses):
-   
-    if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
-        if(calc_grade_level_score(scholarship, student_responses)) == 0:
-            return 0
-        
-    if scholarship['eligibilityCriteria']['currentSchool'] is not None:
-       if(calc_school_score(scholarship, student_responses)) == 0:
-            return 0
-    if scholarship['eligibilityCriteria']['fieldsOfStudy'] is not None:
-        if(calc_study_score(scholarship, student_responses)) == 0:
-            return 0
-    if scholarship['eligibilityCriteria']['locations'] is not None:
-       if(calc_location_score(scholarship, student_responses))
-            return 0
-            
-            '''
