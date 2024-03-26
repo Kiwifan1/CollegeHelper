@@ -27,6 +27,8 @@ interface EligibilityCriteria {
   studyAbroad: boolean | null;
   age: boolean | null;
   demographics: DemographicsEnum[] | null;
+  awardMin: number | null;
+  awardMax: number | null;
 }
 
 interface MiscellaneousCriteria {
