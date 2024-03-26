@@ -7,3 +7,4 @@ azure-cosmos
 azure-identity
 bcrypt
 uuid
+pandas
