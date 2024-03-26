@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
-  userGeneralInfoForm: FormGroup = new FormGroup({
+  userForm: FormGroup = new FormGroup({
     age: new FormControl('', [
       Validators.min(0),
       Validators.max(120),
@@ -34,7 +34,7 @@ export class QuestionnaireStepperComponent implements OnInit {
     maritalStatus: new FormControl('', [Validators.required]),
   });
 
-  userScoreInfoForm: FormGroup = new FormGroup({
+  userScoreForm: FormGroup = new FormGroup({
     SAT: new FormControl('', [Validators.min(400), Validators.max(1600)]),
     ACT: new FormControl('', [Validators.min(1), Validators.max(36)]),
     GPA: new FormControl('', [Validators.min(0), Validators.max(4)]),
@@ -44,9 +44,7 @@ export class QuestionnaireStepperComponent implements OnInit {
     NMSQT: new FormControl('', [Validators.min(320), Validators.max(1520)]),
   });
 
-  userBasicMajorPreferencesForm: FormGroup = new FormGroup({
-    majors: new FormControl(['']),
-    degreeSeeking: new FormControl(['']),
+  userMajorsForm: FormGroup = new FormGroup({
     fieldsOfStudy: new FormControl(['']),
   });
 
@@ -59,21 +57,9 @@ export class QuestionnaireStepperComponent implements OnInit {
     currentCourses: new FormControl(['']),
   });
 
-  // advanced are optional, and will be used to help further specify the areas
-
-  userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
-    collegeSize: new FormControl(''),
-    collegeCost: new FormControl(''),
-    collegeSports: new FormControl(''),
-    collegeClubs: new FormControl(''),
-    collegeGreekLife: new FormControl(''),
+  userCollegeForm: FormGroup = new FormGroup({
+    colleges: new FormControl(['']),
   });
-
-  userAdvancedMajorPreferencesForm: FormGroup = new FormGroup({
-    majorType: new FormControl(''),
-    majorLocation: new FormControl(''),
-  });
-
   private user!: User;
 
   submitted: boolean = false;
@@ -111,7 +97,7 @@ export class QuestionnaireStepperComponent implements OnInit {
 
   makeUser() {
     this.user.address = {
-      street: this.userGeneralInfoForm.get('location')?.value,
+      street: this.userForm.get('location')?.value,
       city: '',
       province: '',
       postCode: '',
@@ -122,13 +108,13 @@ export class QuestionnaireStepperComponent implements OnInit {
     };
 
     this.user.demographics = {
-      age: this.userGeneralInfoForm.get('age')?.value,
+      age: this.userForm.get('age')?.value,
       demographicInfo: {
         identities: {
           nationality: [],
           genderIdentity: [],
           sexualOrientation: [],
-          ethnicity: [this.userGeneralInfoForm.get('ethnicity')?.value],
+          ethnicity: [this.userForm.get('ethnicity')?.value],
         },
         citizenships: [],
         degreeSeeking: [],
@@ -136,25 +122,23 @@ export class QuestionnaireStepperComponent implements OnInit {
         interests: [],
         miscellaneousCriteria: [],
       },
-      educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
-      occupation: this.userGeneralInfoForm.get('occupation')?.value,
-      incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,
-      maritalStatus: this.userGeneralInfoForm.get('maritalStatus')?.value,
+      educationLevel: this.userForm.get('educationLevel')?.value,
+      occupation: this.userForm.get('occupation')?.value,
+      incomeLevel: this.userForm.get('incomeLevel')?.value,
+      maritalStatus: this.userForm.get('maritalStatus')?.value,
     };
 
     this.user.scores = {
-      SAT: this.userScoreInfoForm.get('SAT')?.value,
-      ACT: this.userScoreInfoForm.get('ACT')?.value,
-      GPA: this.userScoreInfoForm.get('GPA')?.value,
-      AP: this.userScoreInfoForm.get('AP')?.value,
-      IB: this.userScoreInfoForm.get('IB')?.value,
-      PSAT10: this.userScoreInfoForm.get('PSAT10')?.value,
-      NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
+      SAT: this.userScoreForm.get('SAT')?.value,
+      ACT: this.userScoreForm.get('ACT')?.value,
+      GPA: this.userScoreForm.get('GPA')?.value,
+      AP: this.userScoreForm.get('AP')?.value,
+      IB: this.userScoreForm.get('IB')?.value,
+      PSAT10: this.userScoreForm.get('PSAT10')?.value,
+      NMSQT: this.userScoreForm.get('NMSQT')?.value,
     };
 
-    this.user.majorPreferences = [
-      this.userBasicMajorPreferencesForm.get('majors')?.value,
-    ];
+    this.user.majorPreferences = [this.userMajorsForm.get('majors')?.value];
     this.user.careerPreferences = [
       this.userInterestsForm.get('careers')?.value,
     ];

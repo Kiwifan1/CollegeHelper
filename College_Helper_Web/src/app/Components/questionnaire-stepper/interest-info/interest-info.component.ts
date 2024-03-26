@@ -32,22 +32,27 @@ export class InterestInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.criteriaSearchForm.valueChanges.subscribe((value) => {
-      this.criteriaFilterChange('criteria');
+      this.filterChange('criteria');
     });
 
     this.otherSearchForm.valueChanges.subscribe((value) => {
-      this.criteriaFilterChange('other');
+      this.filterChange('other');
     });
   }
 
-  addInterest(careerName: string) {
-    // add career to form which is list of careers
+  addCriteriaInterest(interestName: string) {
     this.interestForm.patchValue({
-      careers: [...this.interestForm.value.careers, careerName],
+      criteriaInterests: [...this.interestForm.value.interests, interestName],
     });
   }
 
-  criteriaFilterChange(type: 'criteria' | 'other') {
+  addOtherInterest(interestName: string) {
+    this.interestForm.patchValue({
+      otherInterests: [...this.interestForm.value.interests, interestName],
+    });
+  }
+
+  filterChange(type: 'criteria' | 'other') {
     this.filteredInterestCriterias = this.filterInterests(
       this.criteriaSearchForm.value,
       type

@@ -101,7 +101,6 @@ export enum InterestOtherEnum {
   'Radio service',
   'Racial Equality',
   'Medicine',
-  null,
   'Broadcasting',
   'Creative arts (arts and humanities)',
   'Public Policy',

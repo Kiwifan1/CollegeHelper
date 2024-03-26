@@ -16,8 +16,7 @@ import { FieldsOfStudyEnum } from 'src/app/Objects/enums/FieldsOfStudy';
   styleUrl: './major-info.component.scss',
 })
 export class MajorInfoComponent implements OnInit {
-  @Input() basicMajorPreferencesForm!: FormGroup;
-  @Input() advancedMajorPreferencesForm!: FormGroup;
+  @Input() majorsForm!: FormGroup;
 
   majors: string[] = Object.values(FieldsOfStudyEnum)
     .filter((value) => typeof value === 'string')
@@ -26,8 +25,7 @@ export class MajorInfoComponent implements OnInit {
   selectedMajors: string[] = [];
   searchForm: FormControl = new FormControl(['']);
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.searchForm.valueChanges.subscribe((value: string[] | string) => {
@@ -40,8 +38,8 @@ export class MajorInfoComponent implements OnInit {
   }
 
   selectMajor(major: string) {
-    this.basicMajorPreferencesForm.patchValue({
-      majors: [...this.basicMajorPreferencesForm.value.majors, major],
+    this.majorsForm.patchValue({
+      majors: [...this.majorsForm.value.majors, major],
     });
   }
 

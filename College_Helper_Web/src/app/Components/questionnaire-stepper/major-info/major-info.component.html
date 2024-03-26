@@ -1,5 +1,5 @@
 <div>
-  <form [formGroup]="basicMajorPreferencesForm">
+  <form [formGroup]="majorsForm">
     <div class="form-group">
       <mat-form-field>
         <mat-label>Majors</mat-label>
@@ -37,39 +37,6 @@
       </mat-chip-listbox>
     </div>
   </form>
-
-  <mat-accordion>
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title> Advanced Major Preferences</mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <form [formGroup]="advancedMajorPreferencesForm">
-        <div class="form-group">
-          <mat-form-field>
-            <mat-label>Major Type</mat-label>
-            <mat-select formControlName="majorType">
-              <mat-option value="stem">STEM</mat-option>
-              <mat-option value="humanities">Humanities</mat-option>
-              <mat-option value="business">Business</mat-option>
-              <mat-option value="other">Other</mat-option>
-            </mat-select>
-          </mat-form-field>
-
-          <mat-form-field>
-            <mat-label>Major Location</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="majorLocation"
-              placeholder="e.g. Seattle, New York"
-            />
-          </mat-form-field>
-        </div>
-      </form>
-    </mat-expansion-panel>
-  </mat-accordion>
-
   <div class="stepper-buttons">
     <button mat-button matStepperPrevious>Back</button>
     <button mat-button matStepperNext>Next</button>

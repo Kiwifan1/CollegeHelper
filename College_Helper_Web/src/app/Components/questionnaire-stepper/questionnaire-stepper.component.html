@@ -3,31 +3,26 @@
     <mat-card class="card">
       <mat-card-content>
         <mat-stepper [linear]="true">
-          <mat-step [stepControl]="userGeneralInfoForm">
+          <mat-step [stepControl]="userForm">
             <ng-template matStepLabel>General Info</ng-template>
-            <app-general-info
-              [generalUserInfoForm]="userGeneralInfoForm"
-            ></app-general-info>
+            <app-general-info [userForm]="userForm"></app-general-info>
           </mat-step>
-          <mat-step [stepControl]="userScoreInfoForm">
+          <mat-step [stepControl]="userScoreForm">
             <ng-template matStepLabel>Grades</ng-template>
             <app-score-info
-              [userScoreInfoForm]="userScoreInfoForm"
+              [userScoreInfoForm]="userScoreForm"
             ></app-score-info>
           </mat-step>
-          <mat-step [stepControl]="userAdvancedCollegePreferencesForm">
+          <mat-step [stepControl]="userCollegeForm">
             <ng-template matStepLabel>College Preferences</ng-template>
             <app-college-info
-              [advancedCollegeInfoForm]="userAdvancedCollegePreferencesForm"
+              [collegeForm]="userCollegeForm"
             ></app-college-info>
           </mat-step>
 
-          <mat-step [stepControl]="userBasicMajorPreferencesForm">
+          <mat-step [stepControl]="userMajorsForm">
             <ng-template matStepLabel>Major Preferences</ng-template>
-            <app-major-info
-              [basicMajorPreferencesForm]="userBasicMajorPreferencesForm"
-              [advancedMajorPreferencesForm]="userAdvancedMajorPreferencesForm"
-            ></app-major-info>
+            <app-major-info [majorsForm]="userMajorsForm"></app-major-info>
           </mat-step>
 
           <mat-step [stepControl]="userInterestsForm">
@@ -39,19 +34,19 @@
 
           <mat-step>
             <ng-template matStepLabel>Review and Confirm</ng-template>
-            <app-review
-              [userGeneralInfoForm]="userGeneralInfoForm"
+            <!-- <app-review
+              [userForm]="userForm"
               [userScoreInfoForm]="userScoreInfoForm"
               [userAdvancedCollegePreferencesForm]="
                 userAdvancedCollegePreferencesForm
               "
-              [userBasicMajorPreferencesForm]="userBasicMajorPreferencesForm"
+              [userMajorsForm]="userMajorsForm"
               [userAdvancedMajorPreferencesForm]="
                 userAdvancedMajorPreferencesForm
               "
               [userBasicCareerPreferencesForm]="userInterestsForm"
               (submitQuestionnaire)="handleSubmission()"
-            ></app-review>
+            ></app-review> -->
           </mat-step>
         </mat-stepper>
       </mat-card-content>
