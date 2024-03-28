@@ -17,6 +17,10 @@
             {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
           </h2>
         </mat-card-subtitle>
+        <app-similarity-ring
+          *ngIf="similarityScore"
+          [similarity]="similarityScore"
+        ></app-similarity-ring>
         <button mat-raised-button color="primary" (click)="handleViewDetails()">
           View Details
         </button>

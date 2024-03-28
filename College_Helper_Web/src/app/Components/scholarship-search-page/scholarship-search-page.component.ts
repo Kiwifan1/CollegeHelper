@@ -4,6 +4,7 @@ import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 import { LoadingService } from 'src/app/Services/loading.service';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
 import { ScholarshipSearchDialogComponent } from './scholarship-search-dialog/scholarship-search-dialog.component';
+import { User } from 'src/app/Objects/User/User';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -18,12 +19,20 @@ export class ScholarshipSearchPageComponent implements OnInit {
   pageSizeOptions = [5, 10, 25, 100];
 
   filters: any = {};
+  user_id: string = '';
+  sort_by_match = false;
 
   constructor(
     private scholarshipService: ScholarshipService,
     private loadingService: LoadingService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    if (localStorage.getItem('user')) {
+      this.user_id = (
+        JSON.parse(localStorage.getItem('user') || '{}') as User
+      ).id;
+    }
+  }
 
   ngOnInit() {
     this.totalScholarships();
@@ -41,7 +50,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .getScholarships(
         this.pageIndex * this.pageSize,
         this.pageSize,
-        this.filters
+        this.filters,
+        this.sort_by_match
       )
       .subscribe((scholarships: any) => {
         scholarships.forEach((scholarship: any) => {
@@ -57,10 +67,12 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   totalScholarships() {
     this.loadingService.updateLoadingStatus(true);
-    this.scholarshipService.getNumScholarships(this.filters).subscribe((num: any) => {
-      this.length = num.length;
-      this.loadingService.updateLoadingStatus(false);
-    });
+    this.scholarshipService
+      .getNumScholarships(this.filters)
+      .subscribe((num: any) => {
+        this.length = num.length;
+        this.loadingService.updateLoadingStatus(false);
+      });
   }
 
   openSeachDialog() {
@@ -72,9 +84,10 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.filters = result;
+
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService
-            .getScholarships(0, this.pageSize, this.filters)
+            .getScholarships(0, this.pageSize, this.filters, this.sort_by_match)
             .subscribe((scholarships: any) => {
               scholarships.forEach((scholarship: any) => {
                 scholarship.scholarshipName =

@@ -29,6 +29,7 @@ interface EligibilityCriteria {
   demographics: DemographicsEnum[] | null;
   awardMin: number | null;
   awardMax: number | null;
+  similarity_id?: string;
 }
 
 interface MiscellaneousCriteria {

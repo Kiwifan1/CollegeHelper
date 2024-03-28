@@ -8,14 +8,19 @@ import azure.functions as func
 from azure.core.paging import ItemPaged, PageIterator
 from azure.cosmos import CosmosClient, ContainerProxy
 from http import HTTPStatus
-from user_db_triggers import CLIENT, DATABASE, query_cosmos_db, hash
+from user_db_triggers import (
+    DATABASE,
+    query_cosmos_db,
+    hash,
+)
 
 from model.utils import append_scores
 
 schol_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
-CONTAINER = DATABASE.get_container_client("SCHOLARSHIP")
+SCHOL_CONTAINER = DATABASE.get_container_client("SCHOLARSHIP")
+SCORE_CONTAINER = DATABASE.get_container_client("USER-SCHOL-SCORES")
 
 
 def handleRequirements(string_input):
@@ -73,17 +78,47 @@ def get_scholarships(req: func.HttpRequest) -> func.HttpResponse:
             }
         )
 
+    if req.params.get("sort_by_match"):
+        scores = req.params.get("scores")
+        query, params, handle_sort_by_match(scores, query, params)
+
     query += " OFFSET @offset LIMIT @limit"
     params.append({"name": "@offset", "value": int(offset)})
     params.append({"name": "@limit", "value": int(limit)})
 
     try:
-        scholarships = list(query_cosmos_db(query, params, CONTAINER, True))
+        scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
         return func.HttpResponse(
             json.dumps(scholarships), status_code=200, mimetype="application/json"
         )
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+
+def handle_sort_by_match(scores, query, params):
+    # scores is an object set up like {user_id: <id>, scores: [{schol_id: <id>, score: <score>}]}
+    # the scores should already be sorted from highest to lowest, so we can just iterate through them, and add to the query
+    schol_ids = [score["schol_id"] for score in scores["scores"]]
+
+    # parameterize the list of ids
+    query += " WHERE c.id IN ("
+    for i in range(len(schol_ids)):
+        query += f"@id{i}"
+        if i != len(schol_ids) - 1:
+            query += ", "
+        params.append({"name": f"@id{i}", "value": schol_ids[i]})
+    query += ")"
+
+    # ensure that the order of the scholarships is the same as the order of the scores
+    query += " ORDER BY c.id IN ("
+    for i in range(len(schol_ids)):
+        query += f"@id{i}"
+        if i != len(schol_ids) - 1:
+            query += ", "
+        params.append({"name": f"@id{i}", "value": schol_ids[i]})
+    query += ") DESC"
+
+    return query, params
 
 
 @schol_bp.route(route="get_scholarship", methods=["GET"])
@@ -96,7 +131,7 @@ def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
     params = [{"name": "@id", "value": scholarship_id}]
 
     try:
-        scholarship = list(query_cosmos_db(query, params, CONTAINER, True))
+        scholarship = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
         if not scholarship:
             return func.HttpResponse("Error: Scholarship not found", status_code=404)
         return func.HttpResponse(
@@ -112,7 +147,7 @@ def get_num_scholarships(req: func.HttpRequest) -> func.HttpResponse:
     params = []
 
     try:
-        num_scholarships = list(query_cosmos_db(query, params, CONTAINER, True))
+        num_scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
         # get length of list
         return func.HttpResponse(
             json.dumps({"length": num_scholarships[0]}),
@@ -159,6 +194,9 @@ def predict_scholarships(
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
+    if user[0]["scholarshipScores"]:
+        user[0].pop("scholarshipScores")
+        
     msg.set(json.dumps(user[0]))
     return func.HttpResponse("User found", status_code=200)
 
@@ -184,12 +222,11 @@ def process_prediction_request(
     user = json.loads(msg.get_body().decode("utf-8"))
     scholarships = [s.data for s in scholarships]
 
+    # returns a {sccholarship_id: score} dictionary
     user_preds = append_scores(user, scholarships)
 
-    # update user with new predictions
-    user["scholarshipScores"] = user_preds
-
-    DATABASE.get_container_client("USER").upsert_item(user)
+    # update the scholarships in the database with one query
+    SCHOL_CONTAINER.execute_item_batch
 
     logging.info(f"Updated user: {user['id']}")
     return
