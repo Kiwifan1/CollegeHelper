@@ -259,13 +259,11 @@ def append_scores(student_responses, scholarships) -> dict:
     ### student_responses: dictionary of 1 student response
     scores = []
     for scholarship in scholarships:
-
-        score = {
-            "schol_id": scholarship["id"],
-            "score": calc_expected_value(scholarship, student_responses),
-        }
-        scores.append(score)
-
+        
+        val = calc_expected_value(scholarship, student_responses)
+        
+        if val > 0:
+            scores[scholarship['id']] = val
     scores = sorted(scores, key=lambda x: x["score"], reverse=True)
     val = {"user_id": student_responses["id"], "scores": scores}
     return val
