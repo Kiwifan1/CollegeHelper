@@ -29,7 +29,6 @@ interface EligibilityCriteria {
   demographics: DemographicsEnum[] | null;
   awardMin: number | null;
   awardMax: number | null;
-  similarity_id?: string;
 }
 
 interface MiscellaneousCriteria {
@@ -121,4 +120,6 @@ export interface Scholarship {
   isNeedBased: boolean;
   isMeritBased: boolean;
   cbScholarshipId: string;
+  score?: number;
+  similarityId?: string;
 }

@@ -5,6 +5,7 @@ import { LoadingService } from 'src/app/Services/loading.service';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
 import { ScholarshipSearchDialogComponent } from './scholarship-search-dialog/scholarship-search-dialog.component';
 import { User } from 'src/app/Objects/User/User';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -20,18 +21,16 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   filters: any = {};
   user_id: string = '';
-  sort_by_match = false;
+  sort_by_match = true;
 
   constructor(
+    private authService: AuthService,
     private scholarshipService: ScholarshipService,
     private loadingService: LoadingService,
     private dialog: MatDialog
   ) {
-    if (localStorage.getItem('user')) {
-      this.user_id = (
-        JSON.parse(localStorage.getItem('user') || '{}') as User
-      ).id;
-    }
+    this.user_id = authService.getUser().id;
+    this.filters.id = this.user_id;
   }
 
   ngOnInit() {

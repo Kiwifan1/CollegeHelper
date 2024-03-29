@@ -15,6 +15,7 @@ export interface User {
   majorPreferences: string[];
   careerPreferences: string[];
   currentCourses: string[];
+  scholarshipScores?: any;
 }
 
 export const defaultUser: User = {

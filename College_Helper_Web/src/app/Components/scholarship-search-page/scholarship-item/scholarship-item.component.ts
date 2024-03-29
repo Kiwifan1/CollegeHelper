@@ -15,7 +15,7 @@ import { Academics } from 'src/app/Objects/College/Collegeboard/Academics';
 })
 export class ScholarshipItemComponent implements OnInit {
   @Input() scholarship!: Scholarship;
-  @Input() similarityScore!: number;
+  @Input() similarityScore!: number | null;
 
   constructor(private dialog: MatDialog, private route: Router) {}
 

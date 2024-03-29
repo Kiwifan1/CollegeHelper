@@ -253,22 +253,34 @@ def calc_expected_value(scholarship, student_responses):
     return expected_value
 
 
-def append_scores(student_responses, scholarships) -> dict:
+def append_scores(student_responses, scholarships) -> list[tuple[str, float]]:
     ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
     ### scholarships: list of dictionaries of all scholarships
     ### student_responses: dictionary of 1 student response
+    # scores = {}
+    # for scholarship in scholarships:
+    #     val = calc_expected_value(scholarship, student_responses)
+
+    #     if val > 0:
+    #         scores[scholarship["id"]] = val
+
+    # scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+
     scores = []
+
     for scholarship in scholarships:
+        val = calc_expected_value(scholarship, student_responses)
+        if val > 0:
+            scores.append((scholarship["id"], val))
 
-        score = {
-            "schol_id": scholarship["id"],
-            "score": calc_expected_value(scholarship, student_responses),
-        }
-        scores.append(score)
+    scores = sorted(scores, key=lambda x: x[1], reverse=True)
+    # normalize scores
+    max_score = scores[0][1]
+    min_score = scores[-1][1]
+    for i in range(len(scores)):
+        scores[i] = (scores[i][0], (scores[i][1] - min_score) / (max_score - min_score))
 
-    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
-    val = {"user_id": student_responses["id"], "scores": scores}
-    return val
+    return scores
 
 
 def filter_eligibility(scholarship, student_responses):
