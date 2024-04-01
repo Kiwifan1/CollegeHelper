@@ -10,5 +10,8 @@ export class SimilarityRingComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.similarity = this.similarity * 100;
+    this.similarity = Math.round(this.similarity * 100) / 100;
+  }
 }

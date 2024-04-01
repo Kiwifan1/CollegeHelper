@@ -1,5 +1,6 @@
 import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
 import { DemographicsEnum } from '../enums/Demographics';
+import { UserScore } from './Score';
 
 interface EligibilityCriteria {
   miscellaneous: MiscellaneousCriteria[] | null;
@@ -120,6 +121,6 @@ export interface Scholarship {
   isNeedBased: boolean;
   isMeritBased: boolean;
   cbScholarshipId: string;
-  score?: number;
+  userScores: UserScore[];
   similarityId?: string;
 }

@@ -14,14 +14,12 @@ export class ScholarshipService {
   getScholarships(
     offset: number,
     limit: number,
-    filters: any = {},
-    sort_by_match: boolean = false
+    filters: any = {}
   ): Observable<Scholarship[]> {
     let url = environment.WEB_API_URL + '/get_scholarships';
     const params = {
       offset: offset,
       limit: limit,
-      sort_by_match: sort_by_match,
       ...filters,
     };
     return this.$http.get<Scholarship[]>(url, { params: params });

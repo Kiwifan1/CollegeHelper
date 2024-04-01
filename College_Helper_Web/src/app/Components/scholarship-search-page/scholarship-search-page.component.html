@@ -15,7 +15,7 @@
       <div class="scholarship-content">
         <div class="scholarship-list" *ngFor="let scholarship of scholarships">
           <app-scholarship-item
-            [similarityScore]="scholarship.score || null"
+            [similarityScore]="getScore(scholarship) || null"
             [scholarship]="scholarship"
           ></app-scholarship-item>
         </div>

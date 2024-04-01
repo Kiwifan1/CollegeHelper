@@ -19,9 +19,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
-  filters: any = {};
   user_id: string = '';
   sort_by_match = true;
+  filters: any = {
+    sort_by_match: this.sort_by_match,
+  };
 
   constructor(
     private authService: AuthService,
@@ -49,8 +51,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .getScholarships(
         this.pageIndex * this.pageSize,
         this.pageSize,
-        this.filters,
-        this.sort_by_match
+        this.filters
       )
       .subscribe((scholarships: any) => {
         scholarships.forEach((scholarship: any) => {
@@ -74,6 +75,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
       });
   }
 
+  getScore(scholarship: Scholarship) {
+    return scholarship.userScores.find((score) => score.userId === this.user_id)
+      ?.score;
+  }
+
   openSeachDialog() {
     this.dialog
       .open(ScholarshipSearchDialogComponent, {
@@ -86,7 +92,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService
-            .getScholarships(0, this.pageSize, this.filters, this.sort_by_match)
+            .getScholarships(0, this.pageSize, this.filters)
             .subscribe((scholarships: any) => {
               scholarships.forEach((scholarship: any) => {
                 scholarship.scholarshipName =

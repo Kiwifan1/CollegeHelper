@@ -66,6 +66,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { AddressPipe } from './Components/common/pipes/address.pipe';
 import { SimilarityRingComponent } from './Components/common/similarity-ring/similarity-ring.component';
 import { NgxGaugeModule } from 'ngx-gauge';
+import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
 
 @NgModule({
   declarations: [
@@ -143,6 +144,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
     MatChipsModule,
     AddressPipe,
     NgxGaugeModule,
+    RingColorPipe,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
