@@ -121,6 +121,6 @@ export interface Scholarship {
   isNeedBased: boolean;
   isMeritBased: boolean;
   cbScholarshipId: string;
-  userScores: UserScore[];
+  score?: number;
   similarityId?: string;
 }

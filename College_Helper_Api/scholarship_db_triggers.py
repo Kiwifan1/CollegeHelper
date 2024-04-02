@@ -19,7 +19,7 @@ schol_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
 SCHOL_CONTAINER = DATABASE.get_container_client("SCHOLARSHIP")
-SCORE_CONTAINER = DATABASE.get_container_client("SCORES")
+SCORE_CONTAINER = DATABASE.get_container_client("SCORE")
 
 
 def handleRequirements(string_input):
@@ -40,9 +40,16 @@ def build_query(req, query, params, user=None):
     # adding the predictive list ordering and filtering
     if sort_by_match:
         # start query with creating a list of scholarships from the user
-        query += " JOIN s IN c.userScores"
-        query += " WHERE s.userId = @user_id"
-        params.append({"name": "@user_id", "value": user["id"]})
+        # query += " JOIN s IN c.userScores"
+        # query += " WHERE s.userId = @user_id"
+        # params.append({"name": "@user_id", "value": user["id"]})
+        query += " WHERE ARRAY_CONTAINS(@schol_ids, c.id, true)"
+        params.append(
+            {
+                "name": "@schol_ids",
+                "value": [s["scholId"] for s in user["scholarshipScores"]],
+            }
+        )
 
     if essay_required != None:
         query += " WHERE c.isEssayRequired = @essayRequired"
@@ -77,8 +84,8 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if sort_by_match:
-        query += " ORDER BY c.userScores[0].score DESC"
+    # if sort_by_match:
+    #     query += " ORDER BY c.userScores[0].score DESC"
     return query, params
 
 
@@ -107,9 +114,15 @@ def filter_scholarships(scholarships, req):
     container_name="USER",
     connection=cosmos_db_connection,
 )
+@schol_bp.cosmos_db_input(
+    arg_name="scores",
+    database_name="CollegeHelperDB",
+    container_name="SCORE",
+    connection=cosmos_db_connection,
+)
 @schol_bp.route(route="get_scholarships", methods=["GET"])
 def get_scholarships(
-    req: func.HttpRequest, user: func.DocumentList
+    req: func.HttpRequest, user: func.DocumentList, scores: func.DocumentList
 ) -> func.HttpResponse:
     # params
     id = req.params.get("id")
@@ -120,21 +133,32 @@ def get_scholarships(
         return func.HttpResponse("Error: Missing offset/limit", status_code=400)
 
     user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+    user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
+    user["scholarshipScores"] = user_score["scores"]
 
-    query = "SELECT c FROM c"
+    query = "SELECT * FROM c"
     params = []
 
     query, params = build_query(req, query, params, user)
 
-    query += " OFFSET @offset LIMIT @limit"
-    params.append({"name": "@offset", "value": int(offset)})
-    params.append({"name": "@limit", "value": int(limit)})
+    # query += " OFFSET @offset LIMIT @limit"
+    # params.append({"name": "@offset", "value": int(offset)})
+    # params.append({"name": "@limit", "value": int(limit)})
 
     scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
-    scholarships = [s["c"] for s in scholarships]
+    # scholarships = [s["c"] for s in scholarships]
+
+    # do sorting, offset and limit backend side
+    scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
+
+    for scholarship in scholarships:
+        scholarship["score"] = scores[scholarship["id"]]
+    scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
+    num_returned = len(scholarships)
+    scholarships = scholarships[int(offset) : int(offset) + int(limit)]
 
     return func.HttpResponse(
-        json.dumps(scholarships),
+        json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
         status_code=200,
         mimetype="application/json",
     )
@@ -218,9 +242,7 @@ def predict_scholarships(
     ]
 
     try:
-        user = list(
-            query_cosmos_db(query, params, DATABASE.get_container_client("USER"), True)
-        )
+        user = list(query_cosmos_db(query, params, USER_CONTAINER, True))
         if not user:
             return func.HttpResponse("Error: User not found", status_code=404)
     except Exception as e:
@@ -244,8 +266,15 @@ def predict_scholarships(
     container_name="SCHOLARSHIP",
     connection=cosmos_db_connection,
 )
-async def process_prediction_request(
-    msg: func.QueueMessage, scholarships: func.DocumentList
+# @schol_bp.cosmos_db_output(
+#     arg_name="score",
+#     database_name="CollegeHelperDB",
+#     container_name="SCORE",
+#     connection=cosmos_db_connection,
+# )
+def process_prediction_request(
+    msg: func.QueueMessage,
+    scholarships: func.DocumentList,
 ) -> None:
     if not msg or not msg.get_body() or not scholarships:
         return
@@ -256,44 +285,50 @@ async def process_prediction_request(
     user_preds = {pred[0]: pred[1] for pred in user_preds}
 
     # convert to list for stored procedure testing
-    # user_preds = [{"id": key, "score": value} for key, value in user_preds.items()]
-    # user_preds.insert(0, {"id": user["id"], "score": 0})
+    user_preds = [{"scholId": key, "score": value} for key, value in user_preds.items()]
+    scores = {"userId": user["id"], "scores": user_preds}
 
-    scholarships = [
-        schol.data for schol in scholarships if schol.data["id"] in user_preds
-    ]
+    try:
+        SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
+    except Exception as e:
+        SCORE_CONTAINER.upsert_item(scores)
+    # for scholarship in scholarships:
+    #     if not scholarship.get("userScores") or scholarship["userScores"] == []:
+    #         scholarship["userScores"] = [
+    #             {"userId": user["id"], "score": user_preds[scholarship["id"]]}
+    #         ]
+    #     else:
+    #         user_exists = any(
+    #             [score["userId"] == user["id"] for score in scholarship["userScores"]]
+    #         )
 
-    for scholarship in scholarships:
-        if not scholarship.get("userScores") or scholarship["userScores"] == []:
-            scholarship["userScores"] = [
-                {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-            ]
-        else:
-            user_exists = any(
-                [score["userId"] == user["id"] for score in scholarship["userScores"]]
-            )
+    #         # userScores is set up [{'userId': <id>, 'score': <score>}, ...]
+    #         if user_exists:
+    #             scholarship["userScores"] = [
+    #                 (
+    #                     {"userId": user["id"], "score": user_preds[scholarship["id"]]}
+    #                     if score["userId"] == user["id"]
+    #                     else score
+    #                 )
+    #                 for score in scholarship["userScores"]
+    #             ]
+    #         else:
+    #             scholarship["userScores"].append(
+    #                 {"userId": user["id"], "score": user_preds[scholarship["id"]]}
+    #             )
 
-            # userScores is set up [{'userId': <id>, 'score': <score>}, ...]
-            if user_exists:
-                scholarship["userScores"] = [
-                    (
-                        {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-                        if score["userId"] == user["id"]
-                        else score
-                    )
-                    for score in scholarship["userScores"]
-                ]
-            else:
-                scholarship["userScores"].append(
-                    {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-                )
-
-    scholarship_routines = [updateScore(scholarship) for scholarship in scholarships]
-    # batch them into sizes of 100
-    batch_size = 100
-    for i in range(0, len(scholarship_routines), batch_size):
-        await asyncio.gather(*scholarship_routines[i : i + batch_size])
+    # scholarship_routines = [updateScore(scholarship) for scholarship in scholarships]
+    # await asyncio.gather(*scholarship_routines)
 
 
 async def updateScore(scholarship):
-    await SCORE_CONTAINER.upsert_item(scholarship)
+    operations = [
+        {
+            "op": "replace",
+            "path": "/userScores",
+            "value": scholarship["userScores"],
+        }
+    ]
+    await SCHOL_CONTAINER.patch_item(
+        scholarship["id"], partition_key=scholarship["id"], patch_operations=operations
+    )

@@ -8,14 +8,14 @@
           class="scholarship-search-button"
           (click)="openSeachDialog()"
         >
-        Advanced Search
-        <mat-icon matSuffix>search</mat-icon>
-      </button>
+          Advanced Search
+          <mat-icon matSuffix>search</mat-icon>
+        </button>
       </div>
       <div class="scholarship-content">
         <div class="scholarship-list" *ngFor="let scholarship of scholarships">
           <app-scholarship-item
-            [similarityScore]="getScore(scholarship) || null"
+            [similarityScore]="scholarship.score || null"
             [scholarship]="scholarship"
           ></app-scholarship-item>
         </div>

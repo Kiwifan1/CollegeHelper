@@ -254,17 +254,15 @@ def calc_expected_value(scholarship, student_responses):
 
 
 def append_scores(student_responses, scholarships) -> list[tuple[str, float]]:
-    ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
-    ### scholarships: list of dictionaries of all scholarships
-    ### student_responses: dictionary of 1 student response
-    # scores = {}
-    # for scholarship in scholarships:
-    #     val = calc_expected_value(scholarship, student_responses)
+    """Given a student's responses and a list of scholarships, return a list of tuples containing the scholarship id and the student's score for that scholarship, sorted by score in descending order.
 
-    #     if val > 0:
-    #         scores[scholarship["id"]] = val
+    Args:
+        student_responses (dict): A dictionary containing the student's responses.
+        scholarships (list): A list of dictionaries, each containing information about a scholarship.
 
-    # scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    Returns:
+        list[tuple[str, float]]: A list of tuples containing the scholarship id and the student's score for that scholarship, sorted by score in descending order.
+    """
 
     scores = []
 

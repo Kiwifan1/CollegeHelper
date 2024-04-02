@@ -6,6 +6,7 @@ import { Observable, switchMap } from 'rxjs';
 import { User } from 'src/app/Objects/User/User';
 import { Interest, InterestOtherEnum } from 'src/app/Objects/enums/Interests';
 import { AuthService } from 'src/app/Services/auth.service';
+import { ScholarshipService } from 'src/app/Services/scholarship.service';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -82,7 +83,8 @@ export class QuestionnaireStepperComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private scholarshipService: ScholarshipService
   ) {
     this.activatedRoute.data.subscribe((data: any) => {
       this.user = data.user;
@@ -174,6 +176,7 @@ export class QuestionnaireStepperComponent implements OnInit {
   handleSubmission() {
     this.submitted = true;
     this.makeUser();
+    this.scholarshipService.predictScholarships(this.user);
 
     this.authService
       .updateUser(this.user)

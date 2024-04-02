@@ -36,7 +36,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.totalScholarships();
+    // this.totalScholarships();
     this.onPaginate({
       pageIndex: this.pageIndex * this.pageSize,
       pageSize: this.pageSize,
@@ -53,7 +53,9 @@ export class ScholarshipSearchPageComponent implements OnInit {
         this.pageSize,
         this.filters
       )
-      .subscribe((scholarships: any) => {
+      .subscribe((data: any) => {
+        this.length = data.num_returned;
+        let scholarships = data.scholarships;
         scholarships.forEach((scholarship: any) => {
           scholarship.scholarshipName = scholarship.scholarshipName.replace(
             '_',
@@ -75,11 +77,6 @@ export class ScholarshipSearchPageComponent implements OnInit {
       });
   }
 
-  getScore(scholarship: Scholarship) {
-    return scholarship.userScores.find((score) => score.userId === this.user_id)
-      ?.score;
-  }
-
   openSeachDialog() {
     this.dialog
       .open(ScholarshipSearchDialogComponent, {
@@ -93,7 +90,9 @@ export class ScholarshipSearchPageComponent implements OnInit {
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService
             .getScholarships(0, this.pageSize, this.filters)
-            .subscribe((scholarships: any) => {
+            .subscribe((data: any) => {
+              this.length = data.num_returned;
+              let scholarships = data.scholarships;
               scholarships.forEach((scholarship: any) => {
                 scholarship.scholarshipName =
                   scholarship.scholarshipName.replace('_', '/');
