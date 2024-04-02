@@ -17,9 +17,11 @@
             {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
           </h2>
         </mat-card-subtitle>
-        <button mat-raised-button color="primary" (click)="handleViewDetails()">
-          View Details
-        </button>
+        <app-similarity-ring
+          class="similarity-ring"
+          *ngIf="similarityScore"
+          [similarity]="similarityScore"
+        ></app-similarity-ring>
       </div>
       <div class="right">
         <div class="reqList">
@@ -36,6 +38,13 @@
           <li *ngIf="!scholarship.applicationFee">
             <mat-icon matTooltip="No Application Fee">money_off</mat-icon>
           </li>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="handleViewDetails()"
+          >
+            View Details
+          </button>
         </div>
       </div>
     </div>

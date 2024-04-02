@@ -19,7 +19,7 @@ export class LoadingService {
         new Promise((resolve) => {
           setTimeout(() => {
             resolve(false);
-          }, 3000);
+          }, 5000);
         }),
       ]) as boolean; // Add type assertion here
       return res;

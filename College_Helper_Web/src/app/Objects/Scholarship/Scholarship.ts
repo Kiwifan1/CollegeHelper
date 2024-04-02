@@ -1,3 +1,7 @@
+import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
+import { DemographicsEnum } from '../enums/Demographics';
+import { UserScore } from './Score';
+
 interface EligibilityCriteria {
   miscellaneous: MiscellaneousCriteria[] | null;
   activity: Activity[] | null;
@@ -23,11 +27,13 @@ interface EligibilityCriteria {
   interests: Interest[] | null;
   studyAbroad: boolean | null;
   age: boolean | null;
-  demographics: string[] | null;
+  demographics: DemographicsEnum[] | null;
+  awardMin: number | null;
+  awardMax: number | null;
 }
 
 interface MiscellaneousCriteria {
-  miscellaneousCriteria: string;
+  miscellaneousCriteria: MiscellaneousCriteriaEnum;
 }
 
 interface Activity {
@@ -115,4 +121,6 @@ export interface Scholarship {
   isNeedBased: boolean;
   isMeritBased: boolean;
   cbScholarshipId: string;
+  score?: number;
+  similarityId?: string;
 }

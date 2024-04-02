@@ -1,6 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { of } from 'rxjs';
+import { map, of, startWith } from 'rxjs';
+import { FieldsOfStudyEnum } from 'src/app/Objects/enums/FieldsOfStudy';
 
 @Component({
   selector: 'app-major-info',
@@ -8,45 +16,52 @@ import { of } from 'rxjs';
   styleUrl: './major-info.component.scss',
 })
 export class MajorInfoComponent implements OnInit {
-  @Input() basicMajorPreferencesForm!: FormGroup;
-  @Input() advancedMajorPreferencesForm!: FormGroup;
+  @Input() majorsForm!: FormGroup;
 
-  majors = [
-    'Aerospace Engineering',
-    'Agricultural Engineering',
-    'Biomedical Engineering',
-    'Chemical Engineering',
-    'Civil Engineering',
-    'Computer Engineering',
-    'Electrical Engineering',
-    'Environmental Engineering',
-    'Industrial Engineering',
-    'Materials Engineering',
-    'Mechanical Engineering',
-    'Nuclear Engineering',
-  ];
+  majors: string[] = Object.values(FieldsOfStudyEnum)
+    .filter((value) => typeof value === 'string')
+    .map((value) => value.toString());
 
   filteredMajors = of(this.majors);
-  searchForm: FormControl = new FormControl('');
+  selectedMajors: string[] = [];
+  searchForm: FormControl = new FormControl(['']);
 
   constructor() {}
 
   ngOnInit(): void {
-    this.searchForm.valueChanges.subscribe((value) => {
-      this.filterMajors();
+    this.searchForm.valueChanges.subscribe((value: string[] | string) => {
+      if (value && typeof value !== 'string') {
+        this.filteredMajors = of(this.majors);
+      } else if (typeof value === 'string') {
+        this.filterMajors(value);
+      }
+      this.updateMajorsForm();
     });
   }
 
-  selectMajor(major: string) {
-    this.basicMajorPreferencesForm.patchValue({
-      majors: major,
-    });
+  updateMajorsForm() {
+    this.majorsForm.value.fieldsOfStudy = this.selectedMajors;
   }
 
-  filterMajors() {
-    const searchValue = this.searchForm.value.toLowerCase();
+  addMajor(major: string) {
+    if (this.selectedMajors.includes(major)) return;
+    this.selectedMajors.push(major);
+    this.searchForm.setValue(null);
+    this.filterMajors('');
+  }
+
+  removeMajor(major: string) {
+    this.selectedMajors = this.selectedMajors.filter(
+      (value) => value !== major
+    );
+  }
+
+  filterMajors(value: string) {
+    // get last word in search form
     this.filteredMajors = of(
-      this.majors.filter((major) => major.toLowerCase().includes(searchValue))
+      this.majors.filter((major) =>
+        major.toLowerCase().includes(value.toLowerCase())
+      )
     );
   }
 }

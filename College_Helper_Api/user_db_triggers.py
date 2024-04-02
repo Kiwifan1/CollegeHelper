@@ -12,10 +12,7 @@ from http import HTTPStatus
 user_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
-
-CLIENT = CosmosClient.from_connection_string(
-    os.environ[cosmos_db_connection], credential=os.environ[cosmos_readonly_key]
-)
+CLIENT = CosmosClient.from_connection_string(os.environ[cosmos_db_connection])
 DATABASE = CLIENT.get_database_client("CollegeHelperDB")
 CONTAINER = DATABASE.get_container_client("USER")
 
@@ -229,7 +226,7 @@ def update_user(
             items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
             if items.next():
-                user['password'] = potential_pass
+                user["password"] = potential_pass
                 outputDocument.set(func.Document.from_dict(user))
                 return func.HttpResponse(
                     json.dumps(user),
@@ -273,7 +270,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         ):  # only one item should be returned, so we can just get the first item
             # get the first item
             if hash(user["password"], item["salt"]) == item["password"]:
-                item.pop("password")
+                item["password"] = user["password"]
                 return func.HttpResponse(
                     json.dumps(item),
                     status_code=HTTPStatus.OK,

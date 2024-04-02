@@ -1,29 +1,26 @@
-export interface Demographics {
+import { CitizenshipStatusesEnum } from '../enums/Citizenship';
+import { DegreeSeekingEnum } from '../enums/DegreeSeekings';
+import { DemographicIdentities, GenderIdentityEnum } from '../enums/Demographics';
+import { FieldsOfStudyEnum } from '../enums/FieldsOfStudy';
+import { Interest } from '../enums/Interests';
+import { MiscellaneousCriteriaEnum } from '../enums/Miscellaneous';
+
+export interface UserDemographics {
   age: number | null;
-  gender: Gender | null;
-  ethnicity: Ethnicity | null;
+  demographicInfo: DemographicInfo;
   educationLevel: EducationLevel | null;
   occupation: Occupation | null;
   incomeLevel: IncomeLevel | null;
   maritalStatus: MaritalStatus | null;
 }
 
-export enum Ethnicity {
-  White = 'White',
-  Black = 'Black',
-  Hispanic = 'Hispanic',
-  Asian = 'Asian',
-  NativeAmerican = 'Native American',
-  PacificIslander = 'Pacific Islander',
-  Other = 'Other',
-  PreferNotToSay = 'Prefer not to say',
-}
-
-export enum Gender {
-  Male = 'Male',
-  Female = 'Female',
-  Other = 'Other',
-  PreferNotToSay = 'Prefer not to say',
+export interface DemographicInfo {
+  identities: DemographicIdentities;
+  citizenships: CitizenshipStatusesEnum[];
+  degreeSeeking: DegreeSeekingEnum[];
+  fieldsOfStudy: FieldsOfStudyEnum[];
+  interests: Interest[];
+  miscellaneousCriteria: MiscellaneousCriteriaEnum[];
 }
 
 export enum EducationLevel {

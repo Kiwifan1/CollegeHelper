@@ -9,7 +9,7 @@ import { College } from 'src/app/Objects/College/College';
   styleUrl: './college-info.component.scss',
 })
 export class CollegeInfoComponent implements OnInit {
-  @Input() advancedCollegeInfoForm!: FormGroup;
+  @Input() collegeForm!: FormGroup;
 
   constructor() {}
 

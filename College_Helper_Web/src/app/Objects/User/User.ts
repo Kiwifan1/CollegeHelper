@@ -1,5 +1,5 @@
 import { Address } from '../Address';
-import { Demographics } from './Demographics';
+import { UserDemographics } from './UserDemographics';
 import { Scores } from './Scores';
 
 export interface User {
@@ -7,14 +7,16 @@ export interface User {
   username: string;
   email: string;
   password: string;
-  address: Address;
-  demographics: Demographics;
+  salt: string;
+  addresses: Address[];
+  demographics: UserDemographics;
   scores: Scores;
   salt: string;
   collegePreferences: string[];
   majorPreferences: string[];
   careerPreferences: string[];
   currentCourses: string[];
+  scholarshipScores?: any;
 }
 
 export const defaultUser: User = {
@@ -23,20 +25,33 @@ export const defaultUser: User = {
   email: '',
   password: '',
   salt: '',
-  address: {
-    street: null,
-    city: null,
-    province: null,
-    postCode: null,
-    country: null,
-    website: null,
-    latitude: null,
-    longitude: null,
-  },
+  addresses: [
+    {
+      street: null,
+      city: null,
+      province: null,
+      postCode: null,
+      country: null,
+      website: null,
+      latitude: null,
+      longitude: null,
+    },
+  ],
   demographics: {
     age: null,
-    gender: null,
-    ethnicity: null,
+    demographicInfo: {
+      identities: {
+        nationality: [],
+        genderIdentity: [],
+        sexualOrientation: [],
+        ethnicity: [],
+      },
+      citizenships: [],
+      degreeSeeking: [],
+      fieldsOfStudy: [],
+      interests: [],
+      miscellaneousCriteria: [],
+    },
     educationLevel: null,
     occupation: null,
     incomeLevel: null,

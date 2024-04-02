@@ -4,6 +4,8 @@ import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 import { LoadingService } from 'src/app/Services/loading.service';
 import { ScholarshipService } from 'src/app/Services/scholarship.service';
 import { ScholarshipSearchDialogComponent } from './scholarship-search-dialog/scholarship-search-dialog.component';
+import { User } from 'src/app/Objects/User/User';
+import { AuthService } from 'src/app/Services/auth.service';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -17,16 +19,24 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
-  filters: any = {};
+  user_id: string = '';
+  sort_by_match = true;
+  filters: any = {
+    sort_by_match: this.sort_by_match,
+  };
 
   constructor(
+    private authService: AuthService,
     private scholarshipService: ScholarshipService,
     private loadingService: LoadingService,
     private dialog: MatDialog
-  ) {}
+  ) {
+    this.user_id = authService.getUser().id;
+    this.filters.id = this.user_id;
+  }
 
   ngOnInit() {
-    this.totalScholarships();
+    // this.totalScholarships();
     this.onPaginate({
       pageIndex: this.pageIndex * this.pageSize,
       pageSize: this.pageSize,
@@ -43,7 +53,9 @@ export class ScholarshipSearchPageComponent implements OnInit {
         this.pageSize,
         this.filters
       )
-      .subscribe((scholarships: any) => {
+      .subscribe((data: any) => {
+        this.length = data.num_returned;
+        let scholarships = data.scholarships;
         scholarships.forEach((scholarship: any) => {
           scholarship.scholarshipName = scholarship.scholarshipName.replace(
             '_',
@@ -57,10 +69,12 @@ export class ScholarshipSearchPageComponent implements OnInit {
 
   totalScholarships() {
     this.loadingService.updateLoadingStatus(true);
-    this.scholarshipService.getNumScholarships(this.filters).subscribe((num: any) => {
-      this.length = num.length;
-      this.loadingService.updateLoadingStatus(false);
-    });
+    this.scholarshipService
+      .getNumScholarships(this.filters)
+      .subscribe((num: any) => {
+        this.length = num.length;
+        this.loadingService.updateLoadingStatus(false);
+      });
   }
 
   openSeachDialog() {
@@ -72,10 +86,13 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.filters = result;
+
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService
             .getScholarships(0, this.pageSize, this.filters)
-            .subscribe((scholarships: any) => {
+            .subscribe((data: any) => {
+              this.length = data.num_returned;
+              let scholarships = data.scholarships;
               scholarships.forEach((scholarship: any) => {
                 scholarship.scholarshipName =
                   scholarship.scholarshipName.replace('_', '/');

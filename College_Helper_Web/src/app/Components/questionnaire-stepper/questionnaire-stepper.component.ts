@@ -3,9 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, switchMap } from 'rxjs';
-import { Gender } from 'src/app/Objects/User/Demographics';
 import { User } from 'src/app/Objects/User/User';
+import { Interest, InterestOtherEnum } from 'src/app/Objects/enums/Interests';
 import { AuthService } from 'src/app/Services/auth.service';
+import { ScholarshipService } from 'src/app/Services/scholarship.service';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -13,22 +14,33 @@ import { AuthService } from 'src/app/Services/auth.service';
   styleUrl: './questionnaire-stepper.component.scss',
 })
 export class QuestionnaireStepperComponent implements OnInit {
-  userGeneralInfoForm: FormGroup = new FormGroup({
+  identityForm: FormGroup = new FormGroup({
+    ethnicity: new FormControl('', [Validators.required]),
+    nationality: new FormControl('', [Validators.required]),
+    genderIdentity: new FormControl('', [Validators.required]),
+    sexualOrientation: new FormControl('', [Validators.required]),
+  });
+
+  demographicInfoForm: FormGroup = new FormGroup({
+    citizenship: new FormControl('', [Validators.required]),
+    identities: this.identityForm,
+  });
+
+  userInfoForm: FormGroup = new FormGroup({
     age: new FormControl('', [
       Validators.min(0),
       Validators.max(120),
       Validators.required,
     ]),
     addresses: new FormControl(['']),
-    gender: new FormControl('', [Validators.required]),
-    ethnicity: new FormControl('', [Validators.required]),
+    demographicInfo: this.demographicInfoForm,
     educationLevel: new FormControl('', [Validators.required]),
     occupation: new FormControl('', [Validators.required]),
     incomeLevel: new FormControl('', [Validators.required]),
     maritalStatus: new FormControl('', [Validators.required]),
   });
 
-  userScoreInfoForm: FormGroup = new FormGroup({
+  userScoreForm: FormGroup = new FormGroup({
     SAT: new FormControl('', [Validators.min(400), Validators.max(1600)]),
     ACT: new FormControl('', [Validators.min(1), Validators.max(36)]),
     GPA: new FormControl('', [Validators.min(0), Validators.max(4)]),
@@ -38,40 +50,29 @@ export class QuestionnaireStepperComponent implements OnInit {
     NMSQT: new FormControl('', [Validators.min(320), Validators.max(1520)]),
   });
 
-  userBasicMajorPreferencesForm: FormGroup = new FormGroup({
-    majors: new FormControl(['']),
+  userMajorsForm: FormGroup = new FormGroup({
+    fieldsOfStudy: new FormControl(['']),
   });
 
-  userBasicCareerPreferencesForm: FormGroup = new FormGroup({
-    careers: new FormControl(['']),
+  userInterestsForm: FormGroup = new FormGroup({
+    criteriaInterests: new FormControl(['']),
+    otherInterests: new FormControl(['']),
   });
 
-  userCurrentCoursesForm: FormGroup = new FormGroup({
-    currentCourses: new FormControl(['']),
+  userCollegeForm: FormGroup = new FormGroup({
+    collegeSize: new FormControl('', [Validators.required]),
+    collegeCost: new FormControl('', [Validators.required]),
+    collegeSports: new FormControl('', [Validators.required]),
+    collegeClubs: new FormControl('', [Validators.required]),
+    collegeGreekLife: new FormControl('', [Validators.required]),
   });
 
-  // advanced are optional, and will be used to help further specify the areas
-
-  userAdvancedCollegePreferencesForm: FormGroup = new FormGroup({
-    collegeSize: new FormControl(''),
-    collegeCost: new FormControl(''),
-    collegeSports: new FormControl(''),
-    collegeClubs: new FormControl(''),
-    collegeGreekLife: new FormControl(''),
-  });
-
-  userAdvancedMajorPreferencesForm: FormGroup = new FormGroup({
-    majorType: new FormControl(''),
-    majorLocation: new FormControl(''),
-  });
-
-  userAdvancedCareerPreferencesForm: FormGroup = new FormGroup({
-    careerType: new FormControl(''),
-    careerLocation: new FormControl(''),
-    careerSalary: new FormControl(''),
-    careerHours: new FormControl(''),
-    careerBenefits: new FormControl(''),
-    careerWorkLife: new FormControl(''),
+  userForm: FormGroup = new FormGroup({
+    userInfo: this.userInfoForm,
+    userScores: this.userScoreForm,
+    userMajors: this.userMajorsForm,
+    userInterests: this.userInterestsForm,
+    userCollege: this.userCollegeForm,
   });
 
   private user!: User;
@@ -82,7 +83,8 @@ export class QuestionnaireStepperComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private scholarshipService: ScholarshipService
   ) {
     this.activatedRoute.data.subscribe((data: any) => {
       this.user = data.user;
@@ -110,48 +112,71 @@ export class QuestionnaireStepperComponent implements OnInit {
   }
 
   makeUser() {
-    this.user.address = {
-      street: this.userGeneralInfoForm.get('location')?.value,
-      city: '',
-      province: '',
-      postCode: '',
-      country: '',
-      website: '',
-      latitude: '',
-      longitude: '',
-    };
+    this.user.addresses = this.userInfoForm.get('addresses')?.value;
+
+    // bind the interests to an Interest[] object
+    let interests: Interest[] = [];
+    for (let interest of this.userInterestsForm.get('criteriaInterests')
+      ?.value) {
+      interests.push({
+        interestCriteria: interest,
+        interestOther: InterestOtherEnum.null,
+      });
+    }
+
+    // update the interests with the other interests, keeping the criteria interests
+    for (
+      let i = 0;
+      i < this.userInterestsForm.get('otherInterests')?.value.length;
+      i++
+    ) {
+      interests[i].interestOther =
+        this.userInterestsForm.get('otherInterests')?.value[i];
+    }
 
     this.user.demographics = {
-      age: this.userGeneralInfoForm.get('age')?.value,
-      gender: this.userGeneralInfoForm.get('gender')?.value,
-      ethnicity: this.userGeneralInfoForm.get('ethnicity')?.value,
-      educationLevel: this.userGeneralInfoForm.get('educationLevel')?.value,
-      occupation: this.userGeneralInfoForm.get('occupation')?.value,
-      incomeLevel: this.userGeneralInfoForm.get('incomeLevel')?.value,
-      maritalStatus: this.userGeneralInfoForm.get('maritalStatus')?.value,
+      age: this.userInfoForm.get('age')?.value,
+      demographicInfo: {
+        citizenships: [this.demographicInfoForm.get('citizenship')?.value],
+        identities: {
+          ethnicity: [this.identityForm.get('ethnicity')?.value],
+          nationality: [this.identityForm.get('nationality')?.value],
+          genderIdentity: [this.identityForm.get('genderIdentity')?.value],
+          sexualOrientation: [
+            this.identityForm.get('sexualOrientation')?.value,
+          ],
+        },
+        fieldsOfStudy: this.userMajorsForm.get('fieldsOfStudy')?.value,
+        interests: interests,
+        miscellaneousCriteria: [],
+        degreeSeeking: [],
+      },
+      educationLevel: this.userInfoForm.get('educationLevel')?.value,
+      occupation: this.userInfoForm.get('occupation')?.value,
+      incomeLevel: this.userInfoForm.get('incomeLevel')?.value,
+      maritalStatus: this.userInfoForm.get('maritalStatus')?.value,
     };
 
     this.user.scores = {
-      SAT: this.userScoreInfoForm.get('SAT')?.value,
-      ACT: this.userScoreInfoForm.get('ACT')?.value,
-      GPA: this.userScoreInfoForm.get('GPA')?.value,
-      AP: this.userScoreInfoForm.get('AP')?.value,
-      IB: this.userScoreInfoForm.get('IB')?.value,
-      PSAT10: this.userScoreInfoForm.get('PSAT10')?.value,
-      NMSQT: this.userScoreInfoForm.get('NMSQT')?.value,
+      SAT: this.userScoreForm.get('SAT')?.value,
+      ACT: this.userScoreForm.get('ACT')?.value,
+      GPA: this.userScoreForm.get('GPA')?.value,
+      AP: this.userScoreForm.get('AP')?.value,
+      IB: this.userScoreForm.get('IB')?.value,
+      PSAT10: this.userScoreForm.get('PSAT10')?.value,
+      NMSQT: this.userScoreForm.get('NMSQT')?.value,
     };
 
-    this.user.majorPreferences = [
-      this.userBasicMajorPreferencesForm.get('majors')?.value,
-    ];
+    this.user.majorPreferences = [this.userMajorsForm.get('majors')?.value];
     this.user.careerPreferences = [
-      this.userBasicCareerPreferencesForm.get('careers')?.value,
+      this.userInterestsForm.get('careers')?.value,
     ];
   }
 
   handleSubmission() {
     this.submitted = true;
     this.makeUser();
+    this.scholarshipService.predictScholarships(this.user);
 
     this.authService
       .updateUser(this.user)
