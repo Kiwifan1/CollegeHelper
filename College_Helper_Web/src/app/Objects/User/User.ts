@@ -11,7 +11,6 @@ export interface User {
   addresses: Address[];
   demographics: UserDemographics;
   scores: Scores;
-  salt: string;
   collegePreferences: string[];
   majorPreferences: string[];
   careerPreferences: string[];
