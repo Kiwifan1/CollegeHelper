@@ -8,8 +8,6 @@
 
 button {
   // force right
-  margin-left: auto;
-  margin-top: 15px;
 }
 
 .reqList {
@@ -28,6 +26,10 @@ button {
   list-style-type: none;
   // make the list a little smaller
   font-size: 12px;
+}
+
+.similarity-ring {
+  margin-left: auto;
 }
 
 .content-grid {

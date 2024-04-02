@@ -8,3 +8,5 @@ azure-identity
 bcrypt
 uuid
 pandas
+pypika
+asyncio

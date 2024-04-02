@@ -64,6 +64,9 @@ import { MatSliderModule } from '@angular/material/slider';
 import { ScholarshipSearchDialogComponent } from './Components/scholarship-search-page/scholarship-search-dialog/scholarship-search-dialog.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { AddressPipe } from './Components/common/pipes/address.pipe';
+import { SimilarityRingComponent } from './Components/common/similarity-ring/similarity-ring.component';
+import { NgxGaugeModule } from 'ngx-gauge';
+import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
 
 @NgModule({
   declarations: [
@@ -97,6 +100,7 @@ import { AddressPipe } from './Components/common/pipes/address.pipe';
     ScholarshipClosedDialogComponent,
     AddressComponent,
     ScholarshipSearchDialogComponent,
+    SimilarityRingComponent,
   ],
 
   imports: [
@@ -139,6 +143,8 @@ import { AddressPipe } from './Components/common/pipes/address.pipe';
     MatDialogModule,
     MatChipsModule,
     AddressPipe,
+    NgxGaugeModule,
+    RingColorPipe,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
