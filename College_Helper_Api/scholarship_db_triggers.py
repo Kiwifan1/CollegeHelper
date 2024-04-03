@@ -157,8 +157,6 @@ def get_scholarships(
     user["scholarshipScores"] = user_score["scores"]
 
     query = "SELECT * FROM c"
-    if not similarity_match:
-        query = "SELECT *, COUNT(1) FROM c"
     params = []
 
     query, params = build_query(req, query, params, user)
@@ -167,16 +165,21 @@ def get_scholarships(
         params.append({"name": "@offset", "value": int(offset)})
         params.append({"name": "@limit", "value": int(limit)})
 
+        temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
+        num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
+            0
+        ]
+
     scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
     # scholarships = [s["c"] for s in scholarships]
 
-    # do sorting, offset and limit backend side
-    scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
-
-    for scholarship in scholarships:
-        scholarship["score"] = scores[scholarship["id"]]
+    # do sorting, offset and limit backend side if similarity match
 
     if similarity_match:
+        scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
+
+        for scholarship in scholarships:
+            scholarship["score"] = scores[scholarship["id"]]
         scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
         num_returned = len(scholarships)
         scholarships = scholarships[int(offset) : int(offset) + int(limit)]
