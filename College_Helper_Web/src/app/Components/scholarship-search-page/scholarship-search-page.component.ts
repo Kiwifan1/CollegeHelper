@@ -19,8 +19,14 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
-  user_id: string = '';
+  minChoice: number = 0;
+  maxChoice: number = 0;
+  meritBased: string = 'Either';
+  needBased: string = 'Either';
+  essayRequired: string = 'Either';
   sort_by_match = true;
+
+  user_id: string = '';
   filters: any = {
     sort_by_match: this.sort_by_match,
   };
@@ -81,11 +87,29 @@ export class ScholarshipSearchPageComponent implements OnInit {
     this.dialog
       .open(ScholarshipSearchDialogComponent, {
         width: '500px',
+        data: {
+          minChoice: this.minChoice,
+          maxChoice: this.maxChoice,
+          essayRequired: this.essayRequired,
+          meritBased: this.meritBased,
+          needBased: this.needBased,
+        },
       })
       .afterClosed()
       .subscribe((result) => {
         if (result) {
-          this.filters = result;
+          this.filters = {
+            ...this.filters,
+            ...result,
+          };
+
+          console.log(result)
+
+          this.minChoice = result.minAmount;
+          this.maxChoice = result.maxAmount;
+          this.essayRequired = result.essayRequired;
+          this.meritBased = result.meritBased;
+          this.needBased = result.needBased;
 
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService

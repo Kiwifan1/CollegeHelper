@@ -176,7 +176,6 @@ export class QuestionnaireStepperComponent implements OnInit {
   handleSubmission() {
     this.submitted = true;
     this.makeUser();
-    this.scholarshipService.predictScholarships(this.user);
 
     this.authService
       .updateUser(this.user)
@@ -184,20 +183,18 @@ export class QuestionnaireStepperComponent implements OnInit {
         switchMap((user: any) => {
           if (user) {
             this.authService.setUser(user);
-            return this.authService.login(
-              this.user.username,
-              this.user.password
+            return this.scholarshipService.predictScholarships(
+              this.authService.getUser()
             );
           }
-          return new Observable((observer) => {
-            observer.next(false);
-            observer.complete();
-          });
+          return new Observable((observer) =>
+            observer.next({ success: false })
+          );
         })
       )
-      .subscribe((loggedIn) => {
-        if (loggedIn) {
-          this.router.navigate(['/home']);
+      .subscribe((response: any) => {
+        if (response.success) {
+          this.router.navigate(['/scholarships']);
         } else {
           this.showSnackBar();
         }

@@ -46,8 +46,8 @@
         [displayWith]="displayFn"
         discrete
       >
-        <input [value]="minChoice" matSliderStartThumb />
-        <input [value]="maxChoice" matSliderEndThumb />
+        <input formControlName="minAmount" matSliderStartThumb />
+        <input formControlName="maxAmount" matSliderEndThumb />
       </mat-slider>
     </div>
   </form>
