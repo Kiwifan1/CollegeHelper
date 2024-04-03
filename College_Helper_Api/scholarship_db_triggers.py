@@ -32,7 +32,7 @@ def handleRequirements(string_input):
 
 
 def build_query(req, query, params, user=None):
-    sort_by_match = req.params.get("sort_by_match") == "true"
+    similarity_match = req.params.get("similarityMatch") == "true"
     essay_required = req.params.get("essayRequired") or None
     merit_based = req.params.get("meritBased") or None
     need_based = req.params.get("needBased") or None
@@ -40,7 +40,7 @@ def build_query(req, query, params, user=None):
     max_amount = req.params.get("maxAmount") or None
 
     # adding the predictive list ordering and filtering
-    if sort_by_match:
+    if similarity_match:
         # start query with creating a list of scholarships from the user
         # query += " JOIN s IN c.userScores"
         # query += " WHERE s.userId = @user_id"
@@ -147,6 +147,7 @@ def get_scholarships(
     id = req.params.get("id")
     offset = req.params.get("offset")
     limit = req.params.get("limit")
+    similarity_match = req.params.get("similarityMatch") == "true"
 
     if not offset or not limit:
         return func.HttpResponse("Error: Missing offset/limit", status_code=400)
@@ -156,13 +157,15 @@ def get_scholarships(
     user["scholarshipScores"] = user_score["scores"]
 
     query = "SELECT * FROM c"
+    if not similarity_match:
+        query = "SELECT *, COUNT(1) FROM c"
     params = []
 
     query, params = build_query(req, query, params, user)
-
-    # query += " OFFSET @offset LIMIT @limit"
-    # params.append({"name": "@offset", "value": int(offset)})
-    # params.append({"name": "@limit", "value": int(limit)})
+    if not similarity_match:
+        query += " OFFSET @offset LIMIT @limit"
+        params.append({"name": "@offset", "value": int(offset)})
+        params.append({"name": "@limit", "value": int(limit)})
 
     scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
     # scholarships = [s["c"] for s in scholarships]
@@ -172,9 +175,14 @@ def get_scholarships(
 
     for scholarship in scholarships:
         scholarship["score"] = scores[scholarship["id"]]
-    scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
-    num_returned = len(scholarships)
-    scholarships = scholarships[int(offset) : int(offset) + int(limit)]
+
+    if similarity_match:
+        scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
+        num_returned = len(scholarships)
+        scholarships = scholarships[int(offset) : int(offset) + int(limit)]
+    else:
+        num_returned = scholarships[0]["$1"]
+        scholarships = scholarships[1:]
 
     return func.HttpResponse(
         json.dumps({"scholarships": scholarships, "num_returned": num_returned}),

@@ -26,11 +26,12 @@ export class ScholarshipSearchPageComponent implements OnInit {
   meritBased: string = 'Either';
   needBased: string = 'Either';
   essayRequired: string = 'Either';
+  applicationFee: string = 'Either';
   sort_by_match = true;
 
   user_id: string = '';
   filters: any = {
-    sort_by_match: this.sort_by_match,
+    similarityMatch: this.sort_by_match,
   };
 
   constructor(
@@ -39,12 +40,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
     private loadingService: LoadingService,
     private dialog: MatDialog
   ) {
-    this.user_id = authService.getUser().id;
+    this.user_id = this.authService.getUser().id;
     this.filters.id = this.user_id;
   }
 
   ngOnInit() {
-    // this.totalScholarships();
     this.onPaginate({
       pageIndex: this.pageIndex * this.pageSize,
       pageSize: this.pageSize,
@@ -80,16 +80,6 @@ export class ScholarshipSearchPageComponent implements OnInit {
       });
   }
 
-  totalScholarships() {
-    this.loadingService.updateLoadingStatus(true);
-    this.scholarshipService
-      .getNumScholarships(this.filters)
-      .subscribe((num: any) => {
-        this.length = num.length;
-        this.loadingService.updateLoadingStatus(false);
-      });
-  }
-
   openSeachDialog() {
     this.dialog
       .open(ScholarshipSearchDialogComponent, {
@@ -99,9 +89,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
           max: this.max,
           minChoice: this.minChoice,
           maxChoice: this.maxChoice,
+          applicationFee: this.applicationFee,
           essayRequired: this.essayRequired,
           meritBased: this.meritBased,
           needBased: this.needBased,
+          similarityMatch: this.sort_by_match,
         },
       })
       .afterClosed()
@@ -117,6 +109,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
           this.essayRequired = result.essayRequired;
           this.meritBased = result.meritBased;
           this.needBased = result.needBased;
+          this.sort_by_match = result.similarityMatch;
+          this.applicationFee = result.applicationFee;
 
           this.loadingService.updateLoadingStatus(true);
           this.scholarshipService

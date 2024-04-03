@@ -21,8 +21,10 @@ export class ScholarshipSearchDialogComponent implements OnInit {
     meritBased: new FormControl('Either'),
     needBased: new FormControl('Either'),
     essayRequired: new FormControl('Either'),
+    applicationFee: new FormControl('Either'),
     minAmount: new FormControl(this.minChoice),
     maxAmount: new FormControl(this.maxChoice),
+    similarityMatch: new FormControl(true),
   });
 
   constructor(
@@ -48,8 +50,10 @@ export class ScholarshipSearchDialogComponent implements OnInit {
       meritBased: this.data.meritBased,
       needBased: this.data.needBased,
       essayRequired: this.data.essayRequired,
+      applicationFee: this.data.applicationFee,
       minAmount: this.minChoice,
       maxAmount: this.maxChoice,
+      similarityMatch: this.data.similarityMatch,
     });
   }
 
