@@ -19,6 +19,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
   length = 0;
   pageSizeOptions = [5, 10, 25, 100];
 
+  min: number = 0;
+  max: number = 0;
   minChoice: number = 0;
   maxChoice: number = 0;
   meritBased: string = 'Either';
@@ -46,6 +48,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
     this.onPaginate({
       pageIndex: this.pageIndex * this.pageSize,
       pageSize: this.pageSize,
+    });
+
+    this.scholarshipService.getScholarshipAwards().subscribe((data: any) => {
+      this.min = data.min;
+      this.max = data.max;
     });
   }
 
@@ -88,6 +95,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .open(ScholarshipSearchDialogComponent, {
         width: '500px',
         data: {
+          min: this.min,
+          max: this.max,
           minChoice: this.minChoice,
           maxChoice: this.maxChoice,
           essayRequired: this.essayRequired,
@@ -102,8 +111,6 @@ export class ScholarshipSearchPageComponent implements OnInit {
             ...this.filters,
             ...result,
           };
-
-          console.log(result)
 
           this.minChoice = result.minAmount;
           this.maxChoice = result.maxAmount;

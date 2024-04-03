@@ -32,27 +32,24 @@ export class ScholarshipSearchDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.min = this.data.min;
+    this.max = this.data.max;
     this.minChoice = this.data.minChoice;
     this.maxChoice = this.data.maxChoice;
 
-    this.scholarshipService.getScholarshipAwards().subscribe((data: any) => {
-      this.min = data.min;
-      this.max = data.max;
+    if (this.minChoice < this.min) {
+      this.minChoice = this.min;
+    }
+    if (this.maxChoice > this.max || this.maxChoice < this.min) {
+      this.maxChoice = this.max;
+    }
 
-      if (this.minChoice < this.min) {
-        this.minChoice = this.min;
-      }
-      if (this.maxChoice > this.max || this.maxChoice < this.min) {
-        this.maxChoice = this.max;
-      }
-
-      this.searchForm.patchValue({
-        meritBased: this.data.meritBased,
-        needBased: this.data.needBased,
-        essayRequired: this.data.essayRequired,
-        minAmount: this.minChoice,
-        maxAmount: this.maxChoice,
-      });
+    this.searchForm.patchValue({
+      meritBased: this.data.meritBased,
+      needBased: this.data.needBased,
+      essayRequired: this.data.essayRequired,
+      minAmount: this.minChoice,
+      maxAmount: this.maxChoice,
     });
   }
 
