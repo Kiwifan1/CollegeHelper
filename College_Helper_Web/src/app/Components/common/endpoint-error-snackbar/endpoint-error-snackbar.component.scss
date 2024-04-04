@@ -1,0 +1,21 @@
+.endpoint-error {
+  background-color: #f44336;
+  color: white;
+  font-size: 1.2em;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  animation: slideIn 0.5s ease-in-out;
+}
