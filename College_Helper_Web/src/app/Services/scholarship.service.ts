@@ -38,8 +38,9 @@ export class ScholarshipService {
   }
 
   predictScholarships(user: User): Observable<any> {
+    let user_json = JSON.stringify(user);
     let url = environment.WEB_API_URL + '/predict_scholarships';
-    return this.$http.post(url, user);
+    return this.$http.post(url, user_json);
   }
 
   getScholarshipAwards(): Observable<any> {

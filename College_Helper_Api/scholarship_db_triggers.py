@@ -183,10 +183,6 @@ def get_scholarships(
         scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
         num_returned = len(scholarships)
         scholarships = scholarships[int(offset) : int(offset) + int(limit)]
-    else:
-        num_returned = scholarships[0]["$1"]
-        scholarships = scholarships[1:]
-
     return func.HttpResponse(
         json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
         status_code=200,
@@ -300,7 +296,9 @@ def predict_scholarships(
         user[0].pop("scholarshipScores")
 
     msg.set(json.dumps(user[0]))
-    return func.HttpResponse("User found", status_code=200)
+    return func.HttpResponse(
+        json.dumps({"success": True}), status_code=200, mimetype="application/json"
+    )
 
 
 @schol_bp.queue_trigger(
@@ -330,7 +328,12 @@ def process_prediction_request(
     user_preds = [{"scholId": key, "score": value} for key, value in user_preds.items()]
     scores = {"userId": user["id"], "scores": user_preds}
 
-    try:
-        SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
-    except Exception as e:
-        SCORE_CONTAINER.upsert_item(scores)
+    res = SCORE_CONTAINER.scripts.execute_stored_procedure(
+        "checkIfUserExists", partition_key=user["id"], params=[user["id"]]
+    )
+
+    if res:
+        res["scores"] = user_preds
+        SCORE_CONTAINER.upsert_item(res)
+    else:
+        SCORE_CONTAINER.create_item(scores)
