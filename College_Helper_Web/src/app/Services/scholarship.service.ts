@@ -37,10 +37,14 @@ export class ScholarshipService {
     return this.$http.get<Number>(url, { params: filters });
   }
 
-  predictScholarships(user: User) {
-    console.log('predicting scholarships');
+  predictScholarships(user: User): Observable<any> {
+    let user_json = JSON.stringify(user);
     let url = environment.WEB_API_URL + '/predict_scholarships';
-    return this.$http.post(url, user);
+    return this.$http.post(url, user_json);
   }
 
+  getScholarshipAwards(): Observable<any> {
+    let url = environment.WEB_API_URL + '/get_scholarship_award_amounts';
+    return this.$http.get(url);
+  }
 }

@@ -67,6 +67,7 @@ import { AddressPipe } from './Components/common/pipes/address.pipe';
 import { SimilarityRingComponent } from './Components/common/similarity-ring/similarity-ring.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
     AddressPipe,
     NgxGaugeModule,
     RingColorPipe,
+    MatSlideToggleModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

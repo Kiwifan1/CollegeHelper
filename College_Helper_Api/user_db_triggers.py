@@ -226,8 +226,10 @@ def update_user(
             items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
             if items.next():
+                temp = user['password']
                 user["password"] = potential_pass
                 outputDocument.set(func.Document.from_dict(user))
+                user["password"] = temp
                 return func.HttpResponse(
                     json.dumps(user),
                     status_code=HTTPStatus.OK,

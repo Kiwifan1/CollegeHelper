@@ -30,6 +30,17 @@ export class ScholarshipDetailPageComponent implements OnInit {
     });
   }
 
+  getAwardAmount(scholarship: Scholarship) {
+    if (scholarship.awardMin === null || scholarship.awardMax === null) {
+      return 'Not Available';
+    }
+    if (scholarship.awardMin === scholarship.awardMax) {
+      return `$${scholarship.awardMin}`;
+    } else {
+      return `$${scholarship.awardMin} - $${scholarship.awardMax}`;
+    }
+  }
+
   isWithinDate() {
     let startDate = this.scholarship.scholarshipOpen.split('/');
     let endDate = this.scholarship.scholarshipDeadline.split('/');

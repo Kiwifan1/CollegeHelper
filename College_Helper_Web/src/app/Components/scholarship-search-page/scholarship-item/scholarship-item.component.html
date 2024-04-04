@@ -12,8 +12,8 @@
         <mat-card-subtitle>
           <h3>{{ scholarship.programOrgName }}</h3>
           <h2>
-            <strong> Amount: {{ scholarship.amountDisplay | money }} </strong> |
-            Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
+            <strong> Amount: {{ getAwardAmount(scholarship) | money }}</strong>
+            | Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
             {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
           </h2>
         </mat-card-subtitle>
