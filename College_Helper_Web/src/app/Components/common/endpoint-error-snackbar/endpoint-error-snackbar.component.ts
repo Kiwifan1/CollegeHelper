@@ -9,9 +9,16 @@ import { MAT_SNACK_BAR_DATA, MatSnackBar } from '@angular/material/snack-bar';
 export class EndpointErrorSnackbarComponent implements OnInit {
   @Input() error!: string;
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) private data: any) {}
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) private data: any,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.error = this.data.error;
+  }
+
+  close(): void {
+    this.snackBar.dismiss();
   }
 }

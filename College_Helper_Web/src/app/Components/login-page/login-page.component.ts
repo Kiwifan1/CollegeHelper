@@ -70,20 +70,20 @@ export class LoginPageComponent implements OnInit {
       .login(this.form.get('username')?.value, this.form.get('password')?.value)
       .subscribe({
         next: (res: any) => {
+          this.loadingService.updateLoadingStatus(false);
           this.authService.setUser(res);
           this.router.navigate(['/home']);
         },
         error: (err: any) => {
+          console.log(err)
+          this.loadingService.updateLoadingStatus(false);
           this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
             duration: 5000,
-            data: err.error,
+            data: { error: err.error},
           });
         },
-        complete: () => {
-          this.form.reset();
-          this.loadingService.updateLoadingStatus(false);
-        },
       });
+    this.form.reset();
   }
 
   emptyUsername() {
