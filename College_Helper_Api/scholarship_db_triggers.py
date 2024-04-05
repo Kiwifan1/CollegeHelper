@@ -35,6 +35,13 @@ def build_query(req, query, params, user=None):
     similarity_match = req.params.get("similarityMatch") == "true"
     essay_required = req.params.get("essayRequired") or None
     merit_based = req.params.get("meritBased") or None
+    application_fee = req.params.get("applicationFee") or None
+
+    essay_required = handleRequirements(essay_required)
+    merit_based = handleRequirements(merit_based)
+    essay_required = handleRequirements(essay_required)
+    application_fee = handleRequirements(application_fee)
+
     need_based = req.params.get("needBased") or None
     min_amount = req.params.get("minAmount") or None
     max_amount = req.params.get("maxAmount") or None
@@ -53,7 +60,7 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if essay_required != None and essay_required != "Either":
+    if essay_required:
         if len(params) > 0:
             query += " AND c.isEssayRequired = @essayRequired"
         else:
@@ -61,11 +68,11 @@ def build_query(req, query, params, user=None):
         params.append(
             {
                 "name": "@essayRequired",
-                "value": handleRequirements(req.params.get("essayRequired")),
+                "value": essay_required,
             }
         )
 
-    if merit_based != None and merit_based != "Either":
+    if merit_based:
         if len(params) > 0:
             query += " AND c.isMeritBased = @meritRequired"
         else:
@@ -73,11 +80,11 @@ def build_query(req, query, params, user=None):
         params.append(
             {
                 "name": "@meritRequired",
-                "value": handleRequirements(req.params.get("meritBased")),
+                "value": merit_based,
             }
         )
 
-    if need_based != None and need_based != "Either":
+    if need_based:
         if len(params) > 0:
             query += " AND c.isNeedBased = @needBased"
         else:
@@ -85,7 +92,19 @@ def build_query(req, query, params, user=None):
         params.append(
             {
                 "name": "@needBased",
-                "value": handleRequirements(req.params.get("needBased")),
+                "value": need_based,
+            }
+        )
+
+    if application_fee:
+        if len(params) > 0:
+            query += " AND c.applicationFee = @applicationFee"
+        else:
+            query += " WHERE c.applicationFee = @applicationFee"
+        params.append(
+            {
+                "name": "@applicationFee",
+                "value": application_fee,
             }
         )
 
@@ -161,14 +180,15 @@ def get_scholarships(
 
     query, params = build_query(req, query, params, user)
     if not similarity_match:
-        query += " OFFSET @offset LIMIT @limit"
-        params.append({"name": "@offset", "value": int(offset)})
-        params.append({"name": "@limit", "value": int(limit)})
-
         temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
         num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
             0
         ]
+
+        query += " ORDER BY c.awardMax DESC"
+        query += " OFFSET @offset LIMIT @limit"
+        params.append({"name": "@offset", "value": int(offset)})
+        params.append({"name": "@limit", "value": int(limit)})
 
     scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
     # scholarships = [s["c"] for s in scholarships]

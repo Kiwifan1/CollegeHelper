@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from 'src/app/Services/auth.service';
 import { LoadingService } from 'src/app/Services/loading.service';
+import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 // standin class for error matching
 export class ErrorStateMatcher implements ErrorStateMatcher {
@@ -67,23 +68,21 @@ export class LoginPageComponent implements OnInit {
     this.loadingService.updateLoadingStatus(true);
     this.authService
       .login(this.form.get('username')?.value, this.form.get('password')?.value)
-      .subscribe((res: any) => {
-        if (res) {
+      .subscribe({
+        next: (res: any) => {
+          this.loadingService.updateLoadingStatus(false);
           this.authService.setUser(res);
           this.router.navigate(['/home']);
-        } else {
-          // display error message
-          this.snackBar.open('Incorrect Password or Username', 'Close', {
+        },
+        error: (err: any) => {
+          this.loadingService.updateLoadingStatus(false);
+          this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
             duration: 5000,
-            horizontalPosition: this.horizontalPos,
-            verticalPosition: this.verticalPos,
-            politeness: 'assertive',
+            data: { error: err.error},
           });
-
-          this.form.reset();
-        }
-        this.loadingService.updateLoadingStatus(false);
+        },
       });
+    this.form.reset();
   }
 
   emptyUsername() {
