@@ -75,7 +75,6 @@ export class LoginPageComponent implements OnInit {
           this.router.navigate(['/home']);
         },
         error: (err: any) => {
-          console.log(err)
           this.loadingService.updateLoadingStatus(false);
           this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
             duration: 5000,
