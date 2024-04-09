@@ -140,10 +140,11 @@ def calc_grade_level_score(scholarship, student_responses):
     grade_level_score = 0
     if (
         scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None
-        and student_responses["grade_level"] is not None
+        and student_responses["demographics"]["educationLevel"] is not None
     ):
         for val in scholarship["eligibilityCriteria"]["currentGradeLevel"]:
-            if val == student_responses["grade_level"]:
+
+            if val["currentGrade"] == student_responses["demographics"]["educationLevel"]:
                 grade_level_score += 1
     return grade_level_score
 
@@ -190,11 +191,23 @@ def calc_location_score(scholarship, student_responses):
     location_score = 0
     if (
         scholarship["eligibilityCriteria"]["locations"] is not None
-        and student_responses["location"] is not None
+        and student_responses["address"] is not None
     ):
         for val in scholarship["eligibilityCriteria"]["locations"]:
-            if val == student_responses["location"]:
-                location_score += 1
+    
+            if val.keys() == "country":
+                if val['country'] == student_responses['address']['country']:
+                    return 0
+            
+            if val.keys() == "state":
+                if val['state'] == student_responses['address']['province']:
+                    return 0
+            
+            if val.keys() == "city":
+                if val['city'] == student_responses['address']['city']:
+                    return 0
+            
+            return 1
     return location_score
 
 
@@ -244,10 +257,12 @@ def calc_expected_value(scholarship, student_responses):
     ## student_responses: dictionary of 1 individual student's responses
     score = aggrigate_values(scholarship, student_responses)
     award_amount = scholarship["awardMax"]
+    
     if award_amount is None:
         expected_value = score * 1000
     else:
-        expected_value = score * award_amount
+        
+        expected_value = score * int(award_amount)
     if scholarship["isEssayRequired"] == True:
         expected_value = expected_value / 2
     return expected_value
@@ -257,33 +272,41 @@ def append_scores(student_responses, scholarships) -> dict:
     ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
     ### scholarships: list of dictionaries of all scholarships
     ### student_responses: dictionary of 1 student response
-    scores = []
+    scores = {}
+    
     for scholarship in scholarships:
+        val = calc_expected_value(scholarships[scholarship], student_responses)
         
-        val = calc_expected_value(scholarship, student_responses)
         
-        if val > 0:
-            scores[scholarship['id']] = val
-    scores = sorted(scores, key=lambda x: x["score"], reverse=True)
+        if val > 0 and filter_eligibility(scholarships[scholarship], student_responses) == 1:
+            scores[scholarships[scholarship]['id']] = val
+
+    scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     val = {"user_id": student_responses["id"], "scores": scores}
     return val
 
 
 def filter_eligibility(scholarship, student_responses):
-
-    if scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None:
+    schol_types = decide_schol_type(scholarship)
+    
+    if "GradeLevel" in schol_types and scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None:
         if (calc_grade_level_score(scholarship, student_responses)) == 0:
             return 0
-
-    if scholarship["eligibilityCriteria"]["currentSchool"] is not None:
+    
+    if "School" in schol_types and scholarship["eligibilityCriteria"]["currentSchool"] is not None:
         if (calc_school_score(scholarship, student_responses)) == 0:
             return 0
-    if scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None:
+    
+    if "Study" in schol_types and scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None:
         if (calc_study_score(scholarship, student_responses)) == 0:
             return 0
-    if scholarship["eligibilityCriteria"]["locations"] is not None:
+    
+    if "Location" in schol_types and scholarship["eligibilityCriteria"]["locations"] is not None:
         if (calc_location_score(scholarship, student_responses)) == 0:
             return 0
+    
+    return 1
+    
 
 
 # Sample student json response following given schema
@@ -318,7 +341,7 @@ student_responses = {
             "interests": ["Programming", "Reading", "Hiking", "Basketball", "Sports"],
             "miscellaneousCriteria": ["First-generation college student"],
         },
-        "educationLevel": "High School Graduate",
+        "educationLevel": "High School Senior",
         "occupation": "Student",
         "incomeLevel": "null",
         "maritalStatus": "Single",
