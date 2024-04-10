@@ -6,7 +6,7 @@ import utils
 ##Load in whole scholarship json from database
 ## student_responses = 
 ##Load in whole student response from database
-student_responses = utils.student_responses
+student_responses = utils.new_student_responses
 with open('user_info.json', 'r') as data:
     scholarships = json.load(data)
 

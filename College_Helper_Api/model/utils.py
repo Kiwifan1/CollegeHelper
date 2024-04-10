@@ -38,6 +38,7 @@ def calc_merit_score(scholarship, student_responses):
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
     merit_score = 0
+    i = 0
     if (
         scholarship["eligibilityCriteria"]["academics"] is not None
         and student_responses is not None
@@ -104,14 +105,38 @@ def calc_merit_score(scholarship, student_responses):
     return merit_score
 
 
-"""
+def parse_income_intervals(interval):
+    parsed_intervals = []
+
+    
+    if ">" in interval:
+        lower_bound = int(interval[1:-1].replace("k", "")) * 1000
+        upper_bound = "inf"
+       
+    else:
+        bounds = interval.split("-")
+        lower_bound = int(bounds[0].replace("k", ""))
+        upper_bound = int(bounds[1].replace("k", ""))
+    parsed_intervals.append((lower_bound, upper_bound))
+    return parsed_intervals
+
 def calc_need_score(student_responses):
     need_score = 0
-    if student_responses['need'] is not None:
-        need_score += ((student_responses['need']/10)+1)**2           
-    
+    if student_responses["demographics"]["incomeLevel"] is not None:
+        intervals = parse_income_intervals(student_responses["demographics"]["incomeLevel"])
+        if intervals[-1] == "inf": 
+            need_score = 0
+        elif intervals[-1] == 110000:
+            need_score = 1
+        elif intervals[-1] == 75000:
+            need_score = 4 
+        elif intervals[-1] == 48000:
+            need_score = 3 
+        elif intervals[-1] == 30000:
+            need_score = 4
+             
     return need_score
-"""
+
 
 
 def calc_activity_score(scholarship, student_responses):
@@ -219,33 +244,22 @@ def aggrigate_values(scholarship, student_responses):
     score = 0
     i = 0
     if "Merit" in schol_types:
-        score += calc_merit_score(scholarship, student_responses)
+        score += 2*(calc_merit_score(scholarship, student_responses))
         i += 1
-    """
+   
     if "Need" in schol_types:   
         score += calc_need_score(student_responses)
         i += 1
-    """
+    
     if scholarship["eligibilityCriteria"]["activity"] is not None:
         score += calc_activity_score(scholarship, student_responses)
         i += 1
-    """   
-    if scholarship['eligibilityCriteria']['currentGradeLevel'] is not None:
-        score += calc_grade_level_score(scholarship, student_responses)
-        i += 1
-    """
     if scholarship["eligibilityCriteria"]["currentSchool"] is not None:
         score += calc_school_score(scholarship, student_responses)
         i += 1
     if scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None:
         score += calc_study_score(scholarship, student_responses)
         i += 1
-    """
-    if scholarship['eligibilityCriteria']['locations'] is not None:
-        score += calc_location_score(scholarship, student_responses)
-        i += 1
-        
-    """
     if i != 0:
         score = score / i
     return score
@@ -362,4 +376,79 @@ student_responses = {
     "majorPreferences": ["Computer Science", "Mathematics"],
     "careerPreferences": ["Software Engineer", "Data Scientist"],
     "currentCourses": ["Introduction to Computer Science", "Calculus I"],
+}
+
+new_student_responses = {
+    "id": "32187a28-088a-408f-afa4-82351a0a3811",
+    "username": "kiwi",
+    "email": "asc.zx@asdf",
+    "salt": "$2b$12$egTGa4HfhfN6BMRRnZdHlO",
+    "demographics": {
+        "age": 23,
+        "demographicInfo": {
+            "citizenships": [
+                "U.S. Citizen"
+            ],
+            "identities": {
+                "ethnicity": [
+                    "Caucasian"
+                ],
+                "nationality": [
+                    "Navajo"
+                ],
+                "genderIdentity": [
+                    "Male"
+                ],
+                "sexualOrientation": [
+                    "Heterosexual"
+                ]
+            },
+            "fieldsOfStudy": [
+                ""
+            ],
+            "interests": [
+                {
+                    "interestCriteria": "",
+                    "interestOther": ""
+                }
+            ],
+            "miscellaneousCriteria": [],
+            "degreeSeeking": []
+        },
+        "educationLevel": "High School Sophomore",
+        "occupation": "Employed",
+        "incomeLevel": ">110k",
+        "maritalStatus": "Prefer not to say"
+    },
+    "scores": {
+        "SAT": 1234,
+        "ACT": 32,
+        "GPA": 3.5,
+        "AP": 12,
+        "IB": 10,
+        "PSAT10": 1234,
+        "NMSQT": 1234
+    },
+    "collegePreferences": [],
+    "majorPreferences": [],
+    "careerPreferences": [],
+    "currentCourses": [],
+    "password": "$2b$12$egTGa4HfhfN6BMRRnZdHlO2lr3gjqlazfm1UyNsoUSSjkc4EG/sKq",
+    "addresses": [
+        {
+        "street": "123 Main St",
+        "city": "Springfield",
+        "province": "State",
+        "postCode": "12345",
+        "country": "USA",
+        "website": "www.student123.com",
+        "latitude": 40.7128,
+        "longitude": -74.0060,
+        }
+    ],
+    "_rid": "H7sHAMleQGsfAAAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAMleQGs=/docs/H7sHAMleQGsfAAAAAAAAAA==/",
+    "_etag": "\"c900a785-0000-0200-0000-6612d2710000\"",
+    "_attachments": "attachments/",
+    "_ts": 1712509553
 }
