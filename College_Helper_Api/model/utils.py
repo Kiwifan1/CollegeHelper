@@ -38,6 +38,8 @@ def calc_merit_score(scholarship, student_responses):
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
     merit_score = 0
+    SAT_score = 0
+    ACT_score = 0
     i = 0
     if (
         scholarship["eligibilityCriteria"]["academics"] is not None
@@ -61,8 +63,7 @@ def calc_merit_score(scholarship, student_responses):
                             )
                             + 1
                         ) ** 2
-                    else:
-                        merit_score += 0
+                        i += 1
 
             if val["academicEligibility"] == "Minimum Overall SAT":
                 if student_responses["scores"]["SAT"] is not None:
@@ -70,7 +71,7 @@ def calc_merit_score(scholarship, student_responses):
                         student_responses["scores"]["SAT"]
                         >= val["academicEligibilityValue"]
                     ):
-                        merit_score += (
+                        SAT_score += (
                             (
                                 (
                                     student_responses["scores"]["SAT"]
@@ -80,8 +81,8 @@ def calc_merit_score(scholarship, student_responses):
                             )
                             + 1
                         ) ** 2
-                    else:
-                        merit_score += 0
+                        i += 1
+                   
 
             if val["academicEligibility"] == "Minimum ACT":
                 if student_responses["scores"]["ACT"] is not None:
@@ -89,7 +90,7 @@ def calc_merit_score(scholarship, student_responses):
                         student_responses["scores"]["ACT"]
                         >= val["academicEligibilityValue"]
                     ):
-                        merit_score += (
+                        ACT_score += (
                             (
                                 (
                                     student_responses["scores"]["ACT"]
@@ -98,10 +99,16 @@ def calc_merit_score(scholarship, student_responses):
                                 / student_responses["scores"]["ACT"]
                             )
                             + 1
+                        
                         ) ** 2
-                    else:
-                        merit_score += 0
+                        i += 1
+                    
+    if student_responses["scores"]["ACT"] is not None and student_responses["scores"]["SAT"] is not None:
+        merit_score = (SAT_score + ACT_score) / 2
+        i -= 1
 
+    if i != 0:
+        merit_score = merit_score / i
     return merit_score
 
 
