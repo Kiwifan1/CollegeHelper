@@ -14,6 +14,7 @@ with open('user_info.json', 'r') as data:
 
 top_scholarships = utils.append_scores(student_responses, scholarships)
 #print(utils.append_scores(student_responses, scholarships))
+print(top_scholarships)
 with open('top_scholarships.json', 'w') as file:
     json.dump(top_scholarships, file, indent=4)
 

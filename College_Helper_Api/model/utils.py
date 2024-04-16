@@ -104,7 +104,7 @@ def calc_merit_score(scholarship, student_responses):
                         i += 1
                     
     if student_responses["scores"]["ACT"] is not None and student_responses["scores"]["SAT"] is not None:
-        merit_score = (SAT_score + ACT_score) / 2
+        merit_score += (SAT_score + ACT_score) / 2
         i -= 1
 
     if i != 0:
@@ -136,11 +136,11 @@ def calc_need_score(student_responses):
         elif intervals[-1] == 110000:
             need_score = 1
         elif intervals[-1] == 75000:
-            need_score = 4 
-        elif intervals[-1] == 48000:
             need_score = 3 
+        elif intervals[-1] == 48000:
+            need_score = 6 
         elif intervals[-1] == 30000:
-            need_score = 4
+            need_score = 10
              
     return need_score
 
@@ -276,7 +276,10 @@ def calc_expected_value(scholarship, student_responses):
     ## This function will take in a scholarship and a student's responses and return an expected value for the scholarship
     ## scholarship: dictionary of 1 individual scholarship
     ## student_responses: dictionary of 1 individual student's responses
+    
     score = aggrigate_values(scholarship, student_responses)
+    ideal = calculate_ideal_applicant(scholarship)
+    score = score / ideal
     award_amount = scholarship["awardMax"]
     
     if award_amount is None:
@@ -327,9 +330,65 @@ def filter_eligibility(scholarship, student_responses):
             return 0
     
     return 1
+
+def calculate_ideal_applicant(scholarship):
+    ## This function will calculate the ideal applicant for a scholarship based on the scholarship's criteria
+    ## scholarships: list of dictionaries of all scholarships
+    ## student_responses: dictionary of 1 student response
+    ideal_applicant = 0 
+    i = 0
     
+    
+        
+        
+    if  scholarship["isMeritBased"] is not None:
+        ideal_applicant += (ideal_merit_applicant(scholarship))
+        i = 1
+    if  scholarship["isNeedBased"] is not None:
+        ideal_applicant += 10
+        i += 1
+    if scholarship["eligibilityCriteria"]["activity"] is not None:
+        ideal_applicant += len(scholarship["eligibilityCriteria"]["activity"])
+        i += 1
+    if scholarship["eligibilityCriteria"]["currentSchool"] is not None:
+        ideal_applicant += len(scholarship["eligibilityCriteria"]["currentSchool"])
+        i += 1
+    if scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None:
+        ideal_applicant += len(scholarship["eligibilityCriteria"]["fieldsOfStudy"])
+        i += 1
+        
+            
+    if i != 0:
+        ideal_applicant = ideal_applicant / i
+    return ideal_applicant
 
 
+def ideal_merit_applicant(scholarship):
+    merit_score = 0
+    SAT_score = 0
+    ACT_score = 0
+    i = 0
+    if scholarship["eligibilityCriteria"]["academics"] is not None:
+        for val in scholarship["eligibilityCriteria"]["academics"]:
+
+            if val["academicEligibility"] == "Minimum GPA":
+                merit_score += (((4 - val["academicEligibilityValue"])/ 4) + 1) ** 2
+                i += 1
+            if val["academicEligibility"] == "Minimum Overall SAT":
+                SAT_score += (((1600 - val["academicEligibilityValue"])/ 1600) + 1) ** 2
+                i += 1
+            if val["academicEligibility"] == "Minimum ACT":
+                ACT_score += (((36 - val["academicEligibilityValue"])/ 36) + 1) ** 2
+                i += 1
+        
+        if student_responses["scores"]["ACT"] is not None and student_responses["scores"]["SAT"] is not None:
+            merit_score += ((SAT_score + ACT_score) / 2)
+            i -= 1
+
+        if i != 0:
+            merit_score = merit_score / i
+    
+    return merit_score
 # Sample student json response following given schema
 student_responses = {
     "id": "123456789",
