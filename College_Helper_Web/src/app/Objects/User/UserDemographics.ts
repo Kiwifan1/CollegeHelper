@@ -24,17 +24,26 @@ export interface DemographicInfo {
 }
 
 export enum EducationLevel {
-  HSFR = 'High School Freshman',
-  HSSO = 'High School Sophomore',
-  HSJR = 'High School Junior',
-  HSSR = 'High School Senior',
-  COFR = 'College Freshman',
-  COSO = 'College Sophomore',
-  COJR = 'College Junior',
-  COSR = 'College Senior',
-  Grad = 'Graduate',
-  Other = 'Other',
-  PreferNotToSay = 'Prefer not to say',
+  HSFR = "High School Freshman",
+  HSSO = "High School Sophomore",
+  HSJR = "High School Junior",
+  HSSR = "High School Senior",
+  COFR = "College Freshman",
+  COPFR = "College Freshman - Attended College Previously",
+  COSO = "College Sophomore",
+  COJR = "College Junior",
+  COSR = "College Senior",
+  CMFR = "Community College Freshman",
+  CMSO = "Community College Sophomore",
+  CMPFR = "Community College Freshman - Attended College Previously",
+  GRST = "Graduate Student",
+  FCOU = "5th Year College Undergraduate",
+  NCOU = "Nth Year College Undergraduate",
+  NE = "Not Enrolled",
+  OAB = "On Academic Break",
+  PMS = "Postgraduate Medical School",
+  DC = "Doctoral Candidate",
+  PLS = "Postgraduate Law School"
 }
 
 export enum Occupation {
