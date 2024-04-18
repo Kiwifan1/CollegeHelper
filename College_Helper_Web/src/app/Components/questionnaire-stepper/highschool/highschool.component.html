@@ -1,0 +1,13 @@
+<form [formGroup]="highschoolForm">
+  <!-- Select State required -->
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label for="state">State</mat-label>
+      <mat-select formControlName="state">
+        <mat-option *ngFor="let s of stateEnums" [value]="s">{{
+          s
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</form>
