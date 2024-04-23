@@ -1,11 +1,3 @@
-import pandas as pd
-import json
-
-## scholarships =
-##Load in whole scholarship json from database
-## student_responses =
-##Load in whole student response from database
-
 
 def decide_schol_type(value):
 
@@ -109,6 +101,8 @@ def calc_merit_score(scholarship, student_responses):
 
     if i != 0:
         merit_score = merit_score / i
+    
+    merit_score = (merit_score/ideal_merit_applicant(scholarship)) * 100
     return merit_score
 
 
@@ -134,13 +128,13 @@ def calc_need_score(student_responses):
         if intervals[-1] == "inf": 
             need_score = 0
         elif intervals[-1] == 110000:
-            need_score = 1
-        elif intervals[-1] == 75000:
-            need_score = 3 
-        elif intervals[-1] == 48000:
-            need_score = 6 
-        elif intervals[-1] == 30000:
             need_score = 10
+        elif intervals[-1] == 75000:
+            need_score = 30 
+        elif intervals[-1] == 48000:
+            need_score = 60
+        elif intervals[-1] == 30000:
+            need_score = 100
              
     return need_score
 
@@ -162,6 +156,7 @@ def calc_activity_score(scholarship, student_responses):
                 in student_responses["demographics"]["demographicInfo"]["interests"]
             ):
                 activity_score += 1
+    activity_score = activity_score / len(scholarship["eligibilityCriteria"]["activity"])*100
     return activity_score
 
 
@@ -197,6 +192,7 @@ def calc_school_score(scholarship, student_responses):
                         school_score += 1
             except:
                 pass
+    school_score = school_score / len(scholarship["eligibilityCriteria"]["currentSchool"])*100
     return school_score
 
 
@@ -212,7 +208,7 @@ def calc_study_score(scholarship, student_responses):
         for val in scholarship["eligibilityCriteria"]["fieldsOfStudy"]:
             if val["fieldName"] in student_responses["majorPreferences"]:
                 study_score += 1
-
+    study_score = study_score / len(scholarship["eligibilityCriteria"]["fieldsOfStudy"])*100
     return study_score
 
 
@@ -289,7 +285,7 @@ def calc_expected_value(scholarship, student_responses):
         expected_value = score * int(award_amount)
     if scholarship["isEssayRequired"] == True:
         expected_value = expected_value / 2
-    return expected_value
+    return score, expected_value
 
 
 def append_scores(student_responses, scholarships) -> dict:
@@ -342,13 +338,13 @@ def calculate_ideal_applicant(scholarship):
         
         
     if  scholarship["isMeritBased"] is not None:
-        ideal_applicant += (ideal_merit_applicant(scholarship))
+        ideal_applicant += 100
         i = 1
     if  scholarship["isNeedBased"] is not None:
-        ideal_applicant += 10
+        ideal_applicant += 100
         i += 1
     if scholarship["eligibilityCriteria"]["activity"] is not None:
-        ideal_applicant += len(scholarship["eligibilityCriteria"]["activity"])
+        ideal_applicant += 100
         i += 1
     if scholarship["eligibilityCriteria"]["currentSchool"] is not None:
         ideal_applicant += len(scholarship["eligibilityCriteria"]["currentSchool"])
@@ -389,6 +385,8 @@ def ideal_merit_applicant(scholarship):
             merit_score = merit_score / i
     
     return merit_score
+
+
 # Sample student json response following given schema
 student_responses = {
     "id": "123456789",
