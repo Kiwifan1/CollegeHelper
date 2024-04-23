@@ -103,6 +103,7 @@ def calc_merit_score(scholarship, student_responses):
         merit_score = merit_score / i
     
     merit_score = (merit_score/ideal_merit_applicant(scholarship)) * 100
+
     return merit_score
 
 
@@ -246,7 +247,7 @@ def aggrigate_values(scholarship, student_responses):
     schol_types = decide_schol_type(scholarship)
     score = 0
     i = 0
-    if "Merit" in schol_types:
+    if scholarship["isMeritBased"] == True and scholarship["eligibilityCriteria"]["academics"] is not None:
         score += 2*(calc_merit_score(scholarship, student_responses))
         i += 1
    
@@ -285,7 +286,7 @@ def calc_expected_value(scholarship, student_responses):
         expected_value = score * int(award_amount)
     if scholarship["isEssayRequired"] == True:
         expected_value = expected_value / 2
-    return score, expected_value
+    return expected_value
 
 
 def append_scores(student_responses, scholarships) -> dict:
@@ -298,7 +299,7 @@ def append_scores(student_responses, scholarships) -> dict:
         val = calc_expected_value(scholarships[scholarship], student_responses)
         
         
-        if val > 0 and filter_eligibility(scholarships[scholarship], student_responses) == 1:
+        if val > 0: #and filter_eligibility(scholarships[scholarship], student_responses) == 1:
             scores[scholarships[scholarship]['id']] = val
 
     scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
@@ -383,6 +384,8 @@ def ideal_merit_applicant(scholarship):
 
         if i != 0:
             merit_score = merit_score / i
+        
+    
     
     return merit_score
 
