@@ -64,12 +64,6 @@ import { MatSliderModule } from '@angular/material/slider';
 import { ScholarshipSearchDialogComponent } from './Components/scholarship-search-page/scholarship-search-dialog/scholarship-search-dialog.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { AddressPipe } from './Components/common/pipes/address.pipe';
-import { SimilarityRingComponent } from './Components/common/similarity-ring/similarity-ring.component';
-import { NgxGaugeModule } from 'ngx-gauge';
-import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { HighschoolComponent } from './Components/questionnaire-stepper/highschool/highschool.component';
-import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -103,9 +97,6 @@ import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-err
     ScholarshipClosedDialogComponent,
     AddressComponent,
     ScholarshipSearchDialogComponent,
-    SimilarityRingComponent,
-    HighschoolComponent,
-    EndpointErrorSnackbarComponent,
   ],
 
   imports: [
