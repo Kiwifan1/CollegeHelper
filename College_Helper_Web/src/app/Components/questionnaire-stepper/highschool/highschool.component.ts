@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Highschool } from 'src/app/Objects/Highschool/Highschool';
 import { USStatesEnum } from 'src/app/Objects/USStates';
@@ -18,8 +18,10 @@ export class HighschoolComponent implements OnInit {
   stateEnums = Object.values(USStatesEnum).filter(
     (value) => typeof value === 'string'
   );
-  highschools: Highschool[] = [];
+
+  highschools!: Highschool[];
   filteredHighschools: Observable<Highschool[]> = of(this.highschools);
+  highschoolSearchForm = new FormControl(['']);
 
   constructor(
     private highschoolService: HighschoolService,
@@ -35,6 +37,7 @@ export class HighschoolComponent implements OnInit {
     this.highschoolService.getHighschools(state).subscribe({
       next: (highschools) => {
         this.highschools = highschools;
+        console.log(highschools);
         this.loadingService.updateLoadingStatus(false);
       },
       error: (error) => {
@@ -54,5 +57,11 @@ export class HighschoolComponent implements OnInit {
           highschool.code.toLowerCase().includes(name.toLowerCase())
       )
     );
+  }
+
+  setHighschool(highschool: Highschool) {
+    this.highschoolForm.patchValue({
+      highschool: highschool,
+    });
   }
 }
