@@ -31,6 +31,7 @@ export class QuestionnaireStepperComponent implements OnInit {
       Validators.max(120),
       Validators.required,
     ]),
+    state: new FormControl('', [Validators.required]),
     addresses: new FormControl(['']),
     demographicInfo: this.demographicInfoForm,
     educationLevel: new FormControl('', [Validators.required]),
@@ -72,6 +73,10 @@ export class QuestionnaireStepperComponent implements OnInit {
     userMajors: this.userMajorsForm,
     userInterests: this.userInterestsForm,
     userCollege: this.userCollegeForm,
+  });
+
+  highschoolForm: FormGroup = new FormGroup({
+    highschool: new FormControl('', [Validators.required]),
   });
 
   private user!: User;
