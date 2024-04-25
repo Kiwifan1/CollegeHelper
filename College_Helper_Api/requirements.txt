@@ -10,3 +10,6 @@ uuid
 pandas
 pypika
 asyncio
+scikit-learn
+numpy
+munch

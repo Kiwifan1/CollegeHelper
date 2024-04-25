@@ -13,7 +13,7 @@ from user_db_triggers import (
     hash,
 )
 
-from model.utils import append_scores
+from model.utils import append_scores, get_unique_vals
 
 schol_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
@@ -341,6 +341,10 @@ def process_prediction_request(
     user = json.loads(msg.get_body().decode("utf-8"))
 
     # returns [(schol_id, score), ...]
+    
+    # testing purposes
+    # get_unique_vals(scholarships)
+    
     user_preds = append_scores(user, scholarships)
     user_preds = {pred[0]: pred[1] for pred in user_preds}
 
