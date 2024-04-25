@@ -12,16 +12,14 @@
         <mat-card-subtitle>
           <h3>{{ scholarship.programOrgName }}</h3>
           <h2>
-            <strong> Amount: {{ getAwardAmount(scholarship) | money }}</strong>
-            | Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
+            <strong> Amount: {{ scholarship.amountDisplay | money }} </strong> |
+            Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
             {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
           </h2>
         </mat-card-subtitle>
-        <app-similarity-ring
-          class="similarity-ring"
-          *ngIf="similarityScore"
-          [similarity]="similarityScore"
-        ></app-similarity-ring>
+        <button mat-raised-button color="primary" (click)="handleViewDetails()">
+          View Details
+        </button>
       </div>
       <div class="right">
         <div class="reqList">
@@ -38,13 +36,6 @@
           <li *ngIf="!scholarship.applicationFee">
             <mat-icon matTooltip="No Application Fee">money_off</mat-icon>
           </li>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="handleViewDetails()"
-          >
-            View Details
-          </button>
         </div>
       </div>
     </div>

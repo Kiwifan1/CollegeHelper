@@ -8,8 +8,3 @@ azure-identity
 bcrypt
 uuid
 pandas
-pypika
-asyncio
-scikit-learn
-numpy
-munch

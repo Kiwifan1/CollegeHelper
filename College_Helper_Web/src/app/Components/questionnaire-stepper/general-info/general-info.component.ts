@@ -98,7 +98,6 @@ export class GeneralInfoComponent implements OnInit, OnDestroy {
     navigator.geolocation.getCurrentPosition((position) => {
       const lat = position.coords.latitude;
       const long = position.coords.longitude;
-      this.loadingService.updateLoadingStatus(true);
       this.geoLocationService
         .getAddressFromLatLong(lat, long)
         .subscribe((res: any) => {
