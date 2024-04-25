@@ -6,6 +6,9 @@ import { Observable, switchMap } from 'rxjs';
 import { User } from 'src/app/Objects/User/User';
 import { Interest, InterestOtherEnum } from 'src/app/Objects/enums/Interests';
 import { AuthService } from 'src/app/Services/auth.service';
+import { LoadingService } from 'src/app/Services/loading.service';
+import { ScholarshipService } from 'src/app/Services/scholarship.service';
+import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @Component({
   selector: 'app-questionnaire-stepper',
@@ -87,7 +90,9 @@ export class QuestionnaireStepperComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private scholarshipService: ScholarshipService,
+    private loadingService: LoadingService
   ) {
     this.activatedRoute.data.subscribe((data: any) => {
       this.user = data.user;
@@ -103,15 +108,20 @@ export class QuestionnaireStepperComponent implements OnInit {
     localStorage.removeItem('userInfo');
   }
 
-  showSnackBar() {
+  showSnackBar(error?: string) {
+    let msg = {};
+    if (!error) {
+      msg = {
+        error: 'Sorry, something went wrong. Please register again.',
+      };
+    } else {
+      msg = { error: error };
+    }
     this.router.navigate(['/register']);
-    this.snackBar.open(
-      'Sorry, something went wrong. Please register again.',
-      'Close',
-      {
-        duration: 5000,
-      }
-    );
+    this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
+      data: { error: msg },
+      duration: 5000,
+    });
   }
 
   makeUser() {
@@ -180,29 +190,32 @@ export class QuestionnaireStepperComponent implements OnInit {
     this.submitted = true;
     this.makeUser();
 
+    this.loadingService.updateLoadingStatus(true);
     this.authService
       .updateUser(this.user)
       .pipe(
         switchMap((user: any) => {
           if (user) {
             this.authService.setUser(user);
-            return this.authService.login(
-              this.user.username,
-              this.user.password
+            return this.scholarshipService.predictScholarships(
+              this.authService.getUser()
             );
           }
-          return new Observable((observer) => {
-            observer.next(false);
-            observer.complete();
-          });
+          return new Observable((observer) =>
+            observer.next({ success: false })
+          );
         })
       )
-      .subscribe((loggedIn) => {
-        if (loggedIn) {
-          this.router.navigate(['/home']);
-        } else {
-          this.showSnackBar();
-        }
+      .subscribe({
+        next: (response: any) => {
+          this.loadingService.updateLoadingStatus(false);
+          this.router.navigate(['/scholarships']);
+        },
+
+        error: (error) => {
+          this.loadingService.updateLoadingStatus(false);
+          this.showSnackBar(error.error);
+        },
       });
   }
 }
