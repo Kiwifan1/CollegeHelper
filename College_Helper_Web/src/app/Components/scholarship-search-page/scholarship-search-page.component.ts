@@ -6,6 +6,8 @@ import { ScholarshipService } from 'src/app/Services/scholarship.service';
 import { ScholarshipSearchDialogComponent } from './scholarship-search-dialog/scholarship-search-dialog.component';
 import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -38,7 +40,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
     private authService: AuthService,
     private scholarshipService: ScholarshipService,
     private loadingService: LoadingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {
     this.user_id = this.authService.getUser().id;
     this.filters.id = this.user_id;
@@ -50,9 +53,18 @@ export class ScholarshipSearchPageComponent implements OnInit {
       pageSize: this.pageSize,
     });
 
-    this.scholarshipService.getScholarshipAwards().subscribe((data: any) => {
-      this.min = data.min;
-      this.max = data.max;
+    this.scholarshipService.getScholarshipAwards().subscribe({
+      next: (data: any) => {
+        this.min = data.min;
+        this.max = data.max;
+      },
+      error: (error) => {
+        this.loadingService.updateLoadingStatus(false);
+        this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
+          duration: 5000,
+          data: { error: error.error },
+        });
+      },
     });
   }
 
@@ -66,17 +78,26 @@ export class ScholarshipSearchPageComponent implements OnInit {
         this.pageSize,
         this.filters
       )
-      .subscribe((data: any) => {
-        this.length = data.num_returned;
-        let scholarships = data.scholarships;
-        scholarships.forEach((scholarship: any) => {
-          scholarship.scholarshipName = scholarship.scholarshipName.replace(
-            '_',
-            '/'
-          );
-        });
-        this.scholarships = scholarships;
-        this.loadingService.updateLoadingStatus(false);
+      .subscribe({
+        next: (data: any) => {
+          this.length = data.num_returned;
+          let scholarships = data.scholarships;
+          scholarships.forEach((scholarship: any) => {
+            scholarship.scholarshipName = scholarship.scholarshipName.replace(
+              '_',
+              '/'
+            );
+          });
+          this.scholarships = scholarships;
+          this.loadingService.updateLoadingStatus(false);
+        },
+        error: (error) => {
+          this.loadingService.updateLoadingStatus(false);
+          this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
+            duration: 5000,
+            data: { error: error.error },
+          });
+        },
       });
   }
 
@@ -97,35 +118,56 @@ export class ScholarshipSearchPageComponent implements OnInit {
         },
       })
       .afterClosed()
-      .subscribe((result) => {
-        if (result) {
-          this.filters = {
-            ...this.filters,
-            ...result,
-          };
+      .subscribe({
+        next: (result) => {
+          if (result) {
+            this.filters = {
+              ...this.filters,
+              ...result,
+            };
 
-          this.minChoice = result.minAmount;
-          this.maxChoice = result.maxAmount;
-          this.essayRequired = result.essayRequired;
-          this.meritBased = result.meritBased;
-          this.needBased = result.needBased;
-          this.sort_by_match = result.similarityMatch;
-          this.applicationFee = result.applicationFee;
+            this.minChoice = result.minAmount;
+            this.maxChoice = result.maxAmount;
+            this.essayRequired = result.essayRequired;
+            this.meritBased = result.meritBased;
+            this.needBased = result.needBased;
+            this.sort_by_match = result.similarityMatch;
+            this.applicationFee = result.applicationFee;
 
-          this.loadingService.updateLoadingStatus(true);
-          this.scholarshipService
-            .getScholarships(0, this.pageSize, this.filters)
-            .subscribe((data: any) => {
-              this.length = data.num_returned;
-              let scholarships = data.scholarships;
-              scholarships.forEach((scholarship: any) => {
-                scholarship.scholarshipName =
-                  scholarship.scholarshipName.replace('_', '/');
+            this.loadingService.updateLoadingStatus(true);
+            this.scholarshipService
+              .getScholarships(0, this.pageSize, this.filters)
+              .subscribe({
+                next: (data: any) => {
+                  this.length = data.num_returned;
+                  let scholarships = data.scholarships;
+                  scholarships.forEach((scholarship: any) => {
+                    scholarship.scholarshipName =
+                      scholarship.scholarshipName.replace('_', '/');
+                  });
+                  this.scholarships = scholarships;
+                  this.loadingService.updateLoadingStatus(false);
+                },
+                error: (error) => {
+                  this.loadingService.updateLoadingStatus(false);
+                  this.snackBar.openFromComponent(
+                    EndpointErrorSnackbarComponent,
+                    {
+                      duration: 5000,
+                      data: { error: error.error },
+                    }
+                  );
+                },
               });
-              this.scholarships = scholarships;
-              this.loadingService.updateLoadingStatus(false);
-            });
-        }
+          }
+        },
+        error: (error) => {
+          this.loadingService.updateLoadingStatus(false);
+          this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
+            duration: 5000,
+            data: { error: error.error },
+          });
+        },
       });
   }
 }

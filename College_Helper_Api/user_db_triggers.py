@@ -226,7 +226,7 @@ def update_user(
             items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
             if items.next():
-                temp = user['password']
+                temp = user["password"]
                 user["password"] = potential_pass
                 outputDocument.set(func.Document.from_dict(user))
                 user["password"] = temp
@@ -280,9 +280,8 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 )
             else:
                 return func.HttpResponse(
-                    {"loginSuccess": False},
+                    "Login failed. Please provide a valid username and password.",
                     status_code=HTTPStatus.UNAUTHORIZED,
-                    mimetype="application/json",
                 )
     else:
         return func.HttpResponse(

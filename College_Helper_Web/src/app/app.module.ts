@@ -69,6 +69,7 @@ import { NgxGaugeModule } from 'ngx-gauge';
 import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HighschoolComponent } from './Components/questionnaire-stepper/highschool/highschool.component';
+import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -104,6 +105,7 @@ import { HighschoolComponent } from './Components/questionnaire-stepper/highscho
     ScholarshipSearchDialogComponent,
     SimilarityRingComponent,
     HighschoolComponent,
+    EndpointErrorSnackbarComponent,
   ],
 
   imports: [
