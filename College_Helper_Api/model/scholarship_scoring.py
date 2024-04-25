@@ -6,13 +6,15 @@ import utils
 ##Load in whole scholarship json from database
 ## student_responses = 
 ##Load in whole student response from database
-student_responses = utils.student_responses
-with open('updated_app_info.json', 'r') as data:
+student_responses = utils.new_student_responses
+with open('user_info.json', 'r') as data:
     scholarships = json.load(data)
 
   
 
 top_scholarships = utils.append_scores(student_responses, scholarships)
+#print(utils.append_scores(student_responses, scholarships))
+print(top_scholarships)
 with open('top_scholarships.json', 'w') as file:
     json.dump(top_scholarships, file, indent=4)
 

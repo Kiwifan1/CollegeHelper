@@ -1,0 +1,478 @@
+{
+    "1":{
+    "id": "4b26c80f-7108-4897-980e-a4addfc5e9cb",
+    "scholarshipName": "Jinny and John Johnson Scholarship",
+    "programOrgName": "Community Foundation of Collier County",
+    "scholarshipStatus": "Not Open Yet",
+    "scholarshipOpen": "11/1/2023",
+    "scholarshipDeadline": "2/6/2024",
+    "aboutPara": "The Jinny and John Johnson Scholarship is a need- and merit-based program for students planning to attend or transfer to an out-of-state institution to obtain a bachelor's degree. Residents of Collier County, Florida are eligible to apply.",
+    "amountDisplay": "",
+    "applicationUrl": "https://colliercf.org/scholarships/apply-for-scholarships/",
+    "programUrl": "https://colliercf.org/scholarships/",
+    "applicationFee": null,
+    "eligibilityCriteria": {
+        "miscellaneous": null,
+        "activity": null,
+        "currentGradeLevel": [
+            {
+                "currentGrade": "High School Senior"
+            },
+            {
+                "currentGrade": "Community College Freshman"
+            },
+            {
+                "currentGrade": "Community College Sophomore"
+            },
+            {
+                "currentGrade": "College Freshman"
+            },
+            {
+                "currentGrade": "College Sophomore"
+            },
+            {
+                "currentGrade": "College Junior"
+            }
+        ],
+        "collegeReadinessProgramParticipation": null,
+        "currentSchool": null,
+        "affiliation": null,
+        "graduation": null,
+        "armedServices": null,
+        "situation": null,
+        "profession": null,
+        "financialInformation": null,
+        "applicationRestriction": null,
+        "collegeAttendanceCriteria": null,
+        "academics": [
+            {
+                "academicEligibility": "Minimum GPA",
+                "academicEligibilityValue": 3.5
+            }
+        ],
+        "degreeSeeking": [
+            "Bachelor's Degree"
+        ],
+        "condition": null,
+        "fieldsOfStudy": null,
+        "enrollmentStatus": null,
+        "citizenshipStatuses": null,
+        "graduationStatuses": null,
+        "locations": [
+            {
+                "country": "US",
+                "county": "Collier",
+                "state": "FL"
+            }
+        ],
+        "interests": null,
+        "studyAbroad": null,
+        "age": null,
+        "demographics": null
+    },
+    "maxAmountFormat": null,
+    "eligibilityCriteriaDescriptions": [
+        "Minimum 3.50 GPA",
+        "Resident of Collier County, Florida",
+        "High school senior, community college student, college freshman, sophomore, or junior",
+        "Seeking a bachelor's degree",
+        "Planning to attend or transfer to a college out of state",
+        "Demonstrate financial need"
+    ],
+    "isEssayRequired": true,
+    "isNeedBased": true,
+    "isMeritBased": true,
+    "cbScholarshipId": "XGrtqfgXBLe4",
+    "awardMin": null,
+    "awardMax": null,
+    "_rid": "H7sHAJ6G0YxTAAAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAJ6G0Yw=/docs/H7sHAJ6G0YxTAAAAAAAAAA==/",
+    "_etag": "\"200002e2-0000-0200-0000-65f9cd930000\"",
+    "_attachments": "attachments/",
+    "_ts": 1710869907
+    },
+    "2":{
+    "id": "414953be-bf3f-4f47-b698-af3ca11b8586",
+    "scholarshipName": "Joan & Jack Wallick Scholarship",
+    "programOrgName": "Sigma Alpha Mu Foundation",
+    "scholarshipStatus": "Not Open Yet",
+    "scholarshipOpen": "12/1/2023",
+    "scholarshipDeadline": "1/30/2024",
+    "aboutPara": "The Joan & Jack Wallick Scholarship is offered to undergraduate Sigma Alpha Mu members pursuing a degree in Jewish studies. Applicants who have completed their first year of undergraduate studies are welcome to apply. Special consideration is given to Sigma Gamma chapter members.",
+    "applicationUrl": "https://sam-fdn.celect.org/lawrence-d-schaffer-endowed-scholarship-program",
+    "programUrl": "https://www.sam-fdn.org/scholarships",
+    "applicationFee": null,
+    "eligibilityCriteria": {
+        "miscellaneous": null,
+        "activity": null,
+        "currentGradeLevel": [
+            {
+                "currentGrade": "College Sophomore"
+            },
+            {
+                "currentGrade": "College Junior"
+            },
+            {
+                "currentGrade": "College Senior"
+            },
+            {
+                "currentGrade": "5th Year College Undergraduate"
+            },
+            {
+                "currentGrade": "Nth Year College Undergraduate"
+            }
+        ],
+        "collegeReadinessProgramParticipation": null,
+        "currentSchool": null,
+        "affiliation": [
+            {
+                "affiliationEntityOther": "Sigma Alpha Mu",
+                "indirectRelation": null,
+                "affiliationEntity": "Other",
+                "directRelation": "Member Of"
+            }
+        ],
+        "graduation": null,
+        "armedServices": null,
+        "situation": null,
+        "profession": null,
+        "financialInformation": null,
+        "applicationRestriction": null,
+        "collegeAttendanceCriteria": null,
+        "academics": null,
+        "degreeSeeking": [
+            "Bachelor's Degree"
+        ],
+        "condition": null,
+        "fieldsOfStudy": [
+            {
+                "fieldName": "Jewish Studies",
+                "cipCode": null
+            }
+        ],
+        "enrollmentStatus": null,
+        "citizenshipStatuses": null,
+        "graduationStatuses": null,
+        "locations": [
+            {
+                "country": "US"
+            }
+        ],
+        "interests": null,
+        "studyAbroad": null,
+        "age": null,
+        "demographics": null
+    },
+    "maxAmountFormat": "500",
+    "eligibilityCriteriaDescriptions": [
+        "Member of Sigma Alpha Mu",
+        "Undergraduate sophomore or higher",
+        "Seeking a degree in Jewish studies",
+        "Demonstrate financial need\n\nPreference is given to Sigma Gamma chapter members."
+    ],
+    "isEssayRequired": false,
+    "isNeedBased": true,
+    "isMeritBased": false,
+    "cbScholarshipId": "ORDhWzvw7kHo",
+    "awardMin": 500,
+    "awardMax": 500,
+    "_rid": "H7sHAJ6G0YxfAAAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAJ6G0Yw=/docs/H7sHAJ6G0YxfAAAAAAAAAA==/",
+    "_etag": "\"20000ee2-0000-0200-0000-65f9cd930000\"",
+    "_attachments": "attachments/",
+    "_ts": 1710869907
+},
+"3":{
+    "id": "5d726dae-98a1-47cc-bc8e-5cd1bab143f7",
+    "scholarshipName": "Arthur and Agnes Koldeway Agricultural Scholarship",
+    "programOrgName": "Weld Community Foundation",
+    "scholarshipStatus": "Not Open Yet",
+    "scholarshipOpen": "11/1/2023",
+    "scholarshipDeadline": "2/1/2024",
+    "aboutPara": "The Arthur and Agnes Koldeway Agricultural Scholarship supports graduating seniors from any high school in Weld County, Colorado. Students who are seeking an associate or bachelor's degree in an agricultural-related field are welcome to apply.",
+    "amountDisplay": "",
+    "applicationUrl": "https://weldcommunityfoundation.org/students/",
+    "programUrl": "https://weldcommunityfoundation.org/students/",
+    "applicationFee": null,
+    "eligibilityCriteria": {
+        "miscellaneous": null,
+        "activity": [
+            {
+                "activity": "Community Service",
+                "activityOther": null
+            }
+        ],
+        "currentGradeLevel": [
+            {
+                "currentGrade": "High School Senior"
+            }
+        ],
+        "collegeReadinessProgramParticipation": null,
+        "currentSchool": null,
+        "affiliation": null,
+        "graduation": null,
+        "armedServices": null,
+        "situation": null,
+        "profession": null,
+        "financialInformation": null,
+        "applicationRestriction": null,
+        "collegeAttendanceCriteria": null,
+        "academics": [
+            {
+                "academicEligibility": "Minimum GPA",
+                "academicEligibilityValue": 3
+            }
+        ],
+        "degreeSeeking": [
+            "Associate Degree",
+            "Bachelor's Degree"
+        ],
+        "condition": null,
+        "fieldsOfStudy": [
+            {
+                "fieldName": "Agricultural Sciences",
+                "cipCode": null
+            },
+            {
+                "fieldName": "Veterinary Studies",
+                "cipCode": null
+            },
+            {
+                "fieldName": "Veterinary Sciences",
+                "cipCode": null
+            }
+        ],
+        "enrollmentStatus": [
+            "Full-Time Only"
+        ],
+        "citizenshipStatuses": null,
+        "graduationStatuses": null,
+        "locations": [
+            {
+                "country": "US",
+                "county": "Weld",
+                "state": "CO"
+            }
+        ],
+        "interests": null,
+        "studyAbroad": null,
+        "age": null,
+        "demographics": null
+    },
+    "maxAmountFormat": null,
+    "eligibilityCriteriaDescriptions": [
+        "Minimum 3.00 GPA",
+        "High school senior attending school in Weld County, Colorado",
+        "Seeking an associate or bachelor's degree",
+        "Studying in an agriculturalrelated field",
+        "Fulltime student",
+        "Planning to attend school in the U.S.",
+        "Participation in community service"
+    ],
+    "isEssayRequired": false,
+    "isNeedBased": false,
+    "isMeritBased": true,
+    "cbScholarshipId": "wONlObh7eucO",
+    "awardMin": null,
+    "awardMax": null,
+    "_rid": "H7sHAJ6G0YzDAAAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAJ6G0Yw=/docs/H7sHAJ6G0YzDAAAAAAAAAA==/",
+    "_etag": "\"08002ffc-0000-0200-0000-6609848c0000\"",
+    "_attachments": "attachments/",
+    "userScores": [
+        {
+            "userId": "32187a28-088a-408f-afa4-82351a0a3811",
+            "score": 0.0032014188447837917
+        }
+    ],
+    "_ts": 1711899788
+},
+"4":{
+    "id": "5a145a7a-7860-457b-b881-3f5321f95114",
+    "scholarshipName": "Arthur and Thelma Clark Scholarship",
+    "programOrgName": "The Columbus Foundation",
+    "scholarshipStatus": "Not Open Yet",
+    "scholarshipOpen": "1/1/2024",
+    "scholarshipDeadline": "3/1/2024",
+    "aboutPara": "The Arthur and Thelma Clark Scholarship is a need-based scholarship that recognizes African American students at Bethune-Cookman University and Morehouse College. College sophomores, juniors, and seniors are welcome to apply.",
+    "applicationUrl": "https://columbusfoundation.org/students/scholarships/scholarship-detail/ArthurandThelmaClarkScholarship/104",
+    "programUrl": "https://www.columbusfoundation.org/students/scholarships",
+    "applicationFee": null,
+    "eligibilityCriteria": {
+        "miscellaneous": null,
+        "activity": null,
+        "currentGradeLevel": [
+            {
+                "currentGrade": "College Sophomore"
+            },
+            {
+                "currentGrade": "College Junior"
+            },
+            {
+                "currentGrade": "College Senior"
+            }
+        ],
+        "collegeReadinessProgramParticipation": null,
+        "currentSchool": [
+            {
+                "school": [
+                    {
+                        "ceebCode": "5061",
+                        "schoolType": "College",
+                        "ncesCode": "132602",
+                        "schoolAddress": {
+                            "country": "US",
+                            "stateOrProvince": "FL",
+                            "city": "Daytona Beach",
+                            "addressLine1": "640 Dr Mary McLeod Bethune Blvd ",
+                            "zipOrPostalCode": "32114"
+                        },
+                        "schoolName": "Bethune-Cookman University"
+                    },
+                    {
+                        "ceebCode": "5415",
+                        "schoolType": "College",
+                        "ncesCode": "140553",
+                        "schoolAddress": {
+                            "country": "US",
+                            "stateOrProvince": "GA",
+                            "city": "Atlanta"
+                        },
+                        "schoolName": "Morehouse College"
+                    }
+                ]
+            }
+        ],
+        "affiliation": null,
+        "graduation": null,
+        "armedServices": null,
+        "situation": null,
+        "profession": null,
+        "financialInformation": null,
+        "applicationRestriction": null,
+        "collegeAttendanceCriteria": null,
+        "academics": [
+            {
+                "academicEligibility": "Minimum GPA",
+                "academicEligibilityValue": 2.5
+            }
+        ],
+        "degreeSeeking": [
+            "Bachelor's Degree"
+        ],
+        "condition": null,
+        "fieldsOfStudy": null,
+        "enrollmentStatus": null,
+        "citizenshipStatuses": null,
+        "graduationStatuses": null,
+        "locations": [
+            {
+                "country": "US"
+            }
+        ],
+        "interests": null,
+        "studyAbroad": null,
+        "age": null,
+        "demographics": [
+            "Black or African American"
+        ]
+    },
+    "maxAmountFormat": null,
+    "eligibilityCriteriaDescriptions": [
+        "Minimum 2.5 GPA",
+        "A college sophomore, junior, or senior attending BethuneCookman University or Morehouse College",
+        "Black or African American",
+        "Demonstrate financial need"
+    ],
+    "isEssayRequired": false,
+    "isNeedBased": true,
+    "isMeritBased": false,
+    "cbScholarshipId": "OK3HSWdmbsy4",
+    "awardMin": 500,
+    "awardMax": 500,
+    "_rid": "H7sHAJ6G0YzHAAAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAJ6G0Yw=/docs/H7sHAJ6G0YzHAAAAAAAAAA==/",
+    "_etag": "\"08003cfc-0000-0200-0000-6609848c0000\"",
+    "_attachments": "attachments/",
+    "userScores": [
+        {
+            "userId": "32187a28-088a-408f-afa4-82351a0a3811",
+            "score": 0.003276569521891393
+        }
+    ],
+    "_ts": 1711899788
+},
+"5":{
+    "id": "bf83872f-7d7f-44be-8b41-bbb6cb6981c5",
+    "scholarshipName": "NCHSAA Cheerleading Scholarship",
+    "programOrgName": "North Carolina High School Athletic Association",
+    "scholarshipStatus": "Not Open Yet",
+    "scholarshipOpen": "9/15/2023",
+    "scholarshipDeadline": "11/15/2023",
+    "aboutPara": "NCHSAA Cheerleading Scholarship recognizes and rewards, with college scholarships, cheerleaders who participate in the Cheerleading Invitational of the North Carolina High School Athletic Association (NCHSAA).",
+    "applicationUrl": "https://www.nchsaa.org/students-parents/nchsaa-scholarship-opportunities",
+    "programUrl": "https://www.nchsaa.org/awards-scholarships",
+    "applicationFee": null,
+    "eligibilityCriteria": {
+        "miscellaneous": null,
+        "activity": [
+            {
+                "activity": "Cheerleading",
+                "activityOther": null
+            }
+        ],
+        "currentGradeLevel": [
+            {
+                "currentGrade": "High School Senior"
+            }
+        ],
+        "collegeReadinessProgramParticipation": null,
+        "currentSchool": null,
+        "affiliation": null,
+        "graduation": null,
+        "armedServices": null,
+        "situation": null,
+        "profession": null,
+        "financialInformation": null,
+        "applicationRestriction": null,
+        "collegeAttendanceCriteria": null,
+        "academics": null,
+        "degreeSeeking": [
+            "Bachelor's Degree"
+        ],
+        "condition": null,
+        "fieldsOfStudy": null,
+        "enrollmentStatus": null,
+        "citizenshipStatuses": null,
+        "graduationStatuses": null,
+        "locations": [
+            {
+                "country": "US",
+                "state": "NC"
+            }
+        ],
+        "interests": null,
+        "studyAbroad": null,
+        "age": null,
+        "demographics": null
+    },
+    "maxAmountFormat": "500",
+    "eligibilityCriteriaDescriptions": [
+        "This program is open to cheerleaders graduating from high schools that are members of the NCHSAA and whose team has been invited to the Cheerleading Invitational.",
+        "Participants who exemplify sound character and academic standing, good sportsmanship, and school spirit receive these scholarships for study at a college or university in any state.",
+        "GPA of 3.0 or above."
+    ],
+    "isEssayRequired": false,
+    "isNeedBased": false,
+    "isMeritBased": true,
+    "cbScholarshipId": "G1C14DRiNfWD",
+    "awardMin": 500,
+    "awardMax": 500,
+    "_rid": "H7sHAJ6G0YwTAQAAAAAAAA==",
+    "_self": "dbs/H7sHAA==/colls/H7sHAJ6G0Yw=/docs/H7sHAJ6G0YwTAQAAAAAAAA==/",
+    "_etag": "\"200055e5-0000-0200-0000-65f9cd9b0000\"",
+    "_attachments": "attachments/",
+    "_ts": 1710869915
+}
+
+}
