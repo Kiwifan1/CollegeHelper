@@ -29,6 +29,17 @@ export class ScholarshipItemComponent implements OnInit {
     );
   }
 
+  getAwardAmount(scholarship: Scholarship) {
+    if (scholarship.awardMin === null || scholarship.awardMax === null) {
+      return 'Not Available';
+    }
+    if (scholarship.awardMin === scholarship.awardMax) {
+      return `$${scholarship.awardMin}`;
+    } else {
+      return `$${scholarship.awardMin} - $${scholarship.awardMax}`;
+    }
+  }
+
   handleViewDetails() {
     if (this.isWithinDate()) {
       this.route.navigate(['scholarship', this.scholarship.id]);

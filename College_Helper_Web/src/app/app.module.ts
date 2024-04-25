@@ -67,6 +67,9 @@ import { AddressPipe } from './Components/common/pipes/address.pipe';
 import { SimilarityRingComponent } from './Components/common/similarity-ring/similarity-ring.component';
 import { NgxGaugeModule } from 'ngx-gauge';
 import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HighschoolComponent } from './Components/questionnaire-stepper/highschool/highschool.component';
+import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +104,8 @@ import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
     AddressComponent,
     ScholarshipSearchDialogComponent,
     SimilarityRingComponent,
+    HighschoolComponent,
+    EndpointErrorSnackbarComponent,
   ],
 
   imports: [
@@ -145,6 +150,7 @@ import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
     AddressPipe,
     NgxGaugeModule,
     RingColorPipe,
+    MatSlideToggleModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],

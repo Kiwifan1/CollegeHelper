@@ -32,13 +32,22 @@ def handleRequirements(string_input):
 
 
 def build_query(req, query, params, user=None):
-    sort_by_match = req.params.get("sort_by_match") == "true"
+    similarity_match = req.params.get("similarityMatch") == "true"
     essay_required = req.params.get("essayRequired") or None
     merit_based = req.params.get("meritBased") or None
+    application_fee = req.params.get("applicationFee") or None
+
+    essay_required = handleRequirements(essay_required)
+    merit_based = handleRequirements(merit_based)
+    essay_required = handleRequirements(essay_required)
+    application_fee = handleRequirements(application_fee)
+
     need_based = req.params.get("needBased") or None
+    min_amount = req.params.get("minAmount") or None
+    max_amount = req.params.get("maxAmount") or None
 
     # adding the predictive list ordering and filtering
-    if sort_by_match:
+    if similarity_match:
         # start query with creating a list of scholarships from the user
         # query += " JOIN s IN c.userScores"
         # query += " WHERE s.userId = @user_id"
@@ -51,16 +60,19 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if essay_required != None:
-        query += " WHERE c.isEssayRequired = @essayRequired"
+    if essay_required:
+        if len(params) > 0:
+            query += " AND c.isEssayRequired = @essayRequired"
+        else:
+            query += " WHERE c.isEssayRequired = @essayRequired"
         params.append(
             {
                 "name": "@essayRequired",
-                "value": handleRequirements(req.params.get("essayRequired")),
+                "value": essay_required,
             }
         )
 
-    if merit_based != None:
+    if merit_based:
         if len(params) > 0:
             query += " AND c.isMeritBased = @meritRequired"
         else:
@@ -68,11 +80,11 @@ def build_query(req, query, params, user=None):
         params.append(
             {
                 "name": "@meritRequired",
-                "value": handleRequirements(req.params.get("meritBased")),
+                "value": merit_based,
             }
         )
 
-    if need_based != None:
+    if need_based:
         if len(params) > 0:
             query += " AND c.isNeedBased = @needBased"
         else:
@@ -80,9 +92,35 @@ def build_query(req, query, params, user=None):
         params.append(
             {
                 "name": "@needBased",
-                "value": handleRequirements(req.params.get("needBased")),
+                "value": need_based,
             }
         )
+
+    if application_fee:
+        if len(params) > 0:
+            query += " AND c.applicationFee = @applicationFee"
+        else:
+            query += " WHERE c.applicationFee = @applicationFee"
+        params.append(
+            {
+                "name": "@applicationFee",
+                "value": application_fee,
+            }
+        )
+
+    if min_amount:
+        if len(params) > 0:
+            query += " AND c.awardMax >= @minAmount"
+        else:
+            query += " WHERE c.awardMax >= @minAmount"
+        params.append({"name": "@minAmount", "value": int(min_amount)})
+
+    if max_amount:
+        if len(params) > 0:
+            query += " AND c.awardMax <= @maxAmount"
+        else:
+            query += " WHERE c.awardMax <= @maxAmount"
+        params.append({"name": "@maxAmount", "value": int(max_amount)})
 
     # if sort_by_match:
     #     query += " ORDER BY c.userScores[0].score DESC"
@@ -128,6 +166,7 @@ def get_scholarships(
     id = req.params.get("id")
     offset = req.params.get("offset")
     limit = req.params.get("limit")
+    similarity_match = req.params.get("similarityMatch") == "true"
 
     if not offset or not limit:
         return func.HttpResponse("Error: Missing offset/limit", status_code=400)
@@ -140,23 +179,30 @@ def get_scholarships(
     params = []
 
     query, params = build_query(req, query, params, user)
+    if not similarity_match:
+        temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
+        num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
+            0
+        ]
 
-    # query += " OFFSET @offset LIMIT @limit"
-    # params.append({"name": "@offset", "value": int(offset)})
-    # params.append({"name": "@limit", "value": int(limit)})
+        query += " ORDER BY c.awardMax DESC"
+        query += " OFFSET @offset LIMIT @limit"
+        params.append({"name": "@offset", "value": int(offset)})
+        params.append({"name": "@limit", "value": int(limit)})
 
     scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
     # scholarships = [s["c"] for s in scholarships]
 
-    # do sorting, offset and limit backend side
-    scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
+    # do sorting, offset and limit backend side if similarity match
 
-    for scholarship in scholarships:
-        scholarship["score"] = scores[scholarship["id"]]
-    scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
-    num_returned = len(scholarships)
-    scholarships = scholarships[int(offset) : int(offset) + int(limit)]
+    if similarity_match:
+        scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
 
+        for scholarship in scholarships:
+            scholarship["score"] = scores[scholarship["id"]]
+        scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
+        num_returned = len(scholarships)
+        scholarships = scholarships[int(offset) : int(offset) + int(limit)]
     return func.HttpResponse(
         json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
         status_code=200,
@@ -214,6 +260,24 @@ def get_num_scholarships(
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
 
+@schol_bp.route(route="get_scholarship_award_amounts", methods=["GET"])
+def get_scholarship_award_amounts(req: func.HttpRequest) -> func.HttpResponse:
+    min_query = "SELECT VALUE MIN(c.awardMin) FROM c WHERE c.awardMin != null"
+    max_query = "SELECT VALUE MAX(c.awardMax) FROM c WHERE c.awardMax != null"
+    params = []
+
+    try:
+        min_amount = list(query_cosmos_db(min_query, params, SCHOL_CONTAINER, True))[0]
+        max_amount = list(query_cosmos_db(max_query, params, SCHOL_CONTAINER, True))[0]
+        return func.HttpResponse(
+            json.dumps({"min": min_amount, "max": max_amount}),
+            status_code=200,
+            mimetype="application/json",
+        )
+    except Exception as e:
+        return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+
 @schol_bp.queue_output(
     arg_name="msg",
     queue_name="scholarship-predictions-queue",
@@ -252,7 +316,9 @@ def predict_scholarships(
         user[0].pop("scholarshipScores")
 
     msg.set(json.dumps(user[0]))
-    return func.HttpResponse("User found", status_code=200)
+    return func.HttpResponse(
+        json.dumps({"success": True}), status_code=200, mimetype="application/json"
+    )
 
 
 @schol_bp.queue_trigger(
@@ -266,12 +332,6 @@ def predict_scholarships(
     container_name="SCHOLARSHIP",
     connection=cosmos_db_connection,
 )
-# @schol_bp.cosmos_db_output(
-#     arg_name="score",
-#     database_name="CollegeHelperDB",
-#     container_name="SCORE",
-#     connection=cosmos_db_connection,
-# )
 def process_prediction_request(
     msg: func.QueueMessage,
     scholarships: func.DocumentList,
@@ -280,7 +340,7 @@ def process_prediction_request(
         return
     user = json.loads(msg.get_body().decode("utf-8"))
 
-    # returns [(schol_id, score), ...]
+    scholarships = [s.data for s in scholarships]
     user_preds = append_scores(user, scholarships)
     user_preds = {pred[0]: pred[1] for pred in user_preds}
 
@@ -288,47 +348,12 @@ def process_prediction_request(
     user_preds = [{"scholId": key, "score": value} for key, value in user_preds.items()]
     scores = {"userId": user["id"], "scores": user_preds}
 
-    try:
-        SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
-    except Exception as e:
-        SCORE_CONTAINER.upsert_item(scores)
-    # for scholarship in scholarships:
-    #     if not scholarship.get("userScores") or scholarship["userScores"] == []:
-    #         scholarship["userScores"] = [
-    #             {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-    #         ]
-    #     else:
-    #         user_exists = any(
-    #             [score["userId"] == user["id"] for score in scholarship["userScores"]]
-    #         )
-
-    #         # userScores is set up [{'userId': <id>, 'score': <score>}, ...]
-    #         if user_exists:
-    #             scholarship["userScores"] = [
-    #                 (
-    #                     {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-    #                     if score["userId"] == user["id"]
-    #                     else score
-    #                 )
-    #                 for score in scholarship["userScores"]
-    #             ]
-    #         else:
-    #             scholarship["userScores"].append(
-    #                 {"userId": user["id"], "score": user_preds[scholarship["id"]]}
-    #             )
-
-    # scholarship_routines = [updateScore(scholarship) for scholarship in scholarships]
-    # await asyncio.gather(*scholarship_routines)
-
-
-async def updateScore(scholarship):
-    operations = [
-        {
-            "op": "replace",
-            "path": "/userScores",
-            "value": scholarship["userScores"],
-        }
-    ]
-    await SCHOL_CONTAINER.patch_item(
-        scholarship["id"], partition_key=scholarship["id"], patch_operations=operations
+    res = SCORE_CONTAINER.scripts.execute_stored_procedure(
+        "checkIfUserExists", partition_key=user["id"], params=[user["id"]]
     )
+
+    if res:
+        res["scores"] = user_preds
+        SCORE_CONTAINER.upsert_item(res)
+    else:
+        SCORE_CONTAINER.create_item(scores)

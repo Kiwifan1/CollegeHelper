@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Address } from 'src/app/Objects/Address';
 import {
@@ -23,7 +23,7 @@ import { LoadingService } from 'src/app/Services/loading.service';
   templateUrl: './general-info.component.html',
   styleUrl: './general-info.component.scss',
 })
-export class GeneralInfoComponent implements OnInit {
+export class GeneralInfoComponent implements OnInit, OnDestroy {
   @Input() userInfoForm!: FormGroup;
   grabbedLocation = false;
 
@@ -116,11 +116,14 @@ export class GeneralInfoComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.bindAddress();
+  }
+
   bindAddress() {
     // add all the address forms to the user object
     this.userInfoForm.patchValue({
-      addresses: this.addressForms.map((address) => address.value), 
+      addresses: this.addressForms.map((address) => address.value),
     });
-    console.log(this.userInfoForm.value);
   }
 }

@@ -2,10 +2,17 @@
   <div class="page-content">
     <mat-card class="card">
       <mat-card-content>
-        <mat-stepper [linear]="true">
+        <mat-stepper>
           <mat-step [stepControl]="userInfoForm">
             <ng-template matStepLabel>General Info</ng-template>
             <app-general-info [userInfoForm]="userInfoForm"></app-general-info>
+          </mat-step>
+          <mat-step [stepControl]="highschoolForm">
+            <ng-template matStepLabel>High School Info</ng-template>
+            <app-highschool
+              [highschoolForm]="highschoolForm"
+              [state]="userInfoForm.get('state')?.value"
+            ></app-highschool>
           </mat-step>
           <mat-step [stepControl]="userScoreForm">
             <ng-template matStepLabel>Grades</ng-template>
@@ -34,7 +41,10 @@
 
           <mat-step>
             <ng-template matStepLabel>Review and Confirm</ng-template>
-            <app-review [userForm]="userForm" (submitQuestionnaire)="handleSubmission()"></app-review>
+            <app-review
+              [userForm]="userForm"
+              (submitQuestionnaire)="handleSubmission()"
+            ></app-review>
           </mat-step>
         </mat-stepper>
       </mat-card-content>
