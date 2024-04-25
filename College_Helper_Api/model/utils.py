@@ -288,6 +288,7 @@ def calc_expected_value(scholarship, student_responses):
         expected_value = expected_value / 2
     return expected_value
 
+import heapq
 
 def append_scores(student_responses, scholarships) -> dict:
     ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
@@ -306,6 +307,106 @@ def append_scores(student_responses, scholarships) -> dict:
     val = {"user_id": student_responses["id"], "scores": scores}
     return val
 
+# Define function to generate successor nodes
+def generate_successors(node):
+    # Dummy implementation: generating successors by swapping user and scholarship
+    successors = []
+    
+    # Swap user and scholarship
+    successor1 = Node(node.scholarship, node.user, 0)  # Same cost, no additional cost for swapping
+    successors.append(successor1)
+    
+    return successors
+
+# Define function to evaluate cost
+def evaluate_cost(current_node, successor_node):
+    # Calculate similarity of current node and successor node
+    current_similarity = calculate_similarity(current_node.user, current_node.scholarship)
+    successor_similarity = calculate_similarity(successor_node.user, successor_node.scholarship)
+    
+    # Cost is the difference between current node's similarity and successor node's similarity
+    cost = current_similarity - successor_similarity
+    
+    return cost
+
+# Define A* search function
+def A_star_search(initial_node, min_similarity):
+    # Initialize priority queue with initial node
+    frontier = [initial_node]
+    heapq.heapify(frontier)
+    
+    # While priority queue is not empty
+    while frontier:
+        # Pop node with lowest cost from priority queue
+        current_node = heapq.heappop(frontier)
+        
+        # Check if similarity falls below the threshold
+        current_similarity = calculate_similarity(current_node.user, current_node.scholarship)
+        if current_similarity < min_similarity:
+            return current_node
+        
+        # Generate successor nodes
+        successors = generate_successors(current_node)
+        
+        # For each successor
+        for successor in successors:
+            # Calculate cost
+            cost = current_node.cost + evaluate_cost(current_node, successor)
+            
+            # Add successor to priority queue
+            successor.cost = cost
+            heapq.heappush(frontier, successor)
+    
+    # If no solution found
+    return None
+
+# Main algorithm
+# Assuming you have initialized user and scholarship objects
+
+
+
+def append_scores(student_responses, scholarships) -> list[tuple[str, float]]:
+    """Given a student's responses and a list of scholarships, return a list of tuples containing the scholarship id and the student's score for that scholarship, sorted by score in descending order.
+
+    Args:
+        student_responses (dict): A dictionary containing the student's responses.
+        scholarships (list): A list of dictionaries, each containing information about a scholarship.
+
+    Returns:
+        list[tuple[str, float]]: A list of tuples containing the scholarship id and the student's score for that scholarship, sorted by score in descending order.
+    """
+
+    scores = []
+
+    # for scholarship in scholarships:
+    #     val = calc_expected_value(scholarship, student_responses)
+    #     if val > 0:
+    #         scores.append((scholarship["id"], val))
+
+    # scores = sorted(scores, key=lambda x: x[1], reverse=True)
+    # # normalize scores
+    # max_score = scores[0][1]
+    # min_score = scores[-1][1]
+    # for i in range(len(scores)):
+    #     scores[i] = (scores[i][0], (scores[i][1] - min_score) / (max_score - min_score))
+    min_similarity = 0.2  # Set the minimum similarity threshold
+    user = DefaultMunch.fromDict(student_responses)
+    for schol in scholarships:
+        initial_node = Node(user, schol, 0)
+        scholarship = DefaultMunch.fromDict(schol)
+        solution = A_star_search(initial_node, min_similarity)
+        if solution:
+            scores.append((scholarship.id, calculate_similarity(user, scholarship)))
+        # score = ScholarshipSVDModel(user, scholarship).predict_likelihood()
+        # scores.append((scholarship.id, score))
+
+    scores = sorted(scores, key=lambda x: x[1], reverse=True)
+
+    return scores
+
+def get_unique_vals(scholarships):
+    pass
+    
 
 def filter_eligibility(scholarship, student_responses):
     schol_types = decide_schol_type(scholarship)

@@ -12,10 +12,7 @@ from http import HTTPStatus
 user_bp = func.Blueprint()
 cosmos_db_connection = "CosmosDBConnectionString"
 cosmos_readonly_key = "CosmosClientReadonlyKey"
-
-CLIENT = CosmosClient.from_connection_string(
-    os.environ[cosmos_db_connection], credential=os.environ[cosmos_readonly_key]
-)
+CLIENT = CosmosClient.from_connection_string(os.environ[cosmos_db_connection])
 DATABASE = CLIENT.get_database_client("CollegeHelperDB")
 CONTAINER = DATABASE.get_container_client("USER")
 
@@ -229,8 +226,10 @@ def update_user(
             items = query_cosmos_db(query, params, CONTAINER)
             # check if items has any elements:
             if items.next():
-                user['password'] = potential_pass
+                temp = user["password"]
+                user["password"] = potential_pass
                 outputDocument.set(func.Document.from_dict(user))
+                user["password"] = temp
                 return func.HttpResponse(
                     json.dumps(user),
                     status_code=HTTPStatus.OK,
@@ -273,7 +272,7 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
         ):  # only one item should be returned, so we can just get the first item
             # get the first item
             if hash(user["password"], item["salt"]) == item["password"]:
-                item['password'] = user['password']
+                item["password"] = user["password"]
                 return func.HttpResponse(
                     json.dumps(item),
                     status_code=HTTPStatus.OK,
@@ -281,9 +280,8 @@ def login(req: func.HttpRequest) -> func.HttpResponse:
                 )
             else:
                 return func.HttpResponse(
-                    {"loginSuccess": False},
+                    "Login failed. Please provide a valid username and password.",
                     status_code=HTTPStatus.UNAUTHORIZED,
-                    mimetype="application/json",
                 )
     else:
         return func.HttpResponse(
