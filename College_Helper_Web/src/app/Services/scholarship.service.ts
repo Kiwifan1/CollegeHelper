@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { LoadingService } from './loading.service';
 import { Scholarship } from '../Objects/Scholarship/Scholarship';
 import { Observable } from 'rxjs';
-import { User } from '../Objects/User/User';
 
 @Injectable({
   providedIn: 'root',
@@ -35,16 +34,5 @@ export class ScholarshipService {
   getNumScholarships(filters: any = {}): Observable<Number> {
     let url = environment.WEB_API_URL + '/get_num_scholarships';
     return this.$http.get<Number>(url, { params: filters });
-  }
-
-  predictScholarships(user: User): Observable<any> {
-    let user_json = JSON.stringify(user);
-    let url = environment.WEB_API_URL + '/predict_scholarships';
-    return this.$http.post(url, user_json);
-  }
-
-  getScholarshipAwards(): Observable<any> {
-    let url = environment.WEB_API_URL + '/get_scholarship_award_amounts';
-    return this.$http.get(url);
   }
 }

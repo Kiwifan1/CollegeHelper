@@ -15,7 +15,6 @@ import { Academics } from 'src/app/Objects/College/Collegeboard/Academics';
 })
 export class ScholarshipItemComponent implements OnInit {
   @Input() scholarship!: Scholarship;
-  @Input() similarityScore!: number | null;
 
   constructor(private dialog: MatDialog, private route: Router) {}
 
@@ -27,17 +26,6 @@ export class ScholarshipItemComponent implements OnInit {
       this.scholarship.isNeedBased ||
       this.scholarship.isMeritBased
     );
-  }
-
-  getAwardAmount(scholarship: Scholarship) {
-    if (scholarship.awardMin === null || scholarship.awardMax === null) {
-      return 'Not Available';
-    }
-    if (scholarship.awardMin === scholarship.awardMax) {
-      return `$${scholarship.awardMin}`;
-    } else {
-      return `$${scholarship.awardMin} - $${scholarship.awardMax}`;
-    }
   }
 
   handleViewDetails() {

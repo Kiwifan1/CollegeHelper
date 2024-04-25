@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { Scholarship } from 'src/app/Objects/Scholarship/Scholarship';
 import { LoadingService } from 'src/app/Services/loading.service';
-import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 @Component({
   selector: 'app-scholarship-detail-page',
@@ -15,8 +13,7 @@ export class ScholarshipDetailPageComponent implements OnInit {
   requirements: string[] = [];
   constructor(
     private route: ActivatedRoute,
-    private loadingService: LoadingService,
-    private snackBar: MatSnackBar
+    private loadingService: LoadingService
   ) {}
 
   ngOnInit(): void {
@@ -25,32 +22,12 @@ export class ScholarshipDetailPageComponent implements OnInit {
 
   getScholarship() {
     this.loadingService.updateLoadingStatus(true);
-    this.route.data.subscribe({
-      next: (data: any) => {
-        data.scholarship.scholarshipName =
-          data.scholarship.scholarshipName.replace('_', '/');
-        this.scholarship = data.scholarship;
-        this.loadingService.updateLoadingStatus(false);
-      },
-      error: (error) => {
-        this.loadingService.updateLoadingStatus(false);
-        this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
-          duration: 5000,
-          data: error,
-        });
-      },
+    this.route.data.subscribe((data: any) => {
+      data.scholarship.scholarshipName =
+        data.scholarship.scholarshipName.replace('_', '/');
+      this.scholarship = data.scholarship;
+      this.loadingService.updateLoadingStatus(false);
     });
-  }
-
-  getAwardAmount(scholarship: Scholarship) {
-    if (scholarship.awardMin === null || scholarship.awardMax === null) {
-      return 'Not Available';
-    }
-    if (scholarship.awardMin === scholarship.awardMax) {
-      return `$${scholarship.awardMin}`;
-    } else {
-      return `$${scholarship.awardMin} - $${scholarship.awardMax}`;
-    }
   }
 
   isWithinDate() {

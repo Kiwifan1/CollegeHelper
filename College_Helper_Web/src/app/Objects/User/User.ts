@@ -15,7 +15,6 @@ export interface User {
   majorPreferences: string[];
   careerPreferences: string[];
   currentCourses: string[];
-  scholarshipScores?: any;
 }
 
 export const defaultUser: User = {
@@ -24,18 +23,16 @@ export const defaultUser: User = {
   email: '',
   password: '',
   salt: '',
-  addresses: [
-    {
-      street: null,
-      city: null,
-      province: null,
-      postCode: null,
-      country: null,
-      website: null,
-      latitude: null,
-      longitude: null,
-    },
-  ],
+  addresses: [{
+    street: null,
+    city: null,
+    province: null,
+    postCode: null,
+    country: null,
+    website: null,
+    latitude: null,
+    longitude: null,
+  }],
   demographics: {
     age: null,
     demographicInfo: {

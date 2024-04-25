@@ -7,13 +7,13 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class MoneyPipe implements PipeTransform {
   transform(value: unknown | number, ...args: unknown[]): unknown {
     if (typeof value == 'string') {
-      value = value.replace(/,/g, '').replace(/\$/g, '');
-
+      value = value.replace(/,/g, '');
       if ((value as string).includes(' - ')) {
         // multiple values
         let values = (value as string).split(' - ');
         let num1 = parseInt(values[0]);
         let num2 = parseInt(values[1]);
+
         if (num1 && num2) {
           return (
             '$' +

@@ -37,23 +37,6 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="search-form-field">
-        <mat-label for="fee">Application Fee?</mat-label>
-        <mat-select
-          #fee
-          formControlName="applicationFee"
-          placeholder="Application Fee?"
-        >
-          <mat-option [value]="val" *ngFor="let val of requirements">
-            {{ val }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-slide-toggle formControlName="similarityMatch"
-        >Use Similarity Match?</mat-slide-toggle
-      >
-
       <mat-slider
         min="{{ min }}"
         max=" {{ max }}"
@@ -63,8 +46,8 @@
         [displayWith]="displayFn"
         discrete
       >
-        <input formControlName="minAmount" matSliderStartThumb />
-        <input formControlName="maxAmount" matSliderEndThumb />
+        <input [value]="minChoice" matSliderStartThumb />
+        <input [value]="maxChoice" matSliderEndThumb />
       </mat-slider>
     </div>
   </form>
