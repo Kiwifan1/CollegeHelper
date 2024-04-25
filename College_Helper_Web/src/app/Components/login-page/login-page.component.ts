@@ -17,8 +17,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AuthService } from 'src/app/Services/auth.service';
-import { LoadingService } from 'src/app/Services/loading.service';
-import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
 
 // standin class for error matching
 export class ErrorStateMatcher implements ErrorStateMatcher {
@@ -54,8 +52,7 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private loadingService: LoadingService
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -65,24 +62,24 @@ export class LoginPageComponent implements OnInit {
   }
 
   submit() {
-    this.loadingService.updateLoadingStatus(true);
     this.authService
       .login(this.form.get('username')?.value, this.form.get('password')?.value)
-      .subscribe({
-        next: (res: any) => {
-          this.loadingService.updateLoadingStatus(false);
+      .subscribe((res: any) => {
+        if (res) {
           this.authService.setUser(res);
           this.router.navigate(['/home']);
-        },
-        error: (err: any) => {
-          this.loadingService.updateLoadingStatus(false);
-          this.snackBar.openFromComponent(EndpointErrorSnackbarComponent, {
+        } else {
+          // display error message
+          this.snackBar.open('Incorrect Password or Username', 'Close', {
             duration: 5000,
-            data: { error: err.error},
+            horizontalPosition: this.horizontalPos,
+            verticalPosition: this.verticalPos,
+            politeness: 'assertive',
           });
-        },
+
+          this.form.reset();
+        }
       });
-    this.form.reset();
   }
 
   emptyUsername() {

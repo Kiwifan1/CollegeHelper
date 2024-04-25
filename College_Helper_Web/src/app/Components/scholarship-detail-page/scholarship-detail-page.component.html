@@ -9,7 +9,7 @@
         </mat-card-title>
         <mat-card-subtitle>
           <h4>
-            <strong> Amount: {{ getAwardAmount(scholarship) | money }}</strong>
+            <strong> Amount: {{ scholarship.amountDisplay | money }} </strong>
             | Open: {{ scholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
             {{ scholarship.scholarshipDeadline | date : "MM/dd/yyyy" }}
           </h4>
