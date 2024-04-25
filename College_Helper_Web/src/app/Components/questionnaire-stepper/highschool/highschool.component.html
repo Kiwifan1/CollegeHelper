@@ -1,36 +1,46 @@
 <form [formGroup]="highschoolForm">
-  <!-- Select State required -->
   <div class="form-group">
     <mat-form-field>
       <mat-label for="state">State</mat-label>
-      <mat-select formControlName="state">
-        <mat-option
-          *ngFor="let s of stateEnums"
-          [value]="s"
-          (onSelectionChange)="getHighschools(s)"
-          >{{ s }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div class="form-group" *ngIf="highschools">
-    <mat-form-field>
       <input
         matInput
         type="text"
-        placeholder="High School"
-        [formControl]="highschoolSearchForm"
-        [matAutocomplete]="autoHighschool"
+        placeholder="State"
+        [formControl]="stateSearchForm"
+        required
+        [matAutocomplete]="autoState"
       />
-      <mat-autocomplete #autoHighschool="matAutocomplete">
+      <mat-autocomplete #autoState="matAutocomplete">
         <mat-option
-          *ngFor="let h of filteredHighschools | async"
-          [value]="h"
-          (click)="setHighschool(h)"
-          >{{ h }}</mat-option
+          *ngFor="let state of filteredStates | async"
+          [value]="state"
+          (click)="setState(state)"
+          >{{ state }}</mat-option
         >
       </mat-autocomplete>
     </mat-form-field>
   </div>
+
+  <mat-form-field *ngIf="highschools">
+    <input
+      matInput
+      type="text"
+      placeholder="Search with Name or CEEB Code"
+      [formControl]="highschoolSearchForm"
+      [matAutocomplete]="autoHighschool"
+    />
+    <mat-autocomplete #autoHighschool="matAutocomplete">
+      <mat-option
+        *ngFor="let h of filteredHighschools | async"
+        [value]="h.name"
+        (click)="setHighschool(h)"
+        >{{ h.name }} ({{ h.code }})</mat-option
+      >
+    </mat-autocomplete>
+  </mat-form-field>
 </form>
+<div class="stepper-buttons">
+  <button mat-button matStepperPrevious>Back</button>
+  <div class="fill-remaining-space"></div>
+  <button mat-button matStepperNext>Next</button>
+</div>
