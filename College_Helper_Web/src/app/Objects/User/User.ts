@@ -1,6 +1,7 @@
 import { Address } from '../Address';
 import { UserDemographics } from './UserDemographics';
 import { Scores } from './Scores';
+import { Highschool } from '../Highschool/Highschool';
 
 export interface User {
   id: string;
@@ -9,6 +10,7 @@ export interface User {
   password: string;
   salt: string;
   addresses: Address[];
+  highschool: Highschool;
   demographics: UserDemographics;
   scores: Scores;
   collegePreferences: string[];
@@ -23,6 +25,11 @@ export const defaultUser: User = {
   username: '',
   email: '',
   password: '',
+  highschool: {
+    code: '',
+    name: '',
+    state: '',
+  },
   salt: '',
   addresses: [
     {

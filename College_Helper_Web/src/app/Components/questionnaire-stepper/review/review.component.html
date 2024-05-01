@@ -66,6 +66,28 @@
     </div>
   </div>
 
+  <div class="info" *ngIf="userHighSchoolForm">
+    <div class="info-item">
+      <ul>
+        <p class="label">High School Info:</p>
+        <table>
+          <tr>
+            <td>State:</td>
+            <td>{{userHighSchoolForm.value.highschool?.state}}</td>
+          </tr>
+          <tr>
+            <td>Name:</td>
+            <td>{{ userHighSchoolForm.value.highschool?.name }}</td>
+          </tr>
+          <tr>
+            <td>CEEB Code:</td>
+            <td>{{ userHighSchoolForm.value.highschool?.code }}</td>
+          </tr>
+        </table>
+      </ul>
+    </div>
+  </div>
+
   <div class="info" *ngIf="userScoreForm">
     <div class="info-item">
       <ul>

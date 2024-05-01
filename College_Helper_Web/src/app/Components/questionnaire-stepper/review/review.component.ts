@@ -15,6 +15,7 @@ export class ReviewComponent implements OnInit {
   userMajorsForm!: FormGroup;
   userInterestsForm!: FormGroup;
   userCollegeForm!: FormGroup;
+  userHighSchoolForm!: FormGroup;
 
   @Output() submitQuestionnaire: EventEmitter<any> = new EventEmitter();
 
@@ -26,6 +27,7 @@ export class ReviewComponent implements OnInit {
     this.userMajorsForm = this.userForm.get('userMajors') as FormGroup;
     this.userInterestsForm = this.userForm.get('userInterests') as FormGroup;
     this.userCollegeForm = this.userForm.get('userCollege') as FormGroup;
+    this.userHighSchoolForm = this.userForm.get('highSchool') as FormGroup;
   }
 
   submitForms() {

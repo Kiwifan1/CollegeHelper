@@ -70,17 +70,19 @@ export class QuestionnaireStepperComponent implements OnInit {
     collegeGreekLife: new FormControl('', [Validators.required]),
   });
 
+  highschoolForm: FormGroup = new FormGroup({
+    highschool: new FormControl('', [Validators.required]),
+  });
+
   userForm: FormGroup = new FormGroup({
     userInfo: this.userInfoForm,
     userScores: this.userScoreForm,
+    highSchool: this.highschoolForm,
     userMajors: this.userMajorsForm,
     userInterests: this.userInterestsForm,
     userCollege: this.userCollegeForm,
   });
 
-  highschoolForm: FormGroup = new FormGroup({
-    highschool: new FormControl('', [Validators.required]),
-  });
 
   private user!: User;
 

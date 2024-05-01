@@ -97,5 +97,6 @@ export class HighschoolComponent implements OnInit {
     this.highschoolForm.patchValue({
       highschool: highschool,
     });
+    console.log(this.highschoolForm.value)
   }
 }
