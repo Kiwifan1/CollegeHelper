@@ -2,7 +2,7 @@
   <div class="page-content">
     <mat-card class="card">
       <mat-card-content>
-        <mat-stepper>
+        <mat-stepper [linear]="true">
           <mat-step [stepControl]="userInfoForm">
             <ng-template matStepLabel>General Info</ng-template>
             <app-general-info [userInfoForm]="userInfoForm"></app-general-info>
@@ -11,7 +11,7 @@
             <ng-template matStepLabel>High School Info</ng-template>
             <app-highschool
               [highschoolForm]="highschoolForm"
-              [state]="userInfoForm.get('state')?.value"
+              [state]="userInfoForm.get('province')?.value"
             ></app-highschool>
           </mat-step>
           <mat-step [stepControl]="userScoreForm">
