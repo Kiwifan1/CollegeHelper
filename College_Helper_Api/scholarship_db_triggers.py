@@ -31,8 +31,7 @@ def handleRequirements(string_input):
         return None
 
 
-def build_query(req, query, params, user=None):
-    similarity_match = req.params.get("similarityMatch") == "true"
+def build_query(req, query, params, user=None, similarity_match=True):
     essay_required = req.params.get("essayRequired") or None
     merit_based = req.params.get("meritBased") or None
     application_fee = req.params.get("applicationFee") or None
@@ -176,7 +175,6 @@ def get_scholarships(
     
     if not user_score:
         similarity_match = False
-        req.params["similarityMatch"] = "false"
         user['scholarshipScores'] = []
     else:
         user['scholarshipScores'] = user_score['scores']
@@ -185,7 +183,7 @@ def get_scholarships(
     query = "SELECT * FROM c"
     params = []
 
-    query, params = build_query(req, query, params, user)
+    query, params = build_query(req, query, params, user, similarity_match=similarity_match)
     if not similarity_match:
         temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
         num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
