@@ -46,12 +46,11 @@ def build_query(req, query, params, user=None, similarity_match=True):
     max_amount = req.params.get("maxAmount") or None
 
     # adding the predictive list ordering and filtering
-    if similarity_match is not None:
-        # start query with creating a list of scholarships from the user
-        # query += " JOIN s IN c.userScores"
-        # query += " WHERE s.userId = @user_id"
-        # params.append({"name": "@user_id", "value": user["id"]})
-        query += " WHERE ARRAY_CONTAINS(@schol_ids, c.id, true)"
+    if similarity_match is not None and user and user["scholarshipScores"] != []:
+        if len(params) > 0:
+            query += " AND ARRAY_CONTAINS(@schol_ids, c.id, true)"
+        else:
+            query += " WHERE ARRAY_CONTAINS(@schol_ids, c.id, true)"
         params.append(
             {
                 "name": "@schol_ids",
@@ -96,16 +95,11 @@ def build_query(req, query, params, user=None, similarity_match=True):
         )
 
     if application_fee is not None:
+        operator = "=" if not application_fee else "!="
         if len(params) > 0:
-            query += " AND c.applicationFee = @applicationFee"
+            query += f" AND c.applicationFee {operator} null"
         else:
-            query += " WHERE c.applicationFee = @applicationFee"
-        params.append(
-            {
-                "name": "@applicationFee",
-                "value": application_fee,
-            }
-        )
+            query += f" WHERE c.applicationFee {operator} null"
 
     if min_amount is not None:
         if len(params) > 0:
@@ -121,8 +115,6 @@ def build_query(req, query, params, user=None, similarity_match=True):
             query += " WHERE c.awardMax <= @maxAmount"
         params.append({"name": "@maxAmount", "value": int(max_amount)})
 
-    # if sort_by_match:
-    #     query += " ORDER BY c.userScores[0].score DESC"
     return query, params
 
 
@@ -172,18 +164,19 @@ def get_scholarships(
 
     user = next(iter([u.data for u in user if u.data["id"] == id]), None)
     user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
-    
+
     if not user_score:
         similarity_match = False
-        user['scholarshipScores'] = []
+        user["scholarshipScores"] = []
     else:
-        user['scholarshipScores'] = user_score['scores']
-    
-    
+        user["scholarshipScores"] = user_score["scores"]
+
     query = "SELECT * FROM c"
     params = []
 
-    query, params = build_query(req, query, params, user, similarity_match=similarity_match)
+    query, params = build_query(
+        req, query, params, user, similarity_match=similarity_match
+    )
     if not similarity_match:
         temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
         num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
@@ -266,14 +259,62 @@ def get_num_scholarships(
 
 
 @schol_bp.route(route="get_scholarship_award_amounts", methods=["GET"])
-def get_scholarship_award_amounts(req: func.HttpRequest) -> func.HttpResponse:
-    min_query = "SELECT VALUE MIN(c.awardMin) FROM c WHERE c.awardMin != null"
-    max_query = "SELECT VALUE MAX(c.awardMax) FROM c WHERE c.awardMax != null"
-    params = []
+@schol_bp.cosmos_db_input(
+    arg_name="scores",
+    database_name="CollegeHelperDB",
+    container_name="SCORE",
+    connection=cosmos_db_connection,
+)
+@schol_bp.cosmos_db_input(
+    arg_name="user",
+    database_name="CollegeHelperDB",
+    container_name="USER",
+    connection=cosmos_db_connection,
+)
+def get_scholarship_award_amounts(
+    req: func.HttpRequest, scores: func.DocumentList, user: func.DocumentList
+) -> func.HttpResponse:
+
+    id = req.params.get("id") or None
+    similarity_match = req.params.get("similarityMatch") == "true"
+    user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+    user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
+
+    if not user_score:
+        similarity_match = False
+        user["scholarshipScores"] = []
+    else:
+        user["scholarshipScores"] = user_score["scores"]
+
+    min_query = "SELECT VALUE MIN(c.awardMin) FROM c"
+    max_query = "SELECT VALUE MAX(c.awardMax) FROM c"
+    min_params = []
+    max_params = []
+
+    min_query, min_params = build_query(
+        req, min_query, min_params, similarity_match=similarity_match
+    )
+    max_query, max_params = build_query(
+        req, max_query, max_params, similarity_match=similarity_match
+    )
+    
+    if len(min_params) > 0:
+        min_query += " AND c.awardMin != null"
+    else:
+        min_query += " WHERE c.awardMin != null"
+        
+    if len(max_params) > 0:
+        max_query += " AND c.awardMax != null"
+    else:
+        max_query += " WHERE c.awardMax != null"
 
     try:
-        min_amount = list(query_cosmos_db(min_query, params, SCHOL_CONTAINER, True))[0]
-        max_amount = list(query_cosmos_db(max_query, params, SCHOL_CONTAINER, True))[0]
+        min_amount = list(
+            query_cosmos_db(min_query, min_params, SCHOL_CONTAINER, True)
+        )[0]
+        max_amount = list(
+            query_cosmos_db(max_query, max_params, SCHOL_CONTAINER, True)
+        )[0]
         return func.HttpResponse(
             json.dumps({"min": min_amount, "max": max_amount}),
             status_code=200,
