@@ -41,7 +41,7 @@ def calc_merit_score(scholarship, student_responses):
         for val in scholarship["eligibilityCriteria"]["academics"]:
 
             if val["academicEligibility"] == "Minimum GPA":
-                if student_responses["scores"]["GPA"] is not None:
+                if type(student_responses["scores"]["GPA"]) == float or type(student_responses["scores"]["GPA"]) == int:
                     if (
                         student_responses["scores"]["GPA"]
                         >= val["academicEligibilityValue"]
@@ -59,7 +59,7 @@ def calc_merit_score(scholarship, student_responses):
                         i += 1
 
             if val["academicEligibility"] == "Minimum Overall SAT":
-                if student_responses["scores"]["SAT"] is not None:
+                if type(student_responses["scores"]["SAT"]) == int:
                     if (
                         student_responses["scores"]["SAT"]
                         >= val["academicEligibilityValue"]
@@ -77,7 +77,7 @@ def calc_merit_score(scholarship, student_responses):
                         i += 1
 
             if val["academicEligibility"] == "Minimum ACT":
-                if student_responses["scores"]["ACT"] is not None:
+                if type(student_responses["scores"]["ACT"]) == int:
                     if (
                         student_responses["scores"]["ACT"]
                         >= val["academicEligibilityValue"]
@@ -95,8 +95,8 @@ def calc_merit_score(scholarship, student_responses):
                         i += 1
 
     if (
-        student_responses["scores"]["ACT"] is not None
-        and student_responses["scores"]["SAT"] is not None
+        type(student_responses["scores"]["ACT"]) == int
+        and type(student_responses["scores"]["SAT"]) == int
     ):
         merit_score += (SAT_score + ACT_score) / 2
         i -= 1
