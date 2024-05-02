@@ -298,7 +298,6 @@ def get_scholarship_award_amounts(
         req, max_query, max_params, similarity_match=similarity_match
     )
 
-
     try:
         min_amount = list(
             query_cosmos_db(min_query, min_params, SCHOL_CONTAINER, True)
