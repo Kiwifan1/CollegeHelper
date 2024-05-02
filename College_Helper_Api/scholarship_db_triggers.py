@@ -102,7 +102,7 @@ def build_query(req, query, params, user=None, similarity_match=True):
             query += f" WHERE c.applicationFee {operator} null"
 
     if min_amount is not None:
-        
+
         if len(params) > 0:
             query += " AND c.awardMax >= @minAmount"
         else:
@@ -154,77 +154,89 @@ def filter_scholarships(scholarships, req):
 def get_scholarships(
     req: func.HttpRequest, user: func.DocumentList, scores: func.DocumentList
 ) -> func.HttpResponse:
-    # params
-    id = req.params.get("id")
-    offset = req.params.get("offset")
-    limit = req.params.get("limit")
-    similarity_match = req.params.get("similarityMatch") == "true"
+    try:
+        # params
+        id = req.params.get("id")
+        offset = req.params.get("offset")
+        limit = req.params.get("limit")
+        similarity_match = req.params.get("similarityMatch") == "true"
 
-    if not offset or not limit:
-        return func.HttpResponse("Error: Missing offset/limit", status_code=400)
+        if not offset or not limit:
+            return func.HttpResponse("Error: Missing offset/limit", status_code=400)
 
-    user = next(iter([u.data for u in user if u.data["id"] == id]), None)
-    user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
+        user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+        user_score = next(
+            iter([u.data for u in scores if u.data["userId"] == id]), None
+        )
 
-    if not user_score:
-        similarity_match = False
-        user["scholarshipScores"] = []
-    else:
-        user["scholarshipScores"] = user_score["scores"]
+        if not user_score:
+            similarity_match = False
+            user["scholarshipScores"] = []
+        else:
+            user["scholarshipScores"] = user_score["scores"]
 
-    query = "SELECT * FROM c"
-    params = []
+        query = "SELECT * FROM c"
+        params = []
 
-    query, params = build_query(
-        req, query, params, user, similarity_match=similarity_match
-    )
-    if not similarity_match:
-        temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
-        num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
-            0
-        ]
+        query, params = build_query(
+            req, query, params, user, similarity_match=similarity_match
+        )
+        if not similarity_match:
+            temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
+            num_returned = list(
+                query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True)
+            )[0]
 
-        query += " ORDER BY c.awardMax DESC"
-        query += " OFFSET @offset LIMIT @limit"
-        params.append({"name": "@offset", "value": int(offset)})
-        params.append({"name": "@limit", "value": int(limit)})
+            query += " ORDER BY c.awardMax DESC"
+            query += " OFFSET @offset LIMIT @limit"
+            params.append({"name": "@offset", "value": int(offset)})
+            params.append({"name": "@limit", "value": int(limit)})
 
-    scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
-    # scholarships = [s["c"] for s in scholarships]
+        scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
+        # scholarships = [s["c"] for s in scholarships]
 
-    # do sorting, offset and limit backend side if similarity match
+        # do sorting, offset and limit backend side if similarity match
 
-    if similarity_match:
-        scores = {score["scholId"]: score["score"] for score in user_score["scores"]}
+        if similarity_match:
+            scores = {
+                score["scholId"]: score["score"] for score in user_score["scores"]
+            }
 
-        for scholarship in scholarships:
-            scholarship["score"] = scores[scholarship["id"]]
-        scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
-        num_returned = len(scholarships)
-        scholarships = scholarships[int(offset) : int(offset) + int(limit)]
-    return func.HttpResponse(
-        json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
-        status_code=200,
-        mimetype="application/json",
-    )
+            for scholarship in scholarships:
+                scholarship["score"] = scores[scholarship["id"]]
+            scholarships = sorted(scholarships, key=lambda x: x["score"], reverse=True)
+            num_returned = len(scholarships)
+            scholarships = scholarships[int(offset) : int(offset) + int(limit)]
+        return func.HttpResponse(
+            json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
+            status_code=200,
+            mimetype="application/json",
+        )
+    except Exception as e:
+        return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
 
 @schol_bp.route(route="get_scholarship", methods=["GET"])
 def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
-    scholarship_id = req.params.get("id")
-    if not scholarship_id:
-        return func.HttpResponse("Error: Missing scholarship id", status_code=400)
-
-    query = "SELECT * FROM c WHERE c.id = @id"
-    params = [{"name": "@id", "value": scholarship_id}]
-
     try:
-        scholarship = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
-        if not scholarship:
-            return func.HttpResponse("Error: Scholarship not found", status_code=404)
-        return func.HttpResponse(
-            json.dumps(scholarship[0]), status_code=200, mimetype="application/json"
-        )
+        scholarship_id = req.params.get("id")
+        if not scholarship_id:
+            return func.HttpResponse("Error: Missing scholarship id", status_code=400)
+
+        query = "SELECT * FROM c WHERE c.id = @id"
+        params = [{"name": "@id", "value": scholarship_id}]
+
+        try:
+            scholarship = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
+            if not scholarship:
+                return func.HttpResponse(
+                    "Error: Scholarship not found", status_code=404
+                )
+            return func.HttpResponse(
+                json.dumps(scholarship[0]), status_code=200, mimetype="application/json"
+            )
+        except Exception as e:
+            return func.HttpResponse(f"Error: {str(e)}", status_code=500)
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
@@ -239,22 +251,27 @@ def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
 def get_num_scholarships(
     req: func.HttpRequest, user: func.DocumentList
 ) -> func.HttpResponse:
-    id = req.params.get("id")
-    user = next(iter([u.data for u in user if u.data["id"] == id]), None)
-
-    query = "SELECT VALUE COUNT(1) FROM c"
-    params = []
-
-    query, params = build_query(req, query, params, user)
-
     try:
-        num_scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
-        # get length of list
-        return func.HttpResponse(
-            json.dumps({"length": num_scholarships[0]}),
-            status_code=200,
-            mimetype="application/json",
-        )
+        id = req.params.get("id")
+        user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+
+        query = "SELECT VALUE COUNT(1) FROM c"
+        params = []
+
+        query, params = build_query(req, query, params, user)
+
+        try:
+            num_scholarships = list(
+                query_cosmos_db(query, params, SCHOL_CONTAINER, True)
+            )
+            # get length of list
+            return func.HttpResponse(
+                json.dumps({"length": num_scholarships[0]}),
+                status_code=200,
+                mimetype="application/json",
+            )
+        except Exception as e:
+            return func.HttpResponse(f"Error: {str(e)}", status_code=500)
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
@@ -275,51 +292,56 @@ def get_num_scholarships(
 def get_scholarship_award_amounts(
     req: func.HttpRequest, scores: func.DocumentList, user: func.DocumentList
 ) -> func.HttpResponse:
-
-    id = req.params.get("id") or None
-    similarity_match = req.params.get("similarityMatch") == "true"
-    user = next(iter([u.data for u in user if u.data["id"] == id]), None)
-    user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
-
-    if not user_score:
-        similarity_match = False
-        user["scholarshipScores"] = []
-    else:
-        user["scholarshipScores"] = user_score["scores"]
-
-    min_query = "SELECT VALUE MIN(c.awardMin) FROM c WHERE c.awardMin != null AND"
-    max_query = "SELECT VALUE MAX(c.awardMax) FROM c WHERE c.awardMax != null AND"
-    min_params = []
-    max_params = []
-
-    min_query, min_params = build_query(
-        req, min_query, min_params, user, similarity_match=similarity_match
-    )
-    max_query, max_params = build_query(
-        req, max_query, max_params, user, similarity_match=similarity_match
-    )
-    
-    min_query = min_query.replace("AND WHERE", "AND")
-    max_query = max_query.replace("AND WHERE", "AND")
-    
-    #if it ends with AND, remove it
-    if min_query.endswith("AND"):
-        min_query = min_query[:-3]
-    if max_query.endswith("AND"):
-        max_query = max_query[:-3]
-
     try:
-        min_amount = list(
-            query_cosmos_db(min_query, min_params, SCHOL_CONTAINER, True)
-        )[0]
-        max_amount = list(
-            query_cosmos_db(max_query, max_params, SCHOL_CONTAINER, True)
-        )[0]
-        return func.HttpResponse(
-            json.dumps({"min": min_amount, "max": max_amount}),
-            status_code=200,
-            mimetype="application/json",
+
+        id = req.params.get("id") or None
+        similarity_match = req.params.get("similarityMatch") == "true"
+        user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+        user_score = next(
+            iter([u.data for u in scores if u.data["userId"] == id]), None
         )
+
+        if not user_score:
+            similarity_match = False
+            user["scholarshipScores"] = []
+        else:
+            user["scholarshipScores"] = user_score["scores"]
+
+        min_query = "SELECT VALUE MIN(c.awardMin) FROM c WHERE c.awardMin != null AND"
+        max_query = "SELECT VALUE MAX(c.awardMax) FROM c WHERE c.awardMax != null AND"
+        min_params = []
+        max_params = []
+
+        min_query, min_params = build_query(
+            req, min_query, min_params, user, similarity_match=similarity_match
+        )
+        max_query, max_params = build_query(
+            req, max_query, max_params, user, similarity_match=similarity_match
+        )
+
+        min_query = min_query.replace("AND WHERE", "AND")
+        max_query = max_query.replace("AND WHERE", "AND")
+
+        # if it ends with AND, remove it
+        if min_query.endswith("AND"):
+            min_query = min_query[:-3]
+        if max_query.endswith("AND"):
+            max_query = max_query[:-3]
+
+        try:
+            min_amount = list(
+                query_cosmos_db(min_query, min_params, SCHOL_CONTAINER, True)
+            )[0]
+            max_amount = list(
+                query_cosmos_db(max_query, max_params, SCHOL_CONTAINER, True)
+            )[0]
+            return func.HttpResponse(
+                json.dumps({"min": min_amount, "max": max_amount}),
+                status_code=200,
+                mimetype="application/json",
+            )
+        except Exception as e:
+            return func.HttpResponse(f"Error: {str(e)}", status_code=500)
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
 
@@ -334,37 +356,40 @@ def predict_scholarships(
     req: func.HttpRequest,
     msg: func.Out[func.QueueMessage],
 ) -> func.HttpResponse:
-    user = json.loads(req.get_body().decode("utf-8"))
-    if not user:
-        return func.HttpResponse("Error: Missing user data", status_code=400)
-    if not "id" in user:
-        return func.HttpResponse("Error: Missing user id", status_code=400)
-    if not "password" in user or not "salt" in user:
-        return func.HttpResponse("Error: Missing password/salt", status_code=400)
-
-    potential_pass = hash(user["password"], user["salt"])
-
-    # check if user exists
-    query = "SELECT * FROM c WHERE c.id = @id AND c.password = @password"
-    params = [
-        {"name": "@id", "value": user["id"]},
-        {"name": "@password", "value": potential_pass},
-    ]
-
     try:
-        user = list(query_cosmos_db(query, params, USER_CONTAINER, True))
+        user = json.loads(req.get_body().decode("utf-8"))
         if not user:
-            return func.HttpResponse("Error: User not found", status_code=404)
+            return func.HttpResponse("Error: Missing user data", status_code=400)
+        if not "id" in user:
+            return func.HttpResponse("Error: Missing user id", status_code=400)
+        if not "password" in user or not "salt" in user:
+            return func.HttpResponse("Error: Missing password/salt", status_code=400)
+
+        potential_pass = hash(user["password"], user["salt"])
+
+        # check if user exists
+        query = "SELECT * FROM c WHERE c.id = @id AND c.password = @password"
+        params = [
+            {"name": "@id", "value": user["id"]},
+            {"name": "@password", "value": potential_pass},
+        ]
+
+        try:
+            user = list(query_cosmos_db(query, params, USER_CONTAINER, True))
+            if not user:
+                return func.HttpResponse("Error: User not found", status_code=404)
+        except Exception as e:
+            return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+        if user[0].get("scholarshipScores"):
+            user[0].pop("scholarshipScores")
+
+        msg.set(json.dumps(user[0]))
+        return func.HttpResponse(
+            json.dumps({"success": True}), status_code=200, mimetype="application/json"
+        )
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
-
-    if user[0].get("scholarshipScores"):
-        user[0].pop("scholarshipScores")
-
-    msg.set(json.dumps(user[0]))
-    return func.HttpResponse(
-        json.dumps({"success": True}), status_code=200, mimetype="application/json"
-    )
 
 
 @schol_bp.queue_trigger(
@@ -382,24 +407,29 @@ def process_prediction_request(
     msg: func.QueueMessage,
     scholarships: func.DocumentList,
 ) -> None:
-    if not msg or not msg.get_body() or not scholarships:
-        return
-    user = json.loads(msg.get_body().decode("utf-8"))
+    try:
+        if not msg or not msg.get_body() or not scholarships:
+            return
+        user = json.loads(msg.get_body().decode("utf-8"))
 
-    scholarships = [s.data for s in scholarships]
-    user_preds = append_scores(user, scholarships)
-    user_preds = {pred[0]: pred[1] for pred in user_preds}
+        scholarships = [s.data for s in scholarships]
+        user_preds = append_scores(user, scholarships)
+        user_preds = {pred[0]: pred[1] for pred in user_preds}
 
-    # convert to list for stored procedure testing
-    user_preds = [{"scholId": key, "score": value} for key, value in user_preds.items()]
-    scores = {"userId": user["id"], "scores": user_preds}
+        # convert to list for stored procedure testing
+        user_preds = [
+            {"scholId": key, "score": value} for key, value in user_preds.items()
+        ]
+        scores = {"userId": user["id"], "scores": user_preds}
 
-    res = SCORE_CONTAINER.scripts.execute_stored_procedure(
-        "checkIfUserExists", partition_key=user["id"], params=[user["id"]]
-    )
+        res = SCORE_CONTAINER.scripts.execute_stored_procedure(
+            "checkIfUserExists", partition_key=user["id"], params=[user["id"]]
+        )
 
-    if res and isinstance(res, dict):
-        res["scores"] = user_preds
-        SCORE_CONTAINER.upsert_item(res)
-    else:
-        SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
+        if res and isinstance(res, dict):
+            res["scores"] = user_preds
+            SCORE_CONTAINER.upsert_item(res)
+        else:
+            SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
+    except Exception as e:
+        print(f"Error: {str(e)}")
