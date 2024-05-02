@@ -37,14 +37,10 @@ def get_highschool(req: func.HttpRequest) -> func.HttpResponse:
 @highschool_bp.route("get_highschools", methods=["GET"])
 def get_highschools(req: func.HttpRequest) -> func.HttpResponse:
     state = req.params.get("state")
-    offset = req.params.get("offset")
-    limit = req.params.get("limit")
 
-    query = "SELECT * FROM c WHERE c.state = @state OFFSET @offset LIMIT @limit"
+    query = "SELECT * FROM c WHERE c.state = @state"
     params = [
         {"name": "@state", "value": state},
-        {"name": "@offset", "value": int(offset)},
-        {"name": "@limit", "value": int(limit)},
     ]
 
     try:

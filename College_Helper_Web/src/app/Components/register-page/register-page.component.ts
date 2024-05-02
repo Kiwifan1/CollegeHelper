@@ -129,7 +129,6 @@ export class RegisterPageComponent implements OnInit {
           if (res !== null && res !== undefined) {
             this.user.id = res.id;
             this.user.salt = res.salt;
-            this.loadingService.updateLoadingStatus(false);
             this.register();
           } else {
             this.matSnackBar.open('User could not be created', 'Close', {
@@ -139,6 +138,7 @@ export class RegisterPageComponent implements OnInit {
               politeness: 'assertive',
             });
           }
+          this.loadingService.updateLoadingStatus(false);
         },
         error: (err: HttpErrorResponse) => {
           // make a snackbar depending on the error
@@ -159,6 +159,7 @@ export class RegisterPageComponent implements OnInit {
               politeness: 'assertive',
             });
           }
+          this.loadingService.updateLoadingStatus(false);
         },
       });
   }

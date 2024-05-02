@@ -31,23 +31,22 @@ def handleRequirements(string_input):
         return None
 
 
-def build_query(req, query, params, user=None):
-    similarity_match = req.params.get("similarityMatch") == "true"
+def build_query(req, query, params, user=None, similarity_match=True):
     essay_required = req.params.get("essayRequired") or None
     merit_based = req.params.get("meritBased") or None
     application_fee = req.params.get("applicationFee") or None
+    need_based = req.params.get("needBased") or None
 
     essay_required = handleRequirements(essay_required)
     merit_based = handleRequirements(merit_based)
-    essay_required = handleRequirements(essay_required)
     application_fee = handleRequirements(application_fee)
+    need_based = handleRequirements(need_based)
 
-    need_based = req.params.get("needBased") or None
     min_amount = req.params.get("minAmount") or None
     max_amount = req.params.get("maxAmount") or None
 
     # adding the predictive list ordering and filtering
-    if similarity_match:
+    if similarity_match is not None:
         # start query with creating a list of scholarships from the user
         # query += " JOIN s IN c.userScores"
         # query += " WHERE s.userId = @user_id"
@@ -60,7 +59,7 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if essay_required:
+    if essay_required is not None:
         if len(params) > 0:
             query += " AND c.isEssayRequired = @essayRequired"
         else:
@@ -72,7 +71,7 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if merit_based:
+    if merit_based is not None:
         if len(params) > 0:
             query += " AND c.isMeritBased = @meritRequired"
         else:
@@ -84,7 +83,7 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if need_based:
+    if need_based is not None:
         if len(params) > 0:
             query += " AND c.isNeedBased = @needBased"
         else:
@@ -96,7 +95,7 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if application_fee:
+    if application_fee is not None:
         if len(params) > 0:
             query += " AND c.applicationFee = @applicationFee"
         else:
@@ -108,14 +107,14 @@ def build_query(req, query, params, user=None):
             }
         )
 
-    if min_amount:
+    if min_amount is not None:
         if len(params) > 0:
             query += " AND c.awardMax >= @minAmount"
         else:
             query += " WHERE c.awardMax >= @minAmount"
         params.append({"name": "@minAmount", "value": int(min_amount)})
 
-    if max_amount:
+    if max_amount is not None:
         if len(params) > 0:
             query += " AND c.awardMax <= @maxAmount"
         else:
@@ -173,12 +172,18 @@ def get_scholarships(
 
     user = next(iter([u.data for u in user if u.data["id"] == id]), None)
     user_score = next(iter([u.data for u in scores if u.data["userId"] == id]), None)
-    user["scholarshipScores"] = user_score["scores"]
-
+    
+    if not user_score:
+        similarity_match = False
+        user['scholarshipScores'] = []
+    else:
+        user['scholarshipScores'] = user_score['scores']
+    
+    
     query = "SELECT * FROM c"
     params = []
 
-    query, params = build_query(req, query, params, user)
+    query, params = build_query(req, query, params, user, similarity_match=similarity_match)
     if not similarity_match:
         temp_query = "SELECT VALUE COUNT(1) FROM c" + query.split("FROM c")[1]
         num_returned = list(query_cosmos_db(temp_query, params, SCHOL_CONTAINER, True))[
@@ -352,8 +357,8 @@ def process_prediction_request(
         "checkIfUserExists", partition_key=user["id"], params=[user["id"]]
     )
 
-    if res:
+    if res and isinstance(res, dict):
         res["scores"] = user_preds
         SCORE_CONTAINER.upsert_item(res)
     else:
-        SCORE_CONTAINER.create_item(scores)
+        SCORE_CONTAINER.create_item(scores, enable_automatic_id_generation=True)
