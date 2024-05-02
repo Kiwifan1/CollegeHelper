@@ -45,17 +45,15 @@ export class ScholarshipService {
 
   getScholarshipAwardAmounts(filters: any = {}): Observable<any> {
     // get rid of minAmount and maxAmount if present only for the purpose of this call
-    const min = filters.minAmount;
-    const max = filters.maxAmount;
-    delete filters.minAmount;
-    delete filters.maxAmount;
+    let params = {
+      ...filters,
+    };
 
+    delete params.minAmount;
+    delete params.maxAmount;
     let url = environment.WEB_API_URL + '/get_scholarship_award_amounts';
-    let res = this.$http.get(url, { params: filters });
+    let res = this.$http.get(url, { params: params });
 
-    // add min and max back to filters
-    filters.minAmount = min;
-    filters.maxAmount = max;
     return res;
   }
 }

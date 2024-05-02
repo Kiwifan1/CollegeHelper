@@ -46,7 +46,7 @@ def build_query(req, query, params, user=None, similarity_match=True):
     max_amount = req.params.get("maxAmount") or None
 
     # adding the predictive list ordering and filtering
-    if similarity_match is not None and user and user["scholarshipScores"] != []:
+    if similarity_match and user is not None and user["scholarshipScores"] != []:
         if len(params) > 0:
             query += " AND ARRAY_CONTAINS(@schol_ids, c.id, true)"
         else:
@@ -102,18 +102,19 @@ def build_query(req, query, params, user=None, similarity_match=True):
             query += f" WHERE c.applicationFee {operator} null"
 
     if min_amount is not None:
+        
         if len(params) > 0:
             query += " AND c.awardMax >= @minAmount"
         else:
             query += " WHERE c.awardMax >= @minAmount"
-        params.append({"name": "@minAmount", "value": int(min_amount)})
+        params.append({"name": "@minAmount", "value": int(float(min_amount))})
 
     if max_amount is not None:
         if len(params) > 0:
             query += " AND c.awardMax <= @maxAmount"
         else:
             query += " WHERE c.awardMax <= @maxAmount"
-        params.append({"name": "@maxAmount", "value": int(max_amount)})
+        params.append({"name": "@maxAmount", "value": int(float(max_amount))})
 
     return query, params
 
@@ -286,18 +287,26 @@ def get_scholarship_award_amounts(
     else:
         user["scholarshipScores"] = user_score["scores"]
 
-    min_query = "SELECT VALUE MIN(c.awardMin) FROM c"
-    max_query = "SELECT VALUE MAX(c.awardMax) FROM c"
+    min_query = "SELECT VALUE MIN(c.awardMin) FROM c WHERE c.awardMin != null AND"
+    max_query = "SELECT VALUE MAX(c.awardMax) FROM c WHERE c.awardMax != null AND"
     min_params = []
     max_params = []
 
     min_query, min_params = build_query(
-        req, min_query, min_params, similarity_match=similarity_match
+        req, min_query, min_params, user, similarity_match=similarity_match
     )
     max_query, max_params = build_query(
-        req, max_query, max_params, similarity_match=similarity_match
+        req, max_query, max_params, user, similarity_match=similarity_match
     )
-
+    
+    min_query = min_query.replace("AND WHERE", "AND")
+    max_query = max_query.replace("AND WHERE", "AND")
+    
+    #if it ends with AND, remove it
+    if min_query.endswith("AND"):
+        min_query = min_query[:-3]
+    if max_query.endswith("AND"):
+        max_query = max_query[:-3]
 
     try:
         min_amount = list(
