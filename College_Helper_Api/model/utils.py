@@ -2,6 +2,7 @@ def decide_schol_type(value):
 
     ## This function will decide the type of scholarship based on the eligibility criteria
     ## value: dictionary of 1 individual scholarship
+    ## returns: list of strings of the scholarship types
     n = 0
     total_schol_types = []
 
@@ -28,6 +29,7 @@ def calc_merit_score(scholarship, student_responses):
     ### This function will calculate the merit score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - merit score
     merit_score = 0
     SAT_score = 0
     ACT_score = 0
@@ -112,6 +114,9 @@ def calc_merit_score(scholarship, student_responses):
 
 
 def parse_income_intervals(interval):
+    ### This function will parse the income intervals and return a list of tuples with the lower and upper bounds
+    ### interval: string of the income interval given in user dict
+    ### returns: Tuple with the lower and upper bounds
     parsed_intervals = []
 
     if ">" in interval:
@@ -127,6 +132,9 @@ def parse_income_intervals(interval):
 
 
 def calc_need_score(student_responses):
+    ### This function will calculate the need score of a scholarship based on the student's responses for applicable scholarships
+    ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - need score
     need_score = 0
     if student_responses["demographics"]["incomeLevel"] is not None:
         intervals = parse_income_intervals(
@@ -150,6 +158,7 @@ def calc_activity_score(scholarship, student_responses):
     ### This function will calculate the activity score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - activity score
     activity_score = 0
     if (
         scholarship["eligibilityCriteria"]["activity"] is not None
@@ -172,6 +181,7 @@ def calc_grade_level_score(scholarship, student_responses):
     ### This function will calculate the grade level score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - grade level score
     grade_level_score = 0
     if (
         scholarship["eligibilityCriteria"]["currentGradeLevel"] is not None
@@ -191,6 +201,7 @@ def calc_school_score(scholarship, student_responses):
     ### This function will calculate the school score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - school score
     school_score = 0
     if (
         scholarship["eligibilityCriteria"]["currentSchool"] is not None
@@ -213,6 +224,7 @@ def calc_study_score(scholarship, student_responses):
     ### This function will calculate the study score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - study score
     study_score = 0
     if (
         scholarship["eligibilityCriteria"]["fieldsOfStudy"] is not None
@@ -231,6 +243,7 @@ def calc_location_score(scholarship, student_responses):
     ### This function will calculate the location score of a scholarship based on the student's responses for applicable scholarships
     ### scholarship: dictionary of 1 individual scholarship
     ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - location score
     location_score = 0
     if (
         scholarship["eligibilityCriteria"]["locations"] is not None
@@ -258,6 +271,7 @@ def aggrigate_values(scholarship, student_responses):
     ## This function will take in a scholarship and a student's responses and return a score for the scholarship
     ## scholarship: dictionary of 1 individual scholarship
     ## student_responses: dictionary of 1 individual student's responses
+    ### returns: int - score
     schol_types = decide_schol_type(scholarship)
     score = 0
     i = 0
@@ -290,7 +304,7 @@ def calc_expected_value(scholarship, student_responses):
     ## This function will take in a scholarship and a student's responses and return an expected value for the scholarship
     ## scholarship: dictionary of 1 individual scholarship
     ## student_responses: dictionary of 1 individual student's responses
-
+    ### returns: int - score
     score = aggrigate_values(scholarship, student_responses)
     ideal = calculate_ideal_applicant(scholarship)
     if ideal == 0:
@@ -307,6 +321,7 @@ def append_scores(student_responses, scholarships) -> dict:
     ### This function will append the scores of each scholarship and the name of the scholarship to a new pandas dataframe
     ### scholarships: list of dictionaries of all scholarships
     ### student_responses: dictionary of 1 student response
+    ### returns: sorted dictionary of the scholarships and their scores for the student
     scores = []
 
     for scholarship in scholarships:
@@ -323,6 +338,10 @@ def append_scores(student_responses, scholarships) -> dict:
 
 
 def filter_eligibility(scholarship, student_responses):
+    ### This function will filter out scholarships that the student is not eligible for
+    ### scholarship: dictionary of 1 individual scholarship
+    ### student_responses: dictionary of 1 individual student's responses
+    ### returns: int - 0 if the student is not eligible for the scholarship, 1 if they are
     schol_types = decide_schol_type(scholarship)
 
     if (
@@ -357,9 +376,10 @@ def filter_eligibility(scholarship, student_responses):
 
 
 def calculate_ideal_applicant(scholarship):
-    ## This function will calculate the ideal applicant for a scholarship based on the scholarship's criteria
-    ## scholarships: list of dictionaries of all scholarships
-    ## student_responses: dictionary of 1 student response
+    ### This function will calculate the ideal applicant for a scholarship based on the scholarship's criteria
+    ### scholarships: list of dictionaries of all scholarships
+    ### student_responses: dictionary of 1 student response
+    ### returns: int - score
     ideal_applicant = 0
     i = 0
 
@@ -385,6 +405,10 @@ def calculate_ideal_applicant(scholarship):
 
 
 def ideal_merit_applicant(scholarship):
+    ### This function will calculate the ideal merit applicant for a scholarship based on the scholarship's criteria
+    ### scholarships: list of dictionaries of all scholarships
+    ### student_responses: dictionary of 1 student response
+    ### returns: int - score
     merit_score = 0
     SAT_score = 0
     ACT_score = 0
