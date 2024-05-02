@@ -8,6 +8,8 @@ import { User } from 'src/app/Objects/User/User';
 import { AuthService } from 'src/app/Services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EndpointErrorSnackbarComponent } from '../common/endpoint-error-snackbar/endpoint-error-snackbar.component';
+import { switchMap } from 'rxjs';
+import { consumerPollProducersForChange } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-scholarship-search-page',
@@ -53,7 +55,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
       pageSize: this.pageSize,
     });
 
-    this.scholarshipService.getScholarshipAwards().subscribe({
+    this.scholarshipService.getScholarshipAwardAmounts(this.filters).subscribe({
       next: (data: any) => {
         this.min = data.min;
         this.max = data.max;
@@ -133,10 +135,20 @@ export class ScholarshipSearchPageComponent implements OnInit {
             this.needBased = result.needBased;
             this.sort_by_match = result.similarityMatch;
             this.applicationFee = result.applicationFee;
-
             this.loadingService.updateLoadingStatus(true);
             this.scholarshipService
-              .getScholarships(0, this.pageSize, this.filters)
+              .getScholarshipAwardAmounts(this.filters)
+              .pipe(
+                switchMap((data: any) => {
+                  this.min = data.min;
+                  this.max = data.max;
+                  return this.scholarshipService.getScholarships(
+                    0,
+                    this.pageSize,
+                    this.filters
+                  );
+                })
+              )
               .subscribe({
                 next: (data: any) => {
                   this.length = data.num_returned;
