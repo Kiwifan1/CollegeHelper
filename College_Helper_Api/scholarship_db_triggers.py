@@ -297,16 +297,6 @@ def get_scholarship_award_amounts(
     max_query, max_params = build_query(
         req, max_query, max_params, similarity_match=similarity_match
     )
-    
-    if len(min_params) > 0:
-        min_query += " AND c.awardMin != null"
-    else:
-        min_query += " WHERE c.awardMin != null"
-        
-    if len(max_params) > 0:
-        max_query += " AND c.awardMax != null"
-    else:
-        max_query += " WHERE c.awardMax != null"
 
     try:
         min_amount = list(
