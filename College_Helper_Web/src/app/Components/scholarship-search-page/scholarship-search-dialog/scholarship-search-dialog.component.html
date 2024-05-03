@@ -50,9 +50,15 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-slide-toggle formControlName="similarityMatch"
-        >Use Similarity Match?</mat-slide-toggle
-      >
+      <div class="single-col">
+        <mat-slide-toggle formControlName="currentlyAvailable">
+          Currently Available?
+        </mat-slide-toggle>
+
+        <mat-slide-toggle formControlName="similarityMatch"
+          >Use Similarity Match?</mat-slide-toggle
+        >
+      </div>
 
       <mat-slider
         min="{{ min }}"

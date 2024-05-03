@@ -31,7 +31,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
   needBased: string = 'Either';
   essayRequired: string = 'Either';
   applicationFee: string = 'Either';
-  sort_by_match = true;
+  sort_by_match: boolean = true;
+  currentlyAvailable: boolean = false;
 
   user_id: string = '';
   filters: any = {
@@ -120,6 +121,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
           meritBased: this.meritBased,
           needBased: this.needBased,
           similarityMatch: this.sort_by_match,
+          currentlyAvailable: this.currentlyAvailable,
         },
       })
       .afterClosed()
@@ -139,6 +141,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
             this.needBased = result.needBased;
             this.sort_by_match = result.similarityMatch;
             this.applicationFee = result.applicationFee;
+            this.currentlyAvailable = result.currentlyAvailable;
+
             this.loadingService.updateLoadingStatus(true);
             this.scholarshipService
               .getScholarshipAwardAmounts(this.filters)

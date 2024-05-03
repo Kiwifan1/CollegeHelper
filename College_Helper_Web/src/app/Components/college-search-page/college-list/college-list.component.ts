@@ -87,7 +87,8 @@ export class CollegeListComponent implements OnInit, AfterViewInit {
             next: (colleges) => {
               // append colleges to the list if they are not already in the list
               colleges.forEach((college) => {
-                if (!this.colleges.includes(college)) {
+                // check by id
+                if (!this.colleges.some((c) => c.name === college.name)) {
                   this.colleges.push(college);
                 }
               });

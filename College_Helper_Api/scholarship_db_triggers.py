@@ -1,6 +1,7 @@
 import asyncio
 import json
 import azure.functions as func
+import datetime
 from pypika import Query, Table, Field, CustomFunction, functions as fn, Order, queries
 
 from azure.core.paging import ItemPaged, PageIterator
@@ -36,6 +37,7 @@ def build_query(req, query, params, user=None, similarity_match=True):
     merit_based = req.params.get("meritBased") or None
     application_fee = req.params.get("applicationFee") or None
     need_based = req.params.get("needBased") or None
+    currently_available = req.params.get("currentlyAvailable") == 'true' or None
 
     essay_required = handleRequirements(essay_required)
     merit_based = handleRequirements(merit_based)
@@ -126,6 +128,11 @@ def build_query(req, query, params, user=None, similarity_match=True):
             query += " WHERE c.awardMax <= @maxAmount"
         params.append({"name": "@maxAmount", "value": int(max_amount)})
 
+    if currently_available:
+        if len(params) > 0:
+            query += " AND (c.scholarshipOpen = null OR c.scholarshipOpen <= GetCurrentDateTime()) AND c.scholarshipDeadline >= GetCurrentDateTime()"
+        else:
+            query += " WHERE (c.scholarshipOpen = null OR c.scholarshipOpen <= GetCurrentDateTime()) AND c.scholarshipDeadline >= GetCurrentDateTime()"
     return query, params
 
 
