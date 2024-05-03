@@ -7,13 +7,17 @@
             <mat-card-title>Top Scholarship</mat-card-title>
           </mat-card-header>
           <mat-card-content>
-            <div *ngIf="!bestScholarship">
+            <div *ngIf="!bestScholarship && !loading">
               <p class="none-found">
                 There are currently no recommended scholarships.
               </p>
             </div>
 
-            <div *ngIf="bestScholarship">
+            <div class="loading-spinner" *ngIf="loading">
+              <mat-spinner></mat-spinner>
+            </div>
+
+            <div *ngIf="bestScholarship && !loading">
               <h1 class="scholarship-name">
                 <strong>{{ bestScholarship.scholarshipName }}</strong>
               </h1>
@@ -34,7 +38,8 @@
               </mat-card-subtitle>
             </div>
           </mat-card-content>
-          <button *ngIf="bestScholarship"
+          <button
+            *ngIf="bestScholarship"
             mat-raised-button
             color="primary"
             class="scholarship-search-button"

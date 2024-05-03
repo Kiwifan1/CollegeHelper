@@ -19,6 +19,8 @@ export class HomePageComponent implements OnInit {
 
   user: User = this.userService.getUser();
 
+  loading: boolean = false;
+
   constructor(
     private loadingService: LoadingService,
     private userService: AuthService,
@@ -29,16 +31,20 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadingService.updateLoadingStatus(true);
+    this.loading = true;
     this.scholarshipService.getBestScholarship(this.user.id).subscribe({
       next: (scholarship) => {
         this.bestScholarship = scholarship;
         this.loadingService.updateLoadingStatus(false);
+        this.loading = false;
       },
       error: (error) => {
         this.loadingService.updateLoadingStatus(false);
+        this.loading = false;
       },
     });
 
+    this.loadingService.updateLoadingStatus(true);
     this.collegeService.getBestCollege(this.user.id).subscribe({
       next: (college) => {
         this.bestCollege = college;
@@ -51,6 +57,6 @@ export class HomePageComponent implements OnInit {
   }
 
   goToScholarship() {
-    this.router.navigate(['/scholarship', this.bestScholarship.id]);
+    this.router.navigate(['/scholarship', this.bestScholarship?.id]);
   }
 }
