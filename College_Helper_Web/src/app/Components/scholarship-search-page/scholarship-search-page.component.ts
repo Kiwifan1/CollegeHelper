@@ -38,6 +38,8 @@ export class ScholarshipSearchPageComponent implements OnInit {
     similarityMatch: this.sort_by_match,
   };
 
+  similarityMatchingInProgess: boolean = false;
+
   constructor(
     private authService: AuthService,
     private scholarshipService: ScholarshipService,
@@ -91,6 +93,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
             );
           });
           this.scholarships = scholarships;
+          this.similarityMatchingInProgess = !data.found_scores;
           this.loadingService.updateLoadingStatus(false);
         },
         error: (error) => {
@@ -159,6 +162,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
                       scholarship.scholarshipName.replace('_', '/');
                   });
                   this.scholarships = scholarships;
+                  this.similarityMatchingInProgess = !data.found_scores;
                   this.loadingService.updateLoadingStatus(false);
                 },
                 error: (error) => {

@@ -211,7 +211,7 @@ export class QuestionnaireStepperComponent implements OnInit {
       .subscribe({
         next: (response: any) => {
           this.loadingService.updateLoadingStatus(false);
-          this.router.navigate(['/scholarships']);
+          this.router.navigate(['/home']);
         },
 
         error: (error) => {

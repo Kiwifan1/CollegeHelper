@@ -218,7 +218,7 @@ def get_scholarships(
             num_returned = len(scholarships)
             scholarships = scholarships[int(offset) : int(offset) + int(limit)]
         return func.HttpResponse(
-            json.dumps({"scholarships": scholarships, "num_returned": num_returned}),
+            json.dumps({"scholarships": scholarships, "num_returned": num_returned, "found_scores": user_score is not None}),
             status_code=200,
             mimetype="application/json",
         )
