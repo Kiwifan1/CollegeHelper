@@ -56,4 +56,9 @@ export class ScholarshipService {
 
     return res;
   }
+
+  getBestScholarship(user_id: string): Observable<Scholarship> {
+    let url = environment.WEB_API_URL + '/get_best_scholarship';
+    return this.$http.get<Scholarship>(url, { params: { id: user_id } });
+  }
 }

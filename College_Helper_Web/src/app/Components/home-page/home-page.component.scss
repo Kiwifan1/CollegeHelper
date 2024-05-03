@@ -1,0 +1,45 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  padding: 10px;
+  margin: 10px;
+  margin-right: 20px;
+
+  .grid-item {
+    text-align: center;
+    padding: 20px;
+    font-size: 30px;
+
+    .none-found {
+      font-size: 20px;
+      line-height: 1.5;
+    }
+
+    .information {
+      font-size: 20px;
+    }
+  }
+
+  .grid-item mat-card {
+    flex-grow: 1;
+  }
+}
+
+.scholarship-name {
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.scholarship-search-button {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
+  cursor: pointer;
+}

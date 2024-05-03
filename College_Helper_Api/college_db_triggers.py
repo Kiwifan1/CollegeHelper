@@ -87,3 +87,12 @@ def get_colleges_by_name(req: func.HttpRequest) -> func.HttpResponse:
             return func.HttpResponse(f"Error: {str(e)}", status_code=500)
     except Exception as e:
         return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+
+@college_bp.route(route="get_best_college", methods=["GET"])
+def get_best_college(req: func.HttpRequest) -> func.HttpResponse:
+    try:
+        # TODO: Implement this function
+        return func.HttpResponse("Not Implemented", status_code=501)
+    except Exception as e:
+        return func.HttpResponse(f"Error: {str(e)}", status_code=500)

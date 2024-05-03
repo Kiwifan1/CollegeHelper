@@ -218,7 +218,13 @@ def get_scholarships(
             num_returned = len(scholarships)
             scholarships = scholarships[int(offset) : int(offset) + int(limit)]
         return func.HttpResponse(
-            json.dumps({"scholarships": scholarships, "num_returned": num_returned, "found_scores": user_score is not None}),
+            json.dumps(
+                {
+                    "scholarships": scholarships,
+                    "num_returned": num_returned,
+                    "found_scores": user_score is not None,
+                }
+            ),
             status_code=200,
             mimetype="application/json",
         )
@@ -242,6 +248,51 @@ def get_scholarship(req: func.HttpRequest) -> func.HttpResponse:
                 return func.HttpResponse(
                     "Error: Scholarship not found", status_code=404
                 )
+            return func.HttpResponse(
+                json.dumps(scholarship[0]), status_code=200, mimetype="application/json"
+            )
+        except Exception as e:
+            return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+    except Exception as e:
+        return func.HttpResponse(f"Error: {str(e)}", status_code=500)
+
+
+@schol_bp.route(route="get_best_scholarship", methods=["GET"])
+@schol_bp.cosmos_db_input(
+    arg_name="user",
+    database_name="CollegeHelperDB",
+    container_name="USER",
+    connection=cosmos_db_connection,
+)
+@schol_bp.cosmos_db_input(
+    arg_name="scores",
+    database_name="CollegeHelperDB",
+    container_name="SCORE",
+    connection=cosmos_db_connection,
+)
+def get_best_scholarship(
+    req: func.HttpRequest, user: func.DocumentList, scores: func.DocumentList
+) -> func.HttpResponse:
+    try:
+        id = req.params.get("id")
+        user = next(iter([u.data for u in user if u.data["id"] == id]), None)
+        user_score = next(
+            iter([u.data for u in scores if u.data["userId"] == id]), None
+        )
+
+        if not user_score:
+            return func.HttpResponse("Error: User scores not found", status_code=404)
+
+        query = "SELECT * FROM c WHERE c.id = @id"
+        params = [{"name": "@id", "value": user_score["scores"][0]["scholId"]}]
+        try:
+            scholarship = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
+            if not scholarship:
+                return func.HttpResponse(
+                    "Error: Scholarship not found", status_code=404
+                )
+
+            scholarship[0]["score"] = user_score["scores"][0]["score"]
             return func.HttpResponse(
                 json.dumps(scholarship[0]), status_code=200, mimetype="application/json"
             )

@@ -1,5 +1,83 @@
 <div class="page">
   <div class="page-content">
-    <h1>Home Page</h1>
+    <div class="grid-container">
+      <div class="grid-item">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Top Scholarship</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="!bestScholarship">
+              <p class="none-found">
+                There are currently no recommended scholarships.
+              </p>
+            </div>
+
+            <div *ngIf="bestScholarship">
+              <h1 class="scholarship-name">
+                <strong>{{ bestScholarship.scholarshipName }}</strong>
+              </h1>
+              <app-similarity-ring [similarity]="bestScholarship.score">
+              </app-similarity-ring>
+              <mat-card-subtitle>
+                <h3>{{ bestScholarship.programOrgName }}</h3>
+                <h2>
+                  <strong>
+                    Amount: {{ bestScholarship.maxAmountFormat | money }}
+                  </strong>
+                  | Open:
+                  {{ bestScholarship.scholarshipOpen | date : "MM/dd/yyyy" }} -
+                  {{
+                    bestScholarship.scholarshipDeadline | date : "MM/dd/yyyy"
+                  }}
+                </h2>
+              </mat-card-subtitle>
+            </div>
+          </mat-card-content>
+          <button
+            mat-raised-button
+            color="primary"
+            class="scholarship-search-button"
+            (click)="goToScholarship()"
+          >
+            View Scholarship
+          </button>
+        </mat-card>
+      </div>
+      <div class="grid-item">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Top College</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="!bestCollege">
+              <p>There are currently no recommended colleges.</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <!--
+      <div class="grid-item">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>User Information</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <div *ngIf="!user">
+              <p>There is currently no user information.</p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="grid-item">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Something Else</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+          </mat-card-content>
+        </mat-card>
+      </div> -->
+    </div>
   </div>
 </div>

@@ -119,7 +119,7 @@ export interface Scholarship {
   isNeedBased: boolean;
   isMeritBased: boolean;
   cbScholarshipId: string;
-  score?: number;
+  score: number;
   similarityId?: string;
   awardMin: number | null;
   awardMax: number | null;
