@@ -32,11 +32,12 @@ export class ScholarshipSearchPageComponent implements OnInit {
   essayRequired: string = 'Either';
   applicationFee: string = 'Either';
   sort_by_match: boolean = true;
-  currentlyAvailable: boolean = false;
+  currentlyAvailable: boolean = true;
 
   user_id: string = '';
   filters: any = {
     similarityMatch: this.sort_by_match,
+    currentlyAvailable: this.currentlyAvailable,
   };
 
   similarityMatchingInProgess: boolean = false;
@@ -53,15 +54,14 @@ export class ScholarshipSearchPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onPaginate({
-      pageIndex: this.pageIndex * this.pageSize,
-      pageSize: this.pageSize,
-    });
-
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService.getScholarshipAwardAmounts(this.filters).subscribe({
       next: (data: any) => {
-        this.min = data.min;
-        this.max = data.max;
+        if (data.min !== null || data.max !== null) {
+          this.min = data.min;
+          this.max = data.max;
+        }
+        this.loadingService.updateLoadingStatus(false);
       },
       error: (error) => {
         this.loadingService.updateLoadingStatus(false);
@@ -70,6 +70,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
           data: { error: error.error },
         });
       },
+    });
+
+    this.onPaginate({
+      pageIndex: this.pageIndex * this.pageSize,
+      pageSize: this.pageSize,
     });
   }
 
@@ -128,7 +133,6 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .subscribe({
         next: (result) => {
           if (result) {
-            console.log(result);
             this.filters = {
               ...this.filters,
               ...result,
@@ -148,8 +152,10 @@ export class ScholarshipSearchPageComponent implements OnInit {
               .getScholarshipAwardAmounts(this.filters)
               .pipe(
                 switchMap((data: any) => {
-                  this.min = data.min;
-                  this.max = data.max;
+                  if (data.min !== null || data.max !== null) {
+                    this.min = data.min;
+                    this.max = data.max;
+                  }
                   return this.scholarshipService.getScholarships(
                     0,
                     this.pageSize,

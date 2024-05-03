@@ -23,6 +23,11 @@ export class ScholarshipService {
       limit: limit,
       ...filters,
     };
+
+    if (params.minAmount > params.maxAmount || params.maxAmount === 0) {
+      delete params.minAmount;
+      delete params.maxAmount;
+    }
     return this.$http.get<Scholarship[]>(url, { params: params });
   }
 
