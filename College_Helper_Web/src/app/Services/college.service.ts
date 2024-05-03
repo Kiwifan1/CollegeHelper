@@ -15,4 +15,9 @@ export class CollegeService {
     let url = environment.WEB_API_URL + '/get_colleges';
     return this.$http.get<College[]>(url, { params: params });
   }
+
+  getCollegesByNames(params: any): Observable<College[]> {
+    let url = environment.WEB_API_URL + '/get_colleges_by_name';
+    return this.$http.get<College[]>(url, { params: params });
+  }
 }
