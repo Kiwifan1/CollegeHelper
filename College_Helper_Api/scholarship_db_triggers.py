@@ -45,6 +45,16 @@ def build_query(req, query, params, user=None, similarity_match=True):
     min_amount = req.params.get("minAmount") or None
     max_amount = req.params.get("maxAmount") or None
 
+    # check if min/max are valid numbers
+    try:
+        if min_amount is not None:
+            min_amount = float(min_amount)
+        if max_amount is not None:
+            max_amount = float(max_amount)
+    except ValueError:
+        min_amount = None
+        max_amount = None
+
     # adding the predictive list ordering and filtering
     if similarity_match and user is not None and user["scholarshipScores"] != []:
         if len(params) > 0:
@@ -107,14 +117,14 @@ def build_query(req, query, params, user=None, similarity_match=True):
             query += " AND c.awardMax >= @minAmount"
         else:
             query += " WHERE c.awardMax >= @minAmount"
-        params.append({"name": "@minAmount", "value": int(float(min_amount))})
+        params.append({"name": "@minAmount", "value": int(min_amount)})
 
     if max_amount is not None:
         if len(params) > 0:
             query += " AND c.awardMax <= @maxAmount"
         else:
             query += " WHERE c.awardMax <= @maxAmount"
-        params.append({"name": "@maxAmount", "value": int(float(max_amount))})
+        params.append({"name": "@maxAmount", "value": int(max_amount)})
 
     return query, params
 

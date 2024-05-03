@@ -123,6 +123,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
       .subscribe({
         next: (result) => {
           if (result) {
+            console.log(result);
             this.filters = {
               ...this.filters,
               ...result,
