@@ -15,4 +15,14 @@ export class CollegeService {
     let url = environment.WEB_API_URL + '/get_colleges';
     return this.$http.get<College[]>(url, { params: params });
   }
+
+  getCollegesByNames(params: any): Observable<College[]> {
+    let url = environment.WEB_API_URL + '/get_colleges_by_name';
+    return this.$http.get<College[]>(url, { params: params });
+  }
+
+  getBestCollege(user_id: string): Observable<College> {
+    let url = environment.WEB_API_URL + '/get_best_college';
+    return this.$http.get<College>(url, { params: { id: user_id } });
+  }
 }

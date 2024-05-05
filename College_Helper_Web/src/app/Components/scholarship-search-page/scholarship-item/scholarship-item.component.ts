@@ -55,19 +55,12 @@ export class ScholarshipItemComponent implements OnInit {
   }
 
   isWithinDate() {
-    let startDate = this.scholarship.scholarshipOpen.split('/');
-    let endDate = this.scholarship.scholarshipDeadline.split('/');
+    let startDate = this.scholarship.scholarshipOpen;
+    let endDate = this.scholarship.scholarshipDeadline;
 
-    let start = new Date(
-      Number(startDate[2]),
-      Number(startDate[0]) - 1,
-      Number(startDate[1])
-    );
-    let end = new Date(
-      Number(endDate[2]),
-      Number(endDate[0]) - 1,
-      Number(endDate[1])
-    );
+    // dates are in ISO Format
+    let start = new Date(startDate);
+    let end = new Date(endDate);
     let today = new Date();
 
     return today >= start && today <= end;
