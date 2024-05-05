@@ -25,6 +25,7 @@ export class ScholarshipSearchDialogComponent implements OnInit {
     minAmount: new FormControl(this.minChoice),
     maxAmount: new FormControl(this.maxChoice),
     similarityMatch: new FormControl(true),
+    currentlyAvailable: new FormControl(false),
   });
 
   constructor(
@@ -54,6 +55,7 @@ export class ScholarshipSearchDialogComponent implements OnInit {
       minAmount: this.minChoice,
       maxAmount: this.maxChoice,
       similarityMatch: this.data.similarityMatch,
+      currentlyAvailable: this.data.currentlyAvailable,
     });
   }
 

@@ -31,12 +31,17 @@ export class ScholarshipSearchPageComponent implements OnInit {
   needBased: string = 'Either';
   essayRequired: string = 'Either';
   applicationFee: string = 'Either';
-  sort_by_match = true;
+  sort_by_match: boolean = true;
+  currentlyAvailable: boolean = true;
+  noScholarships: boolean = true;
 
   user_id: string = '';
   filters: any = {
     similarityMatch: this.sort_by_match,
+    currentlyAvailable: this.currentlyAvailable,
   };
+
+  similarityMatchingInProgess: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -50,15 +55,19 @@ export class ScholarshipSearchPageComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onPaginate({
-      pageIndex: this.pageIndex * this.pageSize,
-      pageSize: this.pageSize,
-    });
-
+    this.loadingService.updateLoadingStatus(true);
     this.scholarshipService.getScholarshipAwardAmounts(this.filters).subscribe({
       next: (data: any) => {
-        this.min = data.min;
-        this.max = data.max;
+        if (this.minChoice == this.min) {
+          this.minChoice = data.min !== null ? data.min : 0;
+        }
+
+        if (this.maxChoice == this.max || this.maxChoice < this.min) {
+          this.maxChoice = data.max !== null ? data.max : 0;
+        }
+        this.min = data.min !== null ? data.min : 0;
+        this.max = data.max !== null ? data.max : 0;
+        this.loadingService.updateLoadingStatus(false);
       },
       error: (error) => {
         this.loadingService.updateLoadingStatus(false);
@@ -67,6 +76,11 @@ export class ScholarshipSearchPageComponent implements OnInit {
           data: { error: error.error },
         });
       },
+    });
+
+    this.onPaginate({
+      pageIndex: this.pageIndex * this.pageSize,
+      pageSize: this.pageSize,
     });
   }
 
@@ -84,6 +98,13 @@ export class ScholarshipSearchPageComponent implements OnInit {
         next: (data: any) => {
           this.length = data.num_returned;
           let scholarships = data.scholarships;
+
+          if (scholarships === null || scholarships.length == 0) {
+            this.noScholarships = true;
+          } else {
+            this.noScholarships = false;
+          }
+
           scholarships.forEach((scholarship: any) => {
             scholarship.scholarshipName = scholarship.scholarshipName.replace(
               '_',
@@ -91,6 +112,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
             );
           });
           this.scholarships = scholarships;
+          this.similarityMatchingInProgess = !data.found_scores;
           this.loadingService.updateLoadingStatus(false);
         },
         error: (error) => {
@@ -117,6 +139,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
           meritBased: this.meritBased,
           needBased: this.needBased,
           similarityMatch: this.sort_by_match,
+          currentlyAvailable: this.currentlyAvailable,
         },
       })
       .afterClosed()
@@ -135,13 +158,23 @@ export class ScholarshipSearchPageComponent implements OnInit {
             this.needBased = result.needBased;
             this.sort_by_match = result.similarityMatch;
             this.applicationFee = result.applicationFee;
+            this.currentlyAvailable = result.currentlyAvailable;
+
             this.loadingService.updateLoadingStatus(true);
             this.scholarshipService
               .getScholarshipAwardAmounts(this.filters)
               .pipe(
                 switchMap((data: any) => {
-                  this.min = data.min;
-                  this.max = data.max;
+                  if (this.minChoice == this.min) {
+                    this.minChoice = data.min !== null ? data.min : 0;
+                  }
+
+                  if (this.maxChoice == this.max || this.maxChoice < this.min) {
+                    this.maxChoice = data.max !== null ? data.max : 0;
+                  }
+
+                  this.min = data.min !== null ? data.min : 0;
+                  this.max = data.max !== null ? data.max : 0;
                   return this.scholarshipService.getScholarships(
                     0,
                     this.pageSize,
@@ -153,11 +186,19 @@ export class ScholarshipSearchPageComponent implements OnInit {
                 next: (data: any) => {
                   this.length = data.num_returned;
                   let scholarships = data.scholarships;
+
+                  if (scholarships === null || scholarships.length == 0) {
+                    this.noScholarships = true;
+                  } else {
+                    this.noScholarships = false;
+                  }
+
                   scholarships.forEach((scholarship: any) => {
                     scholarship.scholarshipName =
                       scholarship.scholarshipName.replace('_', '/');
                   });
                   this.scholarships = scholarships;
+                  this.similarityMatchingInProgess = !data.found_scores;
                   this.loadingService.updateLoadingStatus(false);
                 },
                 error: (error) => {

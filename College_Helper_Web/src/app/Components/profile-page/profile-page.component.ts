@@ -35,12 +35,24 @@ export class ProfilePageComponent implements OnInit {
     maritalStatus: new FormControl(''),
   });
 
-  genderOptions = Object.values(GenderIdentityEnum);
-  ethnicityOptions = Object.values(EthnicityEnum);
-  incomeOptions = Object.values(IncomeLevel);
-  educationOptions = Object.values(EducationLevel);
-  occupationOptions = Object.values(Occupation);
-  maritalStatusOptions = Object.values(MaritalStatus);
+  genderOptions = Object.values(GenderIdentityEnum).filter(
+    (value) => typeof value === 'string'
+  );
+  ethnicityOptions = Object.values(EthnicityEnum).filter(
+    (value) => typeof value === 'string'
+  );
+  incomeOptions = Object.values(IncomeLevel).filter(
+    (value) => typeof value === 'string'
+  );
+  educationOptions = Object.values(EducationLevel).filter(
+    (value) => typeof value === 'string'
+  );
+  occupationOptions = Object.values(Occupation).filter(
+    (value) => typeof value === 'string'
+  );
+  maritalStatusOptions = Object.values(MaritalStatus).filter(
+    (value) => typeof value === 'string'
+  );
 
   constructor(
     private authService: AuthService,
@@ -68,6 +80,7 @@ export class ProfilePageComponent implements OnInit {
         occupation: new FormControl(this.user.demographics.occupation),
         maritalStatus: new FormControl(this.user.demographics.maritalStatus),
       });
+      console.log(this.user)
       this.profileForm.controls['age'].setValue(this.user.demographics.age);
       this.profileForm.controls['gender'].setValue(
         this.user.demographics.demographicInfo.identities.genderIdentity

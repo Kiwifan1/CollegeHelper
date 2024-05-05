@@ -1,5 +1,15 @@
 <div class="page">
   <div class="page-content">
+    <div class="still-processing" *ngIf="similarityMatchingInProgess">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <div class="still-processing-text">
+        <h2>Still Predicting...</h2>
+        <p>
+          We are still predicting your best scholarships. This may take a few
+          minutes. Please be patient and try refreshing or come back later.
+        </p>
+      </div>
+    </div>
     <div class="scholarships">
       <div class="scholarship-header">
         <button
@@ -13,6 +23,16 @@
         </button>
       </div>
       <div class="scholarship-content">
+        <div
+          class="no-schols-found"
+          *ngIf="noScholarships && !similarityMatchingInProgess"
+        >
+          <h2>No Scholarships Found</h2>
+          <p>
+            We couldn't find any scholarships that match your preferences. Try
+            broadening your search criteria.
+          </p>
+        </div>
         <div class="scholarship-list" *ngFor="let scholarship of scholarships">
           <app-scholarship-item
             [similarityScore]="scholarship.score || null"

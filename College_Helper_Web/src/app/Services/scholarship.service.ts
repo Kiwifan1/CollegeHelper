@@ -23,6 +23,11 @@ export class ScholarshipService {
       limit: limit,
       ...filters,
     };
+
+    if (params.minAmount > params.maxAmount || params.maxAmount === 0) {
+      delete params.minAmount;
+      delete params.maxAmount;
+    }
     return this.$http.get<Scholarship[]>(url, { params: params });
   }
 
@@ -45,17 +50,20 @@ export class ScholarshipService {
 
   getScholarshipAwardAmounts(filters: any = {}): Observable<any> {
     // get rid of minAmount and maxAmount if present only for the purpose of this call
-    const min = filters.minAmount;
-    const max = filters.maxAmount;
-    delete filters.minAmount;
-    delete filters.maxAmount;
+    let params = {
+      ...filters,
+    };
 
+    delete params.minAmount;
+    delete params.maxAmount;
     let url = environment.WEB_API_URL + '/get_scholarship_award_amounts';
-    let res = this.$http.get(url, { params: filters });
+    let res = this.$http.get(url, { params: params });
 
-    // add min and max back to filters
-    filters.minAmount = min;
-    filters.maxAmount = max;
     return res;
+  }
+
+  getBestScholarship(user_id: string): Observable<Scholarship> {
+    let url = environment.WEB_API_URL + '/get_best_scholarship';
+    return this.$http.get<Scholarship>(url, { params: { id: user_id } });
   }
 }

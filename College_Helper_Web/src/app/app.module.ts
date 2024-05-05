@@ -70,6 +70,7 @@ import { RingColorPipe } from './Components/common/pipes/ring-color.pipe';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HighschoolComponent } from './Components/questionnaire-stepper/highschool/highschool.component';
 import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-error-snackbar/endpoint-error-snackbar.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { EndpointErrorSnackbarComponent } from './Components/common/endpoint-err
     NgxGaugeModule,
     RingColorPipe,
     MatSlideToggleModule,
+    MatProgressBarModule,
   ],
   providers: [AuthService, provideHttpClient()],
   bootstrap: [AppComponent],
