@@ -57,10 +57,15 @@ export class ScholarshipSearchPageComponent implements OnInit {
     this.loadingService.updateLoadingStatus(true);
     this.scholarshipService.getScholarshipAwardAmounts(this.filters).subscribe({
       next: (data: any) => {
-        if (data.min !== null || data.max !== null) {
-          this.min = data.min;
-          this.max = data.max;
+        if (this.minChoice == this.min) {
+          this.minChoice = data.min !== null ? data.min : 0;
         }
+
+        if (this.maxChoice == this.max || this.maxChoice < this.min) {
+          this.maxChoice = data.max !== null ? data.max : 0;
+        }
+        this.min = data.min !== null ? data.min : 0;
+        this.max = data.max !== null ? data.max : 0;
         this.loadingService.updateLoadingStatus(false);
       },
       error: (error) => {
@@ -152,10 +157,16 @@ export class ScholarshipSearchPageComponent implements OnInit {
               .getScholarshipAwardAmounts(this.filters)
               .pipe(
                 switchMap((data: any) => {
-                  if (data.min !== null || data.max !== null) {
-                    this.min = data.min;
-                    this.max = data.max;
+                  if (this.minChoice == this.min) {
+                    this.minChoice = data.min !== null ? data.min : 0;
                   }
+
+                  if (this.maxChoice == this.max || this.maxChoice < this.min) {
+                    this.maxChoice = data.max !== null ? data.max : 0;
+                  }
+
+                  this.min = data.min !== null ? data.min : 0;
+                  this.max = data.max !== null ? data.max : 0;
                   return this.scholarshipService.getScholarships(
                     0,
                     this.pageSize,

@@ -37,7 +37,7 @@ def build_query(req, query, params, user=None, similarity_match=True):
     merit_based = req.params.get("meritBased") or None
     application_fee = req.params.get("applicationFee") or None
     need_based = req.params.get("needBased") or None
-    currently_available = req.params.get("currentlyAvailable") == 'true' or None
+    currently_available = req.params.get("currentlyAvailable") == "true" or None
 
     essay_required = handleRequirements(essay_required)
     merit_based = handleRequirements(merit_based)
@@ -290,18 +290,40 @@ def get_best_scholarship(
         if not user_score:
             return func.HttpResponse("Error: User scores not found", status_code=404)
 
-        query = "SELECT * FROM c WHERE c.id = @id"
-        params = [{"name": "@id", "value": user_score["scores"][0]["scholId"]}]
+        query = "SELECT * FROM c WHERE ARRAY_CONTAINS(@schol_ids, c.id, true)"
+        query += " AND (c.scholarshipOpen = null OR c.scholarshipOpen <= GetCurrentDateTime()) AND c.scholarshipDeadline >= GetCurrentDateTime()"
+        params = [
+            {
+                "name": "@schol_ids",
+                "value": [s["scholId"] for s in user_score["scores"]],
+            }
+        ]
+
         try:
-            scholarship = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
-            if not scholarship:
+            scholarships = list(query_cosmos_db(query, params, SCHOL_CONTAINER, True))
+            if not scholarships:
                 return func.HttpResponse(
-                    "Error: Scholarship not found", status_code=404
+                    "Error: Scholarships not found", status_code=404
                 )
 
-            scholarship[0]["score"] = user_score["scores"][0]["score"]
+            # get top scholarship
+            schols = {schol["id"]: schol for schol in scholarships}
+            # get top scholarship that is in schols
+            top_schol_idx = next(
+                iter(
+                    [
+                        idx
+                        for idx, score in enumerate(user_score["scores"])
+                        if score["scholId"] in schols
+                    ]
+                ),
+            )
+
+            scholarship = schols[user_score["scores"][top_schol_idx]["scholId"]]
+            scholarship["score"] = user_score["scores"][top_schol_idx]["score"]
+
             return func.HttpResponse(
-                json.dumps(scholarship[0]), status_code=200, mimetype="application/json"
+                json.dumps(scholarship), status_code=200, mimetype="application/json"
             )
         except Exception as e:
             return func.HttpResponse(f"Error: {str(e)}", status_code=500)
