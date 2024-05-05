@@ -33,6 +33,7 @@ export class ScholarshipSearchPageComponent implements OnInit {
   applicationFee: string = 'Either';
   sort_by_match: boolean = true;
   currentlyAvailable: boolean = true;
+  noScholarships: boolean = true;
 
   user_id: string = '';
   filters: any = {
@@ -97,6 +98,13 @@ export class ScholarshipSearchPageComponent implements OnInit {
         next: (data: any) => {
           this.length = data.num_returned;
           let scholarships = data.scholarships;
+
+          if (scholarships === null || scholarships.length == 0) {
+            this.noScholarships = true;
+          } else {
+            this.noScholarships = false;
+          }
+
           scholarships.forEach((scholarship: any) => {
             scholarship.scholarshipName = scholarship.scholarshipName.replace(
               '_',
@@ -178,6 +186,13 @@ export class ScholarshipSearchPageComponent implements OnInit {
                 next: (data: any) => {
                   this.length = data.num_returned;
                   let scholarships = data.scholarships;
+
+                  if (scholarships === null || scholarships.length == 0) {
+                    this.noScholarships = true;
+                  } else {
+                    this.noScholarships = false;
+                  }
+
                   scholarships.forEach((scholarship: any) => {
                     scholarship.scholarshipName =
                       scholarship.scholarshipName.replace('_', '/');
